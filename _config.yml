@@ -1,0 +1,42 @@
+# Site settings. GitHub Pages reads this file when it builds the site.
+title: Girish Arora
+description: Analog and mixed-signal IC design, nanofabrication, power electronics. MSE Electrical Engineering, University of Pennsylvania.
+url: https://girisharora.com
+author: Girish Arora
+email: girish5@engineering.upenn.edu
+linkedin: https://www.linkedin.com/in/girish-arora-027918226
+github: https://github.com/Girish501
+
+# Put your resume PDF at this path. The Resume buttons appear automatically once the file exists.
+resume_path: /assets/Girish-Arora-Resume.pdf
+
+# Blog posts live in the _posts folder. File name format: YYYY-MM-DD-short-title.md
+permalink: /blog/:year/:title/
+# Publish posts even if their date is later than GitHub's clock (avoids posts silently not appearing).
+future: true
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+feed:
+  path: blog/feed.xml
+
+# Files kept in the repo but not published on the website.
+exclude:
+  - README.md
+  - content/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/

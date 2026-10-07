@@ -1,0 +1,41 @@
+---
+layout: base
+title: Blog
+permalink: /blog/
+description: Notes by Girish Arora on analog IC design, nanofabrication, and lab work.
+---
+<section class="page-head">
+  <div class="wrap">
+    <h1 class="reveal">Blog</h1>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap wrap-narrow">
+    {% if site.posts.size > 0 %}
+    <ol class="post-list">
+      {% for post in site.posts %}
+      <li class="reveal">
+        <a class="post-item" href="{{ post.url | relative_url }}">
+          <time class="mono" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
+          <span class="post-item-title">{{ post.title }}</span>
+          {% assign summary = post.description | default: post.excerpt | strip_html | normalize_whitespace | truncate: 180 %}
+          {% if summary != "" %}<span class="post-item-dek">{{ summary }}</span>{% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <div class="empty reveal">
+      <p>No posts yet.</p>
+      <!-- Planned topics from content/site-content.md. This list only shows while there are no posts. -->
+      <p class="mono-label">Planned</p>
+      <ul class="planned">
+        <li>Fitting AZO ellipsometry data in WVASE</li>
+        <li>Lessons from a first 45 nm TIA tape-out-style design</li>
+        <li>What 60 hours in a cleanroom teaches you</li>
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</section>
