@@ -21,7 +21,7 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Shared trace drawing code | `assets/js/traces.js` |
 | Web-sized photos | `assets/img/` |
 | Custom domain | `CNAME` |
-| Site settings (email, links, resume path) | `_config.yml` |
+| Site settings (email, links) | `_config.yml` |
 
 ## Add a blog post
 
@@ -34,9 +34,9 @@ On github.com you can do this in the browser: open the `_posts` folder, click **
 
 Files in `_drafts` are never published.
 
-## Add your resume
+## Resume
 
-Upload your resume PDF as `assets/Girish-Arora-Resume.pdf`. The Resume buttons on the home and contact pages appear on their own once the file exists. To use another file name, change `resume_path` in `_config.yml`.
+The site has no resume download. The Contact page has a "Resume: available on request" card that opens an email to you. Do not upload a resume PDF to this repo: everything here is public, including the phone number on the resume.
 
 ## Change text
 

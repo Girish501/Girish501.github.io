@@ -2,9 +2,8 @@
 layout: base
 title: Contact
 permalink: /contact/
-description: Contact Girish Arora. Email, LinkedIn, GitHub, and resume.
+description: Contact Girish Arora. Email, LinkedIn, and GitHub. Resume available on request.
 ---
-{% assign resume = site.static_files | where: "path", site.resume_path | first %}
 <section class="page-head">
   <div class="wrap">
     <h1 class="reveal">Contact</h1>
@@ -36,15 +35,13 @@ description: Contact Girish Arora. Email, LinkedIn, GitHub, and resume.
           <span class="contact-value">github.com/Girish501</span>
         </a>
       </li>
-      {% if resume %}
       <li class="reveal" style="--d:3">
-        <a class="contact-card" href="{{ site.resume_path | relative_url }}" download>
-          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v12 M7 10l5 5 5-5 M4 20h16"/></svg></span>
+        <a class="contact-card" href="mailto:{{ site.email }}?subject=Resume%20request">
+          <span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z M15 3v4h4 M9 12h7 M9 16h7"/></svg></span>
           <span class="contact-label mono">Resume</span>
-          <span class="contact-value">Download PDF</span>
+          <span class="contact-value">Available on request by email</span>
         </a>
       </li>
-      {% endif %}
     </ul>
   </div>
 </section>

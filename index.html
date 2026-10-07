@@ -3,7 +3,6 @@ layout: base
 title: Girish Arora
 hero: true
 ---
-{% assign resume = site.static_files | where: "path", site.resume_path | first %}
 <!-- All text on this page comes from content/site-content.md. -->
 
 <section class="hero" id="top">
@@ -20,7 +19,6 @@ hero: true
       <p class="hero-summary">Analog and mixed-signal IC designer with hands-on cleanroom and thin-film process experience. Currently a Graduate Student Fellow at Penn's Quattrone Nanofabrication Facility.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#projects">See projects</a>
-        {% if resume %}<a class="btn" href="{{ site.resume_path | relative_url }}" download>Resume (PDF)</a>{% endif %}
         <a class="btn" href="{{ '/contact/' | relative_url }}">Contact</a>
       </div>
     </div>
@@ -305,7 +303,6 @@ hero: true
     <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="{{ '/contact/' | relative_url }}">Contact</a>
-      {% if resume %}<a class="btn" href="{{ site.resume_path | relative_url }}" download>Resume (PDF)</a>{% endif %}
     </div>
   </div>
 </section>
