@@ -17,6 +17,8 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Styles | `assets/css/style.css` |
 | Scroll animations and photo enlarge | `assets/js/main.js` |
 | Hero circuit animation | `assets/js/hero.js` |
+| Scroll effects (process bands, left-side trace) | `assets/js/scroll-fx.js` |
+| Shared trace drawing code | `assets/js/traces.js` |
 | Web-sized photos | `assets/img/` |
 | Custom domain | `CNAME` |
 | Site settings (email, links, resume path) | `_config.yml` |
