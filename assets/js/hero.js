@@ -1,5 +1,7 @@
-// Hero background: parallel copper trace buses routed across the hero with 45° jogs,
-// and signal pulses running along them. Traces are drawn once per resize; only pulses animate.
+// Hero background: parallel copper trace buses with 45° jogs and signal pulses running along them.
+// Traces stay out of the text: they are routed and clipped to the area right of the text column
+// and the strip above it. On narrow screens there is no free area, so nothing is drawn.
+// Traces are drawn once per resize; only pulses animate.
 (function () {
   "use strict";
   var T = window.Traces;
@@ -13,27 +15,44 @@
   var W = 0, H = 0, lines = [], pulses = [], flashes = [];
   var running = false, visible = true, rafId = 0, lastT = 0, spawnTimer = 0;
 
-  function build() {
-    var size = T.fit(cvStatic, ctxS); T.fit(cvPulse, ctxP);
-    W = size.w; H = size.h;
-    var rand = T.rng(5360);
-    var small = W < 700;
-    var pitch = small ? 7 : 9;
-    var gap = small ? 58 : 74;        // vertical spacing between buses; jogs stay inside it
-    lines = [];
+  var regions = [];
 
-    for (var y = 26 + rand() * 12; y < H - 16; y += gap * (0.85 + rand() * 0.3)) {
+  function rel(el) {
+    var h = hero.getBoundingClientRect(), r = el.getBoundingClientRect();
+    return { x: r.left - h.left, y: r.top - h.top, r: r.right - h.left, b: r.bottom - h.top };
+  }
+
+  function freeRegions() {
+    var text = hero.querySelector(".hero-text"), hl = hero.querySelector(".highlights");
+    if (!text || W < 820) return [];
+    var t = rel(text), bottom = hl ? rel(hl).y - 16 : H;
+    var out = [];
+    if (t.y - 16 > 24) out.push({ x: 0, y: 0, w: W, h: t.y - 16 });                     // strip above the text
+    var x0 = t.r + 32;
+    if (W - x0 > 80) out.push({ x: x0, y: Math.max(0, t.y - 16), w: W - x0, h: bottom - Math.max(0, t.y - 16) }); // right of the text
+    return out;
+  }
+
+  function clipTo(ctx) {
+    ctx.save();
+    ctx.beginPath();
+    regions.forEach(function (r) { ctx.rect(r.x, r.y, r.w, r.h); });
+    ctx.clip();
+  }
+
+  function busesIn(r, rand, pitch, gap, straight) {
+    for (var y = r.y + 22 + rand() * 10; y < r.y + r.h - 14; y += gap * (0.85 + rand() * 0.3)) {
       var n = 2 + Math.floor(rand() * 3);
-      var maxJog = (gap - n * pitch) / 2;
-      var x = rand() < 0.6 ? -20 : W * (0.05 + rand() * 0.5);
-      var startsInside = x > 0;
+      var maxJog = straight ? 0 : (gap - n * pitch) / 2;
+      // Buses in the full-width strip enter from the left edge; elsewhere they start on a via inside the region.
+      var x = straight && rand() < 0.5 ? r.x - 20 : r.x + 10 + rand() * Math.min(120, r.w * 0.3);
+      var startsInside = x > r.x;
       var pts = [[x, y]], dy = 0;
-      var stopAt = rand() < 0.55 ? W + 40 : W * (0.45 + rand() * 0.5);
+      var stopAt = rand() < 0.6 ? W + 40 : r.x + r.w * (0.5 + rand() * 0.45);
       while (x < stopAt) {
-        x += 60 + rand() * (small ? 120 : 220);
+        x += 50 + rand() * 180;
         pts.push([Math.min(x, stopAt), y + dy]);
-        if (x >= stopAt) break;
-        // 45° jog up or down, kept within this bus's band.
+        if (x >= stopAt || maxJog <= 0) { if (maxJog <= 0) { pts[pts.length - 1][0] = stopAt; } break; }
         var j = pitch * (1.5 + Math.floor(rand() * 2));
         var dir = dy + j > maxJog ? -1 : dy - j < -maxJog ? 1 : (rand() < 0.5 ? -1 : 1);
         dy += dir * j; x += j;
@@ -47,6 +66,19 @@
         lines.push(l);
       }
     }
+  }
+
+  function build() {
+    var size = T.fit(cvStatic, ctxS); T.fit(cvPulse, ctxP);
+    W = size.w; H = size.h;
+    var rand = T.rng(5360);
+    lines = [];
+    regions = freeRegions();
+    regions.forEach(function (r, i) {
+      // The strip above the text is short, so its buses run straight.
+      busesIn(r, rand, 9, i === 0 && r.y === 0 && r.w === W ? 40 : 74, r.w === W);
+    });
+    clipTo(ctxS); clipTo(ctxP);
     drawStatic();
     pulses = []; flashes = [];
   }
@@ -114,7 +146,7 @@
   }
 
   function updateRunning() {
-    var should = !T.reduceMotion && visible && !document.hidden;
+    var should = !T.reduceMotion && visible && !document.hidden && lines.length > 0;
     if (should && !running) { running = true; lastT = 0; rafId = requestAnimationFrame(frame); }
     else if (!should && running) { running = false; cancelAnimationFrame(rafId); }
   }
@@ -125,7 +157,7 @@
     timer = setTimeout(function () {
       if (hero.clientWidth === lastW && hero.clientHeight === lastH) return;
       lastW = hero.clientWidth; lastH = hero.clientHeight;
-      build();
+      build(); updateRunning();
     }, 120);
   }
 

@@ -1,0 +1,21 @@
+{%- comment -%}
+Image slot. Shows the image if the file at include.src exists, otherwise a placeholder.
+To fill a slot, upload the image to the path in include.src. No HTML edit needed.
+Params: src (required), alt, caption, label (placeholder text), full (larger image), fit ("contain" for schematics/plots), class
+{%- endcomment -%}
+{%- assign slot_file = site.static_files | where: "path", include.src | first -%}
+<figure class="slot{% if include.fit == 'contain' %} slot--contain{% endif %}{% unless slot_file %} slot--empty{% endunless %}{% if include.class %} {{ include.class }}{% endif %}">
+  {%- if slot_file %}
+  <a class="zoom slot-media" href="{{ include.full | default: include.src | relative_url }}" data-caption="{{ include.caption | default: include.alt }}">
+    <img src="{{ include.src | relative_url }}" alt="{{ include.alt }}" loading="lazy">
+  </a>
+  {%- else %}
+  <div class="slot-media slot-ph" role="img" aria-label="{{ include.label | default: 'Image coming soon' }}">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z M4 15l4.5-4.5 4 4 2.5-2.5L20 17 M15 9.5a1.5 1.5 0 1 0 0-.01"/></svg>
+    <span>{{ include.label | default: "Image coming soon" }}</span>
+  </div>
+  {%- endif %}
+  {%- if include.caption %}
+  <figcaption>{{ include.caption }}</figcaption>
+  {%- endif %}
+</figure>

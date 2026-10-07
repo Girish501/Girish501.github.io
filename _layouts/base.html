@@ -42,8 +42,8 @@
         <li class="nav-sec"><a href="{{ '/#experience' | relative_url }}">Experience</a></li>
         <li><a href="{{ '/#projects' | relative_url }}">Projects</a></li>
         <li class="nav-sec"><a href="{{ '/#skills' | relative_url }}">Skills</a></li>
-        <li><a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a></li>
-        <li><a href="{{ '/contact/' | relative_url }}"{% if page.url == '/contact/' %} aria-current="page"{% endif %}>Contact</a></li>
+        {% if site.posts.size > 0 %}<li><a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a></li>{% endif %}
+        <li><a href="{{ '/#contact' | relative_url }}">Contact</a></li>
       </ul>
     </nav>
   </header>

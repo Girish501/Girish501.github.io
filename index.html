@@ -8,18 +8,16 @@ hero: true
 <section class="hero" id="top">
   <canvas class="hero-canvas hero-canvas--static" aria-hidden="true"></canvas>
   <canvas class="hero-canvas hero-canvas--pulses" aria-hidden="true"></canvas>
-  <div class="hero-fade" aria-hidden="true"></div>
 
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="mono-label hero-kicker"><span class="dot"></span>Philadelphia, PA</p>
+      <p class="hero-status"><span class="dot"></span>Open to analog/mixed-signal roles, 2027</p>
       <h1 class="hero-name">Girish Arora</h1>
       <p class="hero-title">MSE Electrical Engineering, University of Pennsylvania (May 2027)</p>
       <p class="hero-focus">Analog and mixed-signal IC design, nanofabrication, power electronics</p>
-      <p class="hero-summary">Analog and mixed-signal IC designer with hands-on cleanroom and thin-film process experience. Currently a Graduate Student Fellow at Penn's Quattrone Nanofabrication Facility.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#projects">See projects</a>
-        <a class="btn" href="{{ '/contact/' | relative_url }}">Contact</a>
+        <a class="btn" href="#contact">Contact</a>
       </div>
     </div>
 
@@ -66,28 +64,32 @@ hero: true
 <section class="section" id="about">
   <div class="wrap">
     <header class="section-head reveal">
-      <h2><span class="pin">01</span>About</h2>
+      <h2>About</h2>
     </header>
     <div class="about-grid">
-      <div class="about-text reveal">
-        <p>I am an MSE Electrical Engineering student at the University of Pennsylvania, graduating May 2027. My work sits between analog IC design and the fab. I design circuits in Cadence (a 45 nm TIA, an SRAM array) and I also grow and characterize the films those circuits depend on. At Penn's Quattrone Nanofabrication Facility I am developing an ALD process for aluminum-doped zinc oxide as a replacement for ITO. Before Penn I did a B.E. in Electronics and Communication at Thapar in India and spent a summer building motor driver hardware and firmware for warehouse robots.</p>
-        <p>Long term, I want to work on analog and mixed-signal silicon in the US and then build a semiconductor manufacturing business in India.</p>
-      </div>
-      <div class="edu reveal" style="--d:1">
-        <h3 class="mono-label">Education</h3>
-        <div class="edu-item">
-          <p class="edu-school">University of Pennsylvania, School of Engineering and Applied Science</p>
-          <p class="edu-meta">Philadelphia, PA &middot; Aug 2025 to May 2027</p>
-          <p class="edu-degree">Master of Science in Engineering, Electrical Engineering.</p>
-          <p class="edu-course"><span>Coursework:</span> Nanofabrication and Nanocharacterization, Semiconductor Memory Devices, Nanoscale Science, Analog ICs, Power Electronics Lab.</p>
+      <div class="about-main">
+        <div class="about-text reveal">
+          <p>I am an MSE Electrical Engineering student at the University of Pennsylvania, graduating May 2027. My work sits between analog IC design and the fab. I design circuits in Cadence (a 45 nm TIA, an SRAM array) and I also grow and characterize the films those circuits depend on. At Penn's Quattrone Nanofabrication Facility I am developing an ALD process for aluminum-doped zinc oxide as a replacement for ITO. Before Penn I did a B.E. in Electronics and Communication at Thapar in India and spent a summer building motor driver hardware and firmware for warehouse robots.</p>
+          <p>Long term, I want to work on analog and mixed-signal silicon in the US and then build a semiconductor manufacturing business in India.</p>
         </div>
-        <div class="edu-item">
-          <p class="edu-school">Thapar Institute of Engineering and Technology</p>
-          <p class="edu-meta">Patiala, India &middot; Sep 2021 to Jun 2025</p>
-          <p class="edu-degree">Bachelor of Engineering, Electronics and Communication. GPA 3.89/4.0.</p>
-          <p class="edu-course"><span>Coursework:</span> IC Fabrication, MOS Circuit Design, Analog IC Design, Circuit Analysis, Control Theory, Embedded Systems.</p>
+        <div class="edu reveal">
+          <h3 class="mono-label">Education</h3>
+          <ul class="edu-list">
+            <li>
+              <p class="edu-school"><span>University of Pennsylvania, School of Engineering and Applied Science</span><span class="edu-date">Aug 2025 to May 2027</span></p>
+              <p class="edu-degree">Master of Science in Engineering, Electrical Engineering</p>
+            </li>
+            <li>
+              <p class="edu-school"><span>Thapar Institute of Engineering and Technology</span><span class="edu-date">Sep 2021 to Jun 2025</span></p>
+              <p class="edu-degree">Bachelor of Engineering, Electronics and Communication. GPA 3.89/4.0.</p>
+              <p class="edu-award">Merit-III Scholarship, 2nd and 3rd year, top 10% of class.</p>
+            </li>
+          </ul>
         </div>
       </div>
+      <a class="about-photo zoom reveal" href="{{ '/assets/img/cleanroom-gown-selfie-full.jpg' | relative_url }}" data-caption="In the cleanroom.">
+        <img src="{{ '/assets/img/cleanroom-gown-selfie-thumb.jpg' | relative_url }}" width="540" height="720" loading="lazy" alt="Girish in a full cleanroom gown, hood, and safety glasses">
+      </a>
     </div>
   </div>
 </section>
@@ -96,167 +98,196 @@ hero: true
 <section class="section" id="experience">
   <div class="wrap">
     <header class="section-head reveal">
-      <h2><span class="pin">02</span>Experience</h2>
+      <h2>Experience</h2>
     </header>
-    <ol class="timeline">
-      <li class="tl-item reveal">
-        <div class="tl-head">
-          <h3>Quattrone Nanofabrication Facility (QNF), Penn</h3>
-          <p class="tl-role">Graduate Student Fellow</p>
-          <p class="tl-date mono">Sep 2026 to present</p>
+    <div class="jobs">
+      <article class="job job--media reveal">
+        <div class="job-body">
+          <header class="job-head">
+            <h3>Quattrone Nanofabrication Facility (QNF), Penn</h3>
+            <p class="job-role">Graduate Student Fellow</p>
+            <p class="job-date mono">Sep 2026 to present</p>
+          </header>
+          <p>I am developing an atomic layer deposition (ALD) process for aluminum-doped zinc oxide (AZO) as a replacement for ITO. I grow ZnO:Al films on a Cambridge S200 ALD tool, fit each film's optical response with spectroscopic ellipsometry in WVASE, and use XRD and my own Python analysis to tie doping level to film properties.</p>
+          <ul class="bullets">
+            <li>200 °C doping series from DEZ, TMA, and H<sub>2</sub>O at 99:1, 49:1, and 19:1 ZnO:Al cycle ratios.</li>
+            <li>Ellipsometry fits give 85 to 88 nm film thickness at fit MSE below 7.</li>
+            <li>0.2 eV Burstein-Moss band-edge shift (3.35 to 3.58 eV) and free-carrier absorption at 19:1, consistent with literature.</li>
+          </ul>
         </div>
-        <ul class="bullets">
-          <li>Developing an ALD process for aluminum-doped zinc oxide (AZO) as an ITO replacement.</li>
-          <li>Grew a 200 °C DEZ/TMA/H<sub>2</sub>O doping series (99:1, 49:1, 19:1 ZnO:Al cycle ratios) on a Cambridge S200 ALD tool.</li>
-          <li>Built a spectroscopic ellipsometry fitting workflow in WVASE (Cauchy, point-by-point n,k, PSemi-M0 oscillator with a free-carrier term). Extracted thickness (85 to 88 nm), refractive index, and band edge for each film at fit MSE below 7.</li>
-          <li>Correlated doping ratio with film properties: a 0.2 eV Burstein-Moss band-edge shift (3.35 to 3.58 eV) and free-carrier absorption at 19:1, consistent with literature.</li>
-          <li>Trained on Rigaku SmartLab XRD. Wrote Python scripts for n,k overlays, Tauc band-gap analysis, and doping-trend plots.</li>
-        </ul>
-      </li>
-      <li class="tl-item reveal">
-        <div class="tl-head">
+        {% include slot.html src="/assets/img/experience/azo-ellipsometer.jpg" alt="AZO films on the ellipsometer stage" caption="AZO films on the ellipsometer stage" label="Photo coming soon" class="job-slot" %}
+      </article>
+
+      <article class="job reveal">
+        <header class="job-head">
           <h3>p-Chip Corporation, Philadelphia</h3>
-          <p class="tl-role">Hardware Development Intern</p>
-          <p class="tl-date mono">Jun 2026 to Aug 2026</p>
-        </div>
-        <ul class="bullets">
-          <li>Hardware development on the transmitter side of a laser reader for RF microtransponders.</li>
-          <li>Designed and tested a scanning-mirror drive subsystem that extended the reader's working distance.</li>
-          <li>Bench validation with photodiode timing measurements.</li>
-        </ul>
-      </li>
-      <li class="tl-item reveal">
-        <div class="tl-head">
+          <p class="job-role">Hardware Development Intern</p>
+          <p class="job-date mono">Jun 2026 to Aug 2026</p>
+        </header>
+        <p>I worked on the transmitter side of a laser reader for RF microtransponders. I designed and tested a scanning-mirror drive subsystem that extended the reader's working distance, and validated it on the bench with photodiode timing measurements.</p>
+      </article>
+
+      <article class="job reveal">
+        <header class="job-head">
           <h3>Addverb Technologies, India</h3>
-          <p class="tl-role">Embedded Systems Intern</p>
-          <p class="tl-date mono">Jan 2025 to Jul 2025</p>
-        </div>
-        <ul class="bullets">
-          <li>Designed a BLDC motor driver board.</li>
-          <li>Wrote STM32 firmware for a current-sense amplifier with moving-average filtering.</li>
-          <li>Integrated an R320M Wi-Fi 6 SOM as a TCP server on Zippy warehouse robots.</li>
-        </ul>
-      </li>
-      <li class="tl-item reveal">
-        <div class="tl-head">
+          <p class="job-role">Embedded Systems Intern</p>
+          <p class="job-date mono">Jan 2025 to Jul 2025</p>
+        </header>
+        <p>I built motor-drive hardware and firmware for Zippy warehouse robots. I designed a BLDC motor driver board, wrote STM32 firmware for its current-sense amplifier with moving-average filtering, and integrated an R320M Wi-Fi 6 SOM as a TCP server on the robots.</p>
+      </article>
+
+      <article class="job reveal">
+        <header class="job-head">
           <h3>Detkin Lab, Penn ESE</h3>
-          <p class="tl-role">ESE Lab Leader</p>
-          <p class="tl-date mono">Jan 2026 to present</p>
-        </div>
-        <ul class="bullets">
-          <li>Guide students on instrumentation and components. Troubleshoot measurement, equipment, and circuit issues in embedded and circuit labs.</li>
-          <li>Run lab procurement: maintain the inventory tracker and source parts from DigiKey, McMaster-Carr, and Amazon.</li>
-        </ul>
-      </li>
-    </ol>
+          <p class="job-role">ESE Lab Leader</p>
+          <p class="job-date mono">Jan 2026 to present</p>
+        </header>
+        <p>I help students in Penn's embedded and circuit labs with instruments and components, and troubleshoot measurement, equipment, and circuit problems. I also run lab procurement: I maintain the inventory tracker and source parts from DigiKey, McMaster-Carr, and Amazon.</p>
+      </article>
+    </div>
   </div>
 </section>
-
-<div class="fab-band" data-process="litho" aria-hidden="true">
-  <canvas></canvas>
-  <span class="fab-label mono"></span>
-</div>
 
 <!-- PROJECTS -->
 <section class="section" id="projects">
   <div class="wrap">
     <header class="section-head reveal">
-      <h2><span class="pin">03</span>Projects</h2>
+      <h2>Projects</h2>
     </header>
     <div class="cards">
 
       <article class="card reveal" id="p-tia">
-        <p class="card-meta mono"><span class="tag">Analog IC design</span><span>Aug 2025 to Dec 2025</span></p>
-        <h3>Wideband Transimpedance Amplifier in 45 nm CMOS</h3>
-        <ul class="bullets">
-          <li>1 V CMOS TIA for photodiode front ends.</li>
-          <li><strong>109 dBΩ</strong> transimpedance gain, <strong>~492 MHz</strong> bandwidth, <strong>~4.5e-14 A²/Hz</strong> input-referred noise, <strong>2.76 mW</strong> power.</li>
-        </ul>
-        <p class="card-tools mono">Tools: Cadence Virtuoso, Spectre.</p>
-      </article>
-
-      <article class="card reveal" style="--d:1" id="p-sram">
-        <p class="card-meta mono"><span class="tag">Memory circuit design</span><span>Sep 2025 to Dec 2025</span></p>
-        <h3>16×4 SRAM Memory Circuit</h3>
-        <ul class="bullets">
-          <li>Read access delay <strong>3.348 ps</strong>.</li>
-          <li>Cut power from <strong>131 µW at 1.2 V</strong> to <strong>33 µW at 1.0 V</strong> through supply-voltage scaling.</li>
-        </ul>
-      </article>
-
-      <article class="card card--wide reveal" id="p-cleanroom">
+        {% include slot.html src="/assets/img/projects/tia.jpg" alt="TIA schematic" label="Schematic coming soon" fit="contain" %}
         <div class="card-body">
-          <p class="card-meta mono"><span class="tag">Nanofabrication</span><span>Jan 2026 to May 2026</span></p>
-          <h3>Cleanroom Device Fabrication (ESE 5360)</h3>
+          <p class="card-meta"><span class="tag">Analog IC design</span><span class="card-date">Aug 2025 to Dec 2025</span></p>
+          <h3>Wideband Transimpedance Amplifier in 45 nm CMOS</h3>
           <ul class="bullets">
-            <li><strong>60 hours</strong> of hands-on cleanroom work: photolithography, EBL, RIE/DRIE plasma etch, PECVD and sputtered thin films, ALD, wet processing, device release.</li>
-            <li>Fabricated MEMS actuators on SOI. Verified the <strong>2.6 µm</strong> device layer by reflectometry.</li>
-            <li>Patterned PS-b-PMMA by directed self-assembly with <strong>23 nm</strong> feature heights.</li>
-            <li>Also worked on graphene transistors and CdSe quantum dot synthesis.</li>
+            <li>1 V CMOS TIA for photodiode front ends.</li>
+            <li><strong class="metric">109 dBΩ</strong> transimpedance gain, ~492 MHz bandwidth, ~4.5e-14 A²/Hz input-referred noise, 2.76 mW power.</li>
+          </ul>
+          <p class="card-foot"><span class="card-tools">Tools: Cadence Virtuoso, Spectre.</span></p>
+        </div>
+      </article>
+
+      <article class="card reveal" style="--d:1" id="p-pll">
+        {% include slot.html src="/assets/img/projects/pll.jpg" alt="PLL schematic" label="Schematic coming soon" fit="contain" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Analog/mixed-signal IC design</span><span class="card-date">2024</span></p>
+          <h3>Phase-Locked Loop for SerDes Clock Generation in 180 nm CMOS</h3>
+          <ul class="bullets">
+            <li>Charge-pump PLL for SerDes clocking: phase-frequency detector, charge pump with loop filter, 3-stage ring VCO, and frequency divider.</li>
+            <li><strong class="metric">4.44 GHz</strong> output at 1.8 V supply with 50% duty cycle, from transient simulation (typical corner, 25 °C).</li>
+          </ul>
+          <p class="card-foot">
+            <span class="card-tools">Undergraduate capstone, team of four. Tools: Cadence Virtuoso, Spectre.</span>
+            <a class="repo-link" href="https://github.com/Girish501/Phase-Locked-Loop-for-Clock-Generation-in-SerDes-in-180nm-CMOS" rel="noopener">GitHub repo &rarr;</a>
+          </p>
+        </div>
+      </article>
+
+      <article class="card reveal" id="p-sram">
+        {% include slot.html src="/assets/img/projects/sram.jpg" alt="SRAM schematic" label="Schematic coming soon" fit="contain" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Memory circuit design</span><span class="card-date">Sep 2025 to Dec 2025</span></p>
+          <h3>16×4 SRAM Memory Circuit</h3>
+          <ul class="bullets">
+            <li>Read access delay 3.348 ps.</li>
+            <li>Cut power from 131 µW at 1.2 V to <strong class="metric">33 µW at 1.0 V</strong> through supply-voltage scaling.</li>
           </ul>
         </div>
-        <div class="card-photos">
-          <a class="zoom photo" href="{{ '/assets/img/soi-chip-on-carrier-board-full.jpg' | relative_url }}" data-caption="SOI die on a carrier board, ESE 5360.">
-            <img src="{{ '/assets/img/soi-chip-on-carrier-board-thumb.jpg' | relative_url }}" width="540" height="720" loading="lazy" alt="SOI die mounted in the center of a gold-plated carrier board, held in a gloved hand under cleanroom yellow light">
-          </a>
-          <a class="zoom photo" href="{{ '/assets/img/cleanroom-gown-selfie-full.jpg' | relative_url }}" data-caption="In the cleanroom.">
-            <img src="{{ '/assets/img/cleanroom-gown-selfie-thumb.jpg' | relative_url }}" width="540" height="720" loading="lazy" alt="Girish in a full cleanroom gown, hood, and safety glasses">
-          </a>
+      </article>
+
+      <article class="card reveal" style="--d:1" id="p-cleanroom">
+        {% include slot.html src="/assets/img/soi-chip-on-carrier-board-thumb.jpg" full="/assets/img/soi-chip-on-carrier-board-full.jpg" alt="SOI die mounted in the center of a gold-plated carrier board, held in a gloved hand under cleanroom yellow light" caption="SOI die on a carrier board, ESE 5360." class="slot--chip" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Nanofabrication</span><span class="card-date">Jan 2026 to May 2026</span></p>
+          <h3>Cleanroom Device Fabrication (ESE 5360)</h3>
+          <ul class="bullets">
+            <li><strong class="metric">60 hours</strong> of hands-on cleanroom work: photolithography, EBL, RIE/DRIE plasma etch, PECVD and sputtered thin films, ALD, wet processing, device release.</li>
+            <li>Fabricated MEMS actuators on SOI. Verified the 2.6 µm device layer by reflectometry.</li>
+            <li>Patterned PS-b-PMMA by directed self-assembly with 23 nm feature heights.</li>
+            <li>Also worked on graphene transistors and CdSe quantum dot synthesis.</li>
+          </ul>
         </div>
       </article>
 
       <article class="card reveal" id="p-power">
-        <p class="card-meta mono"><span class="tag">Power electronics</span><span>Sep 2026 to present</span></p>
-        <h3>Power Device Characterization (ESE 5800)</h3>
-        <ul class="bullets">
-          <li>Characterized an STPS360AF Schottky diode and an IRLML0040 MOSFET from <strong>0.02 to 4 A</strong> with pulsed bench measurements.</li>
-          <li>Automated the measurements in Python/PyVISA on Keysight E36441A and 34461A instruments.</li>
-          <li>Fit simplified models (<strong>V<sub>FWD</sub> = 0.330 V</strong>, <strong>R<sub>ON</sub> = 66.5 mΩ</strong>, <strong>R<sub>DS(on)</sub> = 65.1 mΩ</strong>) and validated them against vendor SPICE models and datasheet curves.</li>
-        </ul>
+        {% include slot.html src="/assets/img/projects/power-devices.jpg" alt="Power device I-V measurements" label="Plot coming soon" fit="contain" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Power electronics</span><span class="card-date">Sep 2026 to present</span></p>
+          <h3>Power Device Characterization (ESE 5800)</h3>
+          <ul class="bullets">
+            <li>Characterized an STPS360AF Schottky diode and an IRLML0040 MOSFET from 0.02 to 4 A with pulsed bench measurements.</li>
+            <li>Automated the measurements in Python/PyVISA on Keysight E36441A and 34461A instruments.</li>
+            <li>Fit simplified models (V<sub>FWD</sub> = 0.330 V, R<sub>ON</sub> = 66.5 mΩ, <strong class="metric">R<sub>DS(on)</sub> = 65.1 mΩ</strong>) and validated them against vendor SPICE models and datasheet curves.</li>
+          </ul>
+        </div>
       </article>
 
       <article class="card reveal" style="--d:1" id="p-cim">
-        <a class="zoom photo card-photo-top" href="{{ '/assets/img/cim-poster-presentation-full.jpg' | relative_url }}" data-caption="Presenting the compute-in-memory poster, ESE 5760.">
-          <img src="{{ '/assets/img/cim-poster-presentation-thumb.jpg' | relative_url }}" width="720" height="540" loading="lazy" alt="Girish standing next to the Robust Compute-in-Memory for Edge Healthcare poster">
-        </a>
-        <p class="card-meta mono"><span class="tag">Semiconductor memory</span><span>Jan 2026 to May 2026</span></p>
-        <h3>Robust Compute-in-Memory for Edge Healthcare (ESE 5760)</h3>
-        <ul class="bullets">
-          <li>Modeled OxRAM and PCM 2T2R crossbar non-idealities (RTN, conductance drift) inside hardware-aware training of a 1D-CNN ECG classifier.</li>
-          <li>PCM showed <strong>11% lower</strong> energy-delay product (<strong>0.0275 µJ</strong> per inference).</li>
-        </ul>
+        {% include slot.html src="/assets/img/cim-poster-presentation-thumb.jpg" full="/assets/img/cim-poster-presentation-full.jpg" alt="Girish standing next to the Robust Compute-in-Memory for Edge Healthcare poster" caption="Presenting the compute-in-memory poster, ESE 5760." class="slot--poster" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Semiconductor memory</span><span class="card-date">Jan 2026 to May 2026</span></p>
+          <h3>Robust Compute-in-Memory for Edge Healthcare (ESE 5760)</h3>
+          <ul class="bullets">
+            <li>Modeled OxRAM and PCM 2T2R crossbar non-idealities (RTN, conductance drift) inside hardware-aware training of a 1D-CNN ECG classifier.</li>
+            <li>PCM showed <strong class="metric">11% lower</strong> energy-delay product (0.0275 µJ per inference).</li>
+          </ul>
+        </div>
       </article>
 
-      <article class="card card--award reveal" id="p-neurosense">
-        <p class="card-meta mono"><span class="tag">Edge AI hardware</span><span>2025</span></p>
-        <h3>NeuroSense</h3>
-        <ul class="bullets">
-          <li><strong>Global 3rd place</strong>, Elektor-STM32 Edge-AI Competition 2025. <strong>423+</strong> entries from <strong>31+</strong> countries. <strong>€1,000</strong> prize.</li>
-        </ul>
+      <article class="card reveal" id="p-neurosense">
+        {% include slot.html src="/assets/img/projects/neurosense.jpg" alt="NeuroSense device" label="Photo coming soon" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Edge AI hardware</span><span class="card-date">2025</span></p>
+          <h3>NeuroSense</h3>
+          <ul class="bullets">
+            <li>Real-time mental health monitor that runs entirely on the device. It combines facial emotion recognition, speech cues, and EEG to detect stress, anxiety, and other emotional states.</li>
+            <li>Hardware: STM32N6570-DK with its built-in NPU, an EEG front end with instrumentation amplifier and filtering, a YOLOv8-based emotion model, and a TouchGFX touchscreen UI.</li>
+            <li><strong class="metric">Global 3rd place</strong>, Elektor-STM32 Edge-AI Competition 2025. 423+ entries from 31+ countries. €1,000 prize. Team of three.</li>
+          </ul>
+        </div>
       </article>
 
-      <article class="card card--award reveal" style="--d:1" id="p-neuroband">
-        <p class="card-meta mono"><span class="tag">Wearable</span><span>2025</span></p>
-        <h3>NeuroBand</h3>
-        <ul class="bullets">
-          <li><strong>Top 10 of 2,959</strong> submissions, Circuit Digest Smart Home and Wearables Project Contest 2025.</li>
-        </ul>
+      <article class="card reveal" style="--d:1" id="p-neuroband">
+        {% include slot.html src="/assets/img/projects/neuroband.jpg" alt="NeuroBand armband" label="Photo coming soon" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Wearable</span><span class="card-date">2025</span></p>
+          <h3>NeuroBand</h3>
+          <ul class="bullets">
+            <li>Safety armband for elderly and high-risk users. It detects falls and tracks heart rate and ECG. On a fall it sounds an SOS alarm and sends a Wi-Fi alert to a caregiver app with the ECG recorded just before the event.</li>
+            <li>Hardware: ESP32-S3 running an on-device fall classifier on accelerometer and gyroscope data, plus heart-rate and ECG sensors.</li>
+            <li><strong class="metric">Top 10 of 2,959</strong>, Circuit Digest Smart Home and Wearables Project Contest 2025.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card reveal" id="p-fpga-drone">
+        {% include slot.html src="/assets/img/projects/fpga-drone.jpg" alt="FPGA quadcopter prototype" label="Photo coming soon" %}
+        <div class="card-body">
+          <p class="card-meta"><span class="tag">Digital design / FPGA</span><span class="card-date">2024</span></p>
+          <h3>FPGA Flight Controller for a Quadcopter</h3>
+          <ul class="bullets">
+            <li>Quadcopter flight controller written in HDL on a Basys-3 (Artix-7) FPGA instead of a microcontroller.</li>
+            <li>Modules: PWM decoders for throttle, yaw, pitch, and roll from the RC receiver, an I2C master for the MPU-6050 IMU, a PID controller, and a PWM encoder driving the ESCs.</li>
+            <li>My part: interfacing the peripherals with the FPGA, the FPV camera, and the PWM encoder and decoder HDL. <strong class="metric">All four motors</strong> synchronized with the transmitter and receiver.</li>
+          </ul>
+          <p class="card-foot">
+            <span class="card-tools">Team project, Thapar. Tools: Xilinx Vivado.</span>
+            <a class="repo-link" href="https://github.com/Girish501/FPGA-Drone" rel="noopener">GitHub repo &rarr;</a>
+          </p>
+        </div>
       </article>
 
     </div>
   </div>
 </section>
 
-<div class="fab-band" data-process="metal" aria-hidden="true">
-  <canvas></canvas>
-  <span class="fab-label mono"></span>
-</div>
-
 <!-- SKILLS -->
 <section class="section" id="skills">
   <div class="wrap">
     <header class="section-head reveal">
-      <h2><span class="pin">04</span>Skills</h2>
+      <h2>Skills</h2>
     </header>
     <dl class="skills">
       <div class="skill-row reveal">
@@ -283,26 +314,29 @@ hero: true
   </div>
 </section>
 
-<!-- AWARDS -->
-<section class="section" id="awards">
-  <div class="wrap">
-    <header class="section-head reveal">
-      <h2><span class="pin">05</span>Awards</h2>
-    </header>
-    <ol class="awards">
-      <li class="award reveal"><span class="award-rank mono">3rd</span><p>Global 3rd Place, Elektor-STM32 Edge-AI Competition 2025 (NeuroSense)</p></li>
-      <li class="award reveal" style="--d:1"><span class="award-rank mono">Top 10</span><p>Top 10 of 2,959, Circuit Digest Smart Home and Wearables Project Contest 2025 (NeuroBand)</p></li>
-      <li class="award reveal" style="--d:2"><span class="award-rank mono">Top 10%</span><p>Merit-III Scholarship, Thapar, 2nd and 3rd year, top 10% of class</p></li>
-    </ol>
-  </div>
-</section>
-
-<section class="section section--cta">
-  <div class="wrap cta reveal">
-    <h2>Get in touch</h2>
-    <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="{{ '/contact/' | relative_url }}">Contact</a>
-    </div>
+<!-- CONTACT -->
+<section class="section section--contact" id="contact">
+  <div class="wrap contact-block reveal">
+    <h2>Contact</h2>
+    <ul class="contact-links">
+      <li>
+        <a href="mailto:{{ site.email }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z M3 6l9 7 9-7"/></svg>
+          <span><span class="contact-label">Email</span>{{ site.email }}</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ site.linkedin }}" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h3v11H4z M5.5 4.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z M10 9h3v1.6c.6-1 1.8-1.8 3.5-1.8 2.6 0 3.5 1.7 3.5 4.4V20h-3v-6c0-1.4-.4-2.4-1.8-2.4S13 12.7 13 14v6h-3z"/></svg>
+          <span><span class="contact-label">LinkedIn</span>linkedin.com/in/girish-arora-027918226</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ site.github }}" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-3 18.5c.5.1.7-.2.7-.5v-1.7c-2.6.6-3.2-1.2-3.2-1.2-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.1-.2-4.3-1-4.3-4.7 0-1 .4-1.9 1-2.6-.1-.2-.4-1.2.1-2.5 0 0 .8-.3 2.6 1a9 9 0 0 1 4.8 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.5.6.7 1 1.6 1 2.6 0 3.7-2.2 4.5-4.3 4.7.3.3.6.8.6 1.6v2.4c0 .3.2.6.7.5A9.5 9.5 0 0 0 12 2.5z"/></svg>
+          <span><span class="contact-label">GitHub</span>github.com/Girish501</span>
+        </a>
+      </li>
+    </ul>
   </div>
 </section>
