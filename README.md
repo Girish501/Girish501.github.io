@@ -23,6 +23,10 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Custom domain | `CNAME` |
 | Site settings (email, links) | `_config.yml` |
 
+## Videos
+
+YouTube videos are embedded with `_includes/yt.html`. Only the thumbnail loads until a visitor clicks play. To change a video, edit its `id="..."` in `index.html`. To start a video partway through, set `start=` to the number of seconds.
+
 ## Fill an image slot
 
 Each project card and the QNF experience entry has an image slot. Upload a JPG to the matching path and the placeholder is replaced on the next build. No HTML edit needed.
@@ -33,8 +37,6 @@ Each project card and the QNF experience entry has an image slot. Upload a JPG t
 | PLL schematic or plot | `assets/img/projects/pll.jpg` |
 | SRAM schematic or plot | `assets/img/projects/sram.jpg` |
 | Power device plot | `assets/img/projects/power-devices.jpg` |
-| NeuroSense photo | `assets/img/projects/neurosense.jpg` |
-| NeuroBand photo | `assets/img/projects/neuroband.jpg` |
 | FPGA quadcopter photo | `assets/img/projects/fpga-drone.jpg` |
 | AZO films on the ellipsometer stage | `assets/img/experience/azo-ellipsometer.jpg` |
 

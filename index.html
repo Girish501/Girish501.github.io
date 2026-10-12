@@ -124,7 +124,7 @@ hero: true
           <p class="job-role">Hardware Development Intern</p>
           <p class="job-date mono">Jun 2026 to Aug 2026</p>
         </header>
-        <p>I worked on the transmitter side of a laser reader for RF microtransponders. I designed and tested a scanning-mirror drive subsystem that extended the reader's working distance, and validated it on the bench with photodiode timing measurements.</p>
+        <p>I worked on a mirror driver board for p-Chip's laser reader. An oscillating mirror sweeps the beam to extend the reader's working distance. The mirror is a resonant load, so the drive circuit has to hold a clean sine at resonance with stable amplitude and phase. I took it from the first scope measurement to a design ready to build. <a href="https://blog.ese.upenn.edu/ee-masters-student-girish-arora-reflects-on-his-summer-internship-at-p-chip-corporation/" rel="noopener">Penn ESE wrote about this internship.</a></p>
       </article>
 
       <article class="job reveal">
@@ -136,15 +136,47 @@ hero: true
         <p>I built motor-drive hardware and firmware for Zippy warehouse robots. I designed a BLDC motor driver board, wrote STM32 firmware for its current-sense amplifier with moving-average filtering, and integrated an R320M Wi-Fi 6 SOM as a TCP server on the robots.</p>
       </article>
 
-      <article class="job reveal">
-        <header class="job-head">
-          <h3>Detkin Lab, Penn ESE</h3>
-          <p class="job-role">ESE Lab Leader</p>
-          <p class="job-date mono">Jan 2026 to present</p>
-        </header>
-        <p>I help students in Penn's embedded and circuit labs with instruments and components, and troubleshoot measurement, equipment, and circuit problems. I also run lab procurement: I maintain the inventory tracker and source parts from DigiKey, McMaster-Carr, and Amazon.</p>
+      <article class="job job--media reveal">
+        <div class="job-body">
+          <header class="job-head">
+            <h3>Detkin Lab, Penn ESE</h3>
+            <p class="job-role">ESE Lab Leader</p>
+            <p class="job-date mono">Jan 2026 to present</p>
+          </header>
+          <p>I help students in Penn's embedded and circuit labs with instruments and components, and troubleshoot measurement, equipment, and circuit problems. I also run lab procurement: I maintain the inventory tracker and source parts from DigiKey, McMaster-Carr, and Amazon.</p>
+        </div>
+        <figure class="job-videos">
+          <div class="job-videos-grid">
+            {% include yt.html id="QTJ8fXF8_7o" title="Power supply tutorial" %}
+            {% include yt.html id="JHV8bR9OWwg" title="Mixed-signal oscilloscope tutorial" %}
+          </div>
+          <figcaption>Instrument tutorials I made for the lab: power supply and mixed-signal oscilloscope.</figcaption>
+        </figure>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- PRESS -->
+<section class="section section--press" id="press">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <h2>Press and mentions</h2>
+    </header>
+    <ul class="press-list reveal">
+      <li>
+        <span class="press-src">Penn ESE Department News &middot; Oct 12, 2026</span>
+        <a href="https://blog.ese.upenn.edu/ee-masters-student-girish-arora-reflects-on-his-summer-internship-at-p-chip-corporation/" rel="noopener">EE Master's student Girish Arora reflects on his summer internship at p-Chip Corporation.</a>
+      </li>
+      <li>
+        <span class="press-src">Penn Detkin Lab</span>
+        <a href="https://detkin.ese.upenn.edu/team-leadership/" rel="noopener">Graduate Student Leader, Detkin Lab team page.</a>
+      </li>
+      <li>
+        <span class="press-src">eeNews Europe &middot; Oct 31, 2025</span>
+        <a href="https://www.eenewseurope.com/en/stm32-edge-ai-contest-2025" rel="noopener">NeuroSense selected as a finalist, STM32 Edge AI Contest 2025.</a>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -237,20 +269,26 @@ hero: true
       </article>
 
       <article class="card reveal" id="p-neurosense">
-        {% include slot.html src="/assets/img/projects/neurosense.jpg" alt="NeuroSense device" label="Photo coming soon" %}
+        <!-- start = number of seconds into the video to begin playing. -->
+        {% include yt.html id="n8w2AGcf5HU" start=0 title="NeuroSense demo" %}
         <div class="card-body">
           <p class="card-meta"><span class="tag">Edge AI hardware</span><span class="card-date">2025</span></p>
           <h3>NeuroSense</h3>
           <ul class="bullets">
             <li>Real-time mental health monitor that runs entirely on the device. It combines facial emotion recognition, speech cues, and EEG to detect stress, anxiety, and other emotional states.</li>
             <li>Hardware: STM32N6570-DK with its built-in NPU, an EEG front end with instrumentation amplifier and filtering, a YOLOv8-based emotion model, and a TouchGFX touchscreen UI.</li>
-            <li><strong class="metric">Global 3rd place</strong>, Elektor-STM32 Edge-AI Competition 2025. 423+ entries from 31+ countries. €1,000 prize. Team of three.</li>
+            <li><strong class="metric">Global 3rd place</strong>, Elektor-STM32 Edge-AI Competition 2025. 423+ entries from 31+ countries. €1,000 prize.</li>
           </ul>
+          <p class="card-credit">With Kartik Khandelwal and Viren Sharma.</p>
+          <p class="card-foot card-foot--links">
+            <a class="repo-link" href="https://www.elektormagazine.com/labs/neurosense-real-time-mental-health-monitoring-system-on-stm32n6" rel="noopener">Project page on Elektor Labs &rarr;</a>
+            <a class="repo-link" href="https://www.eenewseurope.com/en/stm32-edge-ai-contest-2025" rel="noopener">Nominee announcement &rarr;</a>
+          </p>
         </div>
       </article>
 
       <article class="card reveal" style="--d:1" id="p-neuroband">
-        {% include slot.html src="/assets/img/projects/neuroband.jpg" alt="NeuroBand armband" label="Photo coming soon" %}
+        {% include yt.html id="41hNWNWDTYc" title="NeuroBand demo" %}
         <div class="card-body">
           <p class="card-meta"><span class="tag">Wearable</span><span class="card-date">2025</span></p>
           <h3>NeuroBand</h3>
@@ -259,6 +297,10 @@ hero: true
             <li>Hardware: ESP32-S3 running an on-device fall classifier on accelerometer and gyroscope data, plus heart-rate and ECG sensors.</li>
             <li><strong class="metric">Top 10 of 2,959</strong>, Circuit Digest Smart Home and Wearables Project Contest 2025.</li>
           </ul>
+          <p class="card-credit">With Kartik Khandelwal.</p>
+          <p class="card-foot card-foot--links">
+            <a class="repo-link" href="https://circuitdigest.com/microcontroller-projects/neuroband-the-smart-safety-band" rel="noopener">Project page on Circuit Digest &rarr;</a>
+          </p>
         </div>
       </article>
 

@@ -18,6 +18,28 @@
     items.forEach(function (el) { el.classList.add("in"); });
   }
 
+  // ---- Lazy YouTube embeds: load the player only when clicked ----
+  // If a thumbnail fails to load, drop the broken image and keep the play button.
+  Array.prototype.forEach.call(document.querySelectorAll(".yt img"), function (im) {
+    im.addEventListener("error", function () { im.remove(); });
+    if (im.complete && im.naturalWidth === 0 && im.src) im.remove();
+  });
+  document.addEventListener("click", function (e) {
+    var yt = e.target.closest(".yt");
+    if (!yt || yt.classList.contains("yt--on") || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    var id = yt.getAttribute("data-id");
+    var start = parseInt(yt.getAttribute("data-start"), 10) || 0;
+    var f = document.createElement("iframe");
+    f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) + "?autoplay=1&rel=0" + (start ? "&start=" + start : "");
+    f.title = yt.getAttribute("data-title") || "Video";
+    f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    f.setAttribute("allowfullscreen", "");
+    yt.textContent = "";
+    yt.appendChild(f);
+    yt.classList.add("yt--on");
+  });
+
   // ---- Lightbox ----
   var box = document.getElementById("lightbox");
   if (!box || typeof box.showModal !== "function") return; // links still open the full image

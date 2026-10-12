@@ -41,11 +41,21 @@ Site format: one short paragraph per role, then at most 3 bullets with key numbe
 - 0.2 eV Burstein-Moss band-edge shift (3.35 to 3.58 eV) and free-carrier absorption at 19:1, consistent with literature.
 - Image slot: "AZO films on the ellipsometer stage" (photo to come).
 
-**p-Chip prose:** I worked on the transmitter side of a laser reader for RF microtransponders. I designed and tested a scanning-mirror drive subsystem that extended the reader's working distance, and validated it on the bench with photodiode timing measurements.
+**p-Chip prose (matches the Penn ESE post):** I worked on a mirror driver board for p-Chip's laser reader. An oscillating mirror sweeps the beam to extend the reader's working distance. The mirror is a resonant load, so the drive circuit has to hold a clean sine at resonance with stable amplitude and phase. I took it from the first scope measurement to a design ready to build.
+- Link at the end: https://blog.ese.upenn.edu/ee-masters-student-girish-arora-reflects-on-his-summer-internship-at-p-chip-corporation/
+- No part numbers or schematic detail.
 
 **Addverb prose:** I built motor-drive hardware and firmware for Zippy warehouse robots. I designed a BLDC motor driver board, wrote STM32 firmware for its current-sense amplifier with moving-average filtering, and integrated an R320M Wi-Fi 6 SOM as a TCP server on the robots.
 
 **Detkin Lab prose:** I help students in Penn's embedded and circuit labs with instruments and components, and troubleshoot measurement, equipment, and circuit problems. I also run lab procurement: I maintain the inventory tracker and source parts from DigiKey, McMaster-Carr, and Amazon.
+- Two YouTube videos side by side: QTJ8fXF8_7o (power supply) and JHV8bR9OWwg (mixed-signal oscilloscope). Caption: "Instrument tutorials I made for the lab: power supply and mixed-signal oscilloscope."
+
+## Press and mentions
+
+Compact block after Experience.
+- "EE Master's student Girish Arora reflects on his summer internship at p-Chip Corporation." Penn ESE Department News, Oct 12, 2026. https://blog.ese.upenn.edu/ee-masters-student-girish-arora-reflects-on-his-summer-internship-at-p-chip-corporation/
+- "Graduate Student Leader, Detkin Lab team page." https://detkin.ese.upenn.edu/team-leadership/
+- "NeuroSense selected as a finalist, STM32 Edge AI Contest 2025." eeNews Europe, Oct 31, 2025. https://www.eenewseurope.com/en/stm32-edge-ai-contest-2025
 
 ### Quattrone Nanofabrication Facility (QNF), Penn. Graduate Student Fellow. Sep 2026 to present.
 - Developing an ALD process for aluminum-doped zinc oxide (AZO) as an ITO replacement.
@@ -114,13 +124,19 @@ Jan 2026 to May 2026. Semiconductor memory.
 2025. Edge AI hardware.
 - Real-time mental health monitor that runs entirely on the device. It combines facial emotion recognition, speech cues, and EEG to detect stress, anxiety, and other emotional states.
 - Hardware: STM32N6570-DK with its built-in NPU, an EEG front end with instrumentation amplifier and filtering, a YOLOv8-based emotion model, and a TouchGFX touchscreen UI.
-- **Global 3rd place**, Elektor-STM32 Edge-AI Competition 2025. 423+ entries from 31+ countries. €1,000 prize. Team of three.
+- **Global 3rd place**, Elektor-STM32 Edge-AI Competition 2025. 423+ entries from 31+ countries. €1,000 prize.
+- Credit line: With Kartik Khandelwal and Viren Sharma.
+- Media: YouTube video n8w2AGcf5HU (start time to be set).
+- Links: "Project page on Elektor Labs" https://www.elektormagazine.com/labs/neurosense-real-time-mental-health-monitoring-system-on-stm32n6 and "Nominee announcement" https://www.eenewseurope.com/en/stm32-edge-ai-contest-2025
 
 ### NeuroBand
 2025. Wearable.
 - Safety armband for elderly and high-risk users. It detects falls and tracks heart rate and ECG. On a fall it sounds an SOS alarm and sends a Wi-Fi alert to a caregiver app with the ECG recorded just before the event.
 - Hardware: ESP32-S3 running an on-device fall classifier on accelerometer and gyroscope data, plus heart-rate and ECG sensors.
 - **Top 10 of 2,959**, Circuit Digest Smart Home and Wearables Project Contest 2025. (Check: Circuit Digest reports 889 submissions from 2,959 participants.)
+- Credit line: With Kartik Khandelwal.
+- Media: YouTube video 41hNWNWDTYc.
+- Link: "Project page on Circuit Digest" https://circuitdigest.com/microcontroller-projects/neuroband-the-smart-safety-band
 
 ### FPGA Flight Controller for a Quadcopter
 Thapar, team project. 2024. Digital design / FPGA.
