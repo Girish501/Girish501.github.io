@@ -16,12 +16,15 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Blog posts | `_posts/` |
 | Styles | `assets/css/style.css` |
 | Scroll animations and photo enlarge | `assets/js/main.js` |
-| Hero circuit animation | `assets/js/hero.js` |
-| ALD process strip | `assets/js/scroll-fx.js` |
-| Shared trace drawing code | `assets/js/traces.js` |
+| Animations (SVG files) | `_includes/anim/` |
+| Animation styles and timing | `assets/css/anim.css` |
 | Web-sized photos | `assets/img/` |
 | Custom domain | `CNAME` |
 | Site settings (email, links) | `_config.yml` |
+
+## Animations
+
+The hero (ALD cycle), five project cards, and two experience entries use inline SVG animations driven by CSS. Each one plays once when it scrolls into view, then holds its last frame. Visitors who set "reduce motion" see only the last frame. The SVGs live in `_includes/anim/` and the timing is in `assets/css/anim.css`. No JavaScript libraries.
 
 ## Videos
 
@@ -29,16 +32,10 @@ YouTube videos are embedded with `_includes/yt.html`. Only the thumbnail loads u
 
 ## Fill an image slot
 
-Each project card and the QNF experience entry has an image slot. Upload a JPG to the matching path and the placeholder is replaced on the next build. No HTML edit needed.
+The Cleanroom and Compute-in-Memory cards show photos. Other cards show animations (see below). An image slot still exists for photos you may add later. Upload a JPG to the matching path and the placeholder is replaced on the next build. No HTML edit needed.
 
 | Slot | Upload to |
 |------|-----------|
-| TIA schematic or plot | `assets/img/projects/tia.jpg` |
-| PLL schematic or plot | `assets/img/projects/pll.jpg` |
-| SRAM schematic or plot | `assets/img/projects/sram.jpg` |
-| Power device plot | `assets/img/projects/power-devices.jpg` |
-| FPGA quadcopter photo | `assets/img/projects/fpga-drone.jpg` |
-| AZO films on the ellipsometer stage | `assets/img/experience/azo-ellipsometer.jpg` |
 
 Schematics and plots are shown whole (not cropped). Photos are cropped to fill the slot. Keep files under about 300 KB; 1600 px wide is plenty.
 On github.com: open the folder (create it by typing `assets/img/projects/` in the file name box), click **Add file > Upload files**, then **Commit changes**.

@@ -1,0 +1,15 @@
+<svg class="anim anim--pll" viewBox="0 0 360 225" role="img" aria-label="PLL locking: the VCO square wave slides into phase with the reference and its frequency settles at 4.44 GHz">
+  <defs><clipPath id="pll-clip"><rect x="50" y="20" width="290" height="140"/></clipPath></defs>
+  <text class="w" x="14" y="66">REF</text><text class="w" x="14" y="131">VCO</text>
+  <line class="guide" x1="110" y1="30" x2="110" y2="152"/>
+  <g clip-path="url(#pll-clip)">
+    <path class="ref" d="M50,76 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32"/>
+    <path class="vco" d="M50,141 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32 h20 v-32 h20 v32"/>
+  </g>
+  <text x="50" y="198">VCO freq</text>
+  <text class="v" x="130" y="198"><tspan data-from="4.15" data-to="4.44" data-dec="2" data-dur="2200" data-delay="100" data-ease="settle">4.15</tspan> GHz</text>
+  <rect class="lockbox" x="244" y="180" width="100" height="26" rx="5"/>
+  <circle class="ldot" cx="258" cy="193" r="4"/>
+  <text class="lt0" x="270" y="198">unlocked</text>
+  <text class="lt1 c" x="270" y="198">LOCKED</text>
+</svg>

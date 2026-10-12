@@ -1,0 +1,18 @@
+<svg class="anim anim--ellip" viewBox="0 0 360 225" role="img" aria-label="Spectroscopic ellipsometry on an AZO film: the band edge shifts from 3.35 to 3.58 eV as Al doping rises from 99:1 to 19:1">
+  <rect class="box" x="24" y="30" width="24" height="16" rx="2"/><text x="36" y="60" text-anchor="middle">source</text>
+  <rect class="box" x="312" y="30" width="24" height="16" rx="2"/><text x="324" y="60" text-anchor="middle">detector</text>
+  <rect class="film" x="100" y="118" width="160" height="10"/><rect class="sub" x="100" y="128" width="160" height="20"/>
+  <text class="v" x="266" y="127">AZO film</text><text x="266" y="144">substrate</text>
+  <path class="b1" pathLength="1" d="M48,42 L180,118"/>
+  <path class="b2" pathLength="1" d="M180,118 L190,128 L200,118"/>
+  <path class="b3" pathLength="1" d="M180,118 L312,42"/>
+  <path class="b4" pathLength="1" d="M200,118 L332,42"/>
+  <text class="psi c" x="232" y="62">Ψ, Δ</text>
+  <text x="60" y="190">ZnO:Al</text>
+  <g class="dop"><text class="v d1" x="118" y="190">99:1</text><text class="v d2" x="118" y="190">49:1</text><text class="v d3" x="118" y="190">19:1</text></g>
+  <text x="176" y="190">band edge</text>
+  <text class="v" x="262" y="190"><tspan data-from="3.35" data-to="3.58" data-dec="2" data-dur="2400" data-delay="1200" data-ease="linear">3.35</tspan> eV</text>
+  <g class="axis"><line x1="60" y1="204" x2="300" y2="204"/><line x1="108" y1="201" x2="108" y2="207"/><line x1="156" y1="201" x2="156" y2="207"/><line x1="204" y1="201" x2="204" y2="207"/><line x1="252" y1="201" x2="252" y2="207"/></g>
+  <text x="108" y="221" text-anchor="middle">3.3</text><text x="156" y="221" text-anchor="middle">3.4</text><text x="204" y="221" text-anchor="middle">3.5</text><text x="252" y="221" text-anchor="middle">3.6 eV</text>
+  <g transform="translate(132,203)"><path class="egmk" d="M0,-7 L5,0 L-5,0 Z"/></g>
+</svg>

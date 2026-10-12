@@ -1,0 +1,36 @@
+<svg class="anim anim--sram" viewBox="0 0 360 225" role="img" aria-label="6T SRAM cell read: the word line rises, the bit lines split, and the sense amplifier fires after 3.348 ps">
+  <defs>
+    <g id="sr-n" fill="none"><path d="M-12,0 H-4 M-4,-7 V7 M0,-8 V8 M0,-8 H6 V-14 M0,8 H6 V14"/></g>
+    <g id="sr-p" fill="none"><circle cx="-7" cy="0" r="2.6"/><path d="M-12,0 H-9.6 M-4.4,0 H-4 M-4,-7 V7 M0,-8 V8 M0,-8 H6 V-14 M0,8 H6 V14"/></g>
+  </defs>
+  <g class="wire">
+    <line x1="146" y1="44" x2="214" y2="44"/><line x1="146" y1="44" x2="146" y2="52"/><line x1="214" y1="44" x2="214" y2="52"/>
+    <line x1="146" y1="80" x2="146" y2="92"/><line x1="214" y1="80" x2="214" y2="92"/>
+    <line x1="146" y1="120" x2="146" y2="128"/><line x1="214" y1="120" x2="214" y2="128"/><line x1="146" y1="128" x2="214" y2="128"/>
+    <path d="M180,128 V134 M172,134 H188 M175,137 H185 M178,140 H182"/>
+    <line x1="164" y1="66" x2="164" y2="106"/><line x1="196" y1="66" x2="196" y2="106"/>
+    <path d="M164,82 H192 A4,4 0 0 1 200,82 H214"/>
+    <path d="M196,90 H168 A4,4 0 0 0 160,90 H146"/>
+    <line x1="104" y1="22" x2="104" y2="66"/><line x1="256" y1="22" x2="256" y2="70"/>
+    <line x1="118" y1="84" x2="146" y2="84"/><line x1="214" y1="88" x2="242" y2="88"/>
+  </g>
+  <g class="tr"><use href="#sr-p" transform="translate(152,66) scale(-1,1)"/><use href="#sr-n" transform="translate(152,106) scale(-1,1)"/><use href="#sr-p" transform="translate(208,66)"/><use href="#sr-n" transform="translate(208,106)"/></g>
+  <g class="tr acc"><use href="#sr-n" transform="translate(104,78) rotate(90)"/><use href="#sr-n" transform="translate(256,82) rotate(90)"/></g>
+  <line class="wl" x1="40" y1="22" x2="320" y2="22"/>
+  <g class="bl"><line x1="70" y1="14" x2="70" y2="136"/><line x1="70" y1="84" x2="90" y2="84"/></g>
+  <g class="blb"><line x1="290" y1="14" x2="290" y2="136"/><line x1="270" y1="88" x2="290" y2="88"/></g>
+  <g class="dot"><circle cx="146" cy="84" r="2.2"/><circle cx="146" cy="90" r="2.2"/><circle cx="214" cy="82" r="2.2"/><circle cx="214" cy="88" r="2.2"/><circle cx="104" cy="22" r="2.2"/><circle cx="256" cy="22" r="2.2"/></g>
+  <text class="lwl w" x="32" y="26" text-anchor="end">WL</text>
+  <text class="lbl" x="76" y="40">BL</text><text class="lblb" x="284" y="40" text-anchor="end">BLB</text>
+  <text x="180" y="38" text-anchor="middle">VDD</text>
+  <text class="w" x="138" y="94" text-anchor="end">Q</text><text class="w" x="222" y="86">Q̄</text>
+  <g class="sw">
+    <path class="twl" pathLength="1" d="M60,184 H100 V172 H300"/>
+    <path class="tbl" pathLength="1" d="M60,198 H300"/>
+    <path class="tblb" pathLength="1" d="M60,198 H110 L220,206 V216 H300"/>
+  </g>
+  <text x="56" y="188" text-anchor="end">WL</text><text class="lbl2" x="304" y="202">BL</text><text class="lblb2" x="304" y="220">BLB</text>
+  <g class="mk1"><line x1="100" y1="150" x2="100" y2="216"/><text class="c" x="100" y="160" text-anchor="middle">WL</text></g>
+  <g class="mk2"><line x1="220" y1="150" x2="220" y2="216"/><text class="c" x="220" y="160" text-anchor="middle">SA</text></g>
+  <g class="br"><path d="M100,150 V146 H220 V150"/><text class="v" x="160" y="160" text-anchor="middle">3.348 ps</text></g>
+</svg>

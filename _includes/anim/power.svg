@@ -1,0 +1,12 @@
+<svg class="anim anim--pwr" viewBox="0 0 360 225" role="img" aria-label="I-V curves from 0.02 to 4 A: Schottky diode with V_FWD 0.330 V and MOSFET with R_DS(on) 65.1 mΩ">
+  <g class="grid"><line x1="44" y1="148.5" x2="340" y2="148.5"/><line x1="44" y1="107" x2="340" y2="107"/><line x1="44" y1="65.5" x2="340" y2="65.5"/><line x1="44" y1="24" x2="340" y2="24"/><line x1="128.6" y1="24" x2="128.6" y2="190"/><line x1="213.2" y1="24" x2="213.2" y2="190"/><line x1="297.8" y1="24" x2="297.8" y2="190"/></g>
+  <g class="axis"><line x1="44" y1="24" x2="44" y2="190"/><line x1="44" y1="190" x2="340" y2="190"/></g>
+  <text x="38" y="152" text-anchor="end">1</text><text x="38" y="111" text-anchor="end">2</text><text x="38" y="69" text-anchor="end">3</text><text x="38" y="28" text-anchor="end">4 A</text>
+  <text x="44" y="208">0</text><text x="128.6" y="208" text-anchor="middle">0.2</text><text x="213.2" y="208" text-anchor="middle">0.4</text><text x="297.8" y="208" text-anchor="middle">0.6 V</text>
+  <path class="dio" pathLength="1" d="M184.2,189.2 L296.1,24.0"/>
+  <path class="mos" pathLength="1" d="M44.6,189.2 L154.1,24.0"/>
+  <g class="pd"><circle class="d p0" cx="184.2" cy="189.2" r="3"/><circle class="d p1" cx="197.7" cy="169.2" r="3"/><circle class="d p2" cx="211.7" cy="148.5" r="3"/><circle class="d p3" cx="239.8" cy="107.0" r="3"/><circle class="d p4" cx="268.0" cy="65.5" r="3"/><circle class="d p5" cx="296.1" cy="24.0" r="3"/></g>
+  <g class="pm"><circle class="m p0" cx="44.6" cy="189.2" r="3"/><circle class="m p1" cx="57.8" cy="169.2" r="3"/><circle class="m p2" cx="71.5" cy="148.5" r="3"/><circle class="m p3" cx="99.1" cy="107.0" r="3"/><circle class="m p4" cx="126.6" cy="65.5" r="3"/><circle class="m p5" cx="154.1" cy="24.0" r="3"/></g>
+  <g class="lab lm"><line x1="44" y1="12" x2="56" y2="12"/><text x="62" y="16">IRLML0040 · RDS(on) = 65.1 mΩ</text></g>
+  <g class="lab ld"><text x="240" y="126">STPS360AF</text><text class="v" x="240" y="142">VFWD = 0.330 V</text></g>
+</svg>

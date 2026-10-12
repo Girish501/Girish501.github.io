@@ -18,6 +18,53 @@
     items.forEach(function (el) { el.classList.add("in"); });
   }
 
+  // ---- SVG animations: play once when scrolled into view, then hold the last frame ----
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Tweens the text of an element from data-from to data-to (used for the counters).
+  function tween(el) {
+    var from = parseFloat(el.getAttribute("data-from")) || 0;
+    var to = parseFloat(el.getAttribute("data-to")) || 0;
+    var dec = parseInt(el.getAttribute("data-dec"), 10) || 0;
+    var dur = parseInt(el.getAttribute("data-dur"), 10) || 1000;
+    var delay = parseInt(el.getAttribute("data-delay"), 10) || 0;
+    var ease = el.getAttribute("data-ease") || "out";
+    function fmt(v) { return v.toFixed(dec); }
+    if (reduceMotion) { el.textContent = fmt(to); return; }
+    var t0 = null;
+    function step(t) {
+      if (t0 === null) t0 = t;
+      var x = (t - t0 - delay) / dur;
+      if (x >= 1) { el.textContent = fmt(to); return; }
+      if (x > 0) {
+        var k = ease === "linear" ? x
+              : ease === "settle" ? 1 - Math.exp(-5 * x) * Math.cos(7 * x)   // overshoots, then settles
+              : 1 - Math.pow(1 - x, 3);
+        el.textContent = fmt(from + (to - from) * k);
+      }
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function play(el) {
+    if (el.classList.contains("play")) return;
+    el.classList.add("play");
+    Array.prototype.forEach.call(el.querySelectorAll("[data-to]"), tween);
+  }
+
+  var anims = document.querySelectorAll(".anim");
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    Array.prototype.forEach.call(anims, play);
+  } else {
+    var aio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { play(e.target); aio.unobserve(e.target); }
+      });
+    }, { threshold: 0.35 });
+    Array.prototype.forEach.call(anims, function (el) { aio.observe(el); });
+  }
+
   // ---- Lazy YouTube embeds: load the player only when clicked ----
   // If a thumbnail fails to load, drop the broken image and keep the play button.
   Array.prototype.forEach.call(document.querySelectorAll(".yt img"), function (im) {

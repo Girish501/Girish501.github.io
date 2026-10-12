@@ -1,0 +1,18 @@
+{%- comment -%}
+Hero ALD cycle animation. Three pieces, all driven by anim.css once .play is set on the hero:
+- .ald-sprite: the DEZ and H2O molecule glyphs (referenced with <use>).
+- .ald-film: substrate and six monolayers across the full width (stretched; rectangles only).
+- .ald-chamber: molecules falling onto the film. Desktop version sits right of the hero text;
+  phone version sits in the band under the buttons.
+{%- endcomment -%}
+<svg class="ald-sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="m-dez"><line class="dez-l" x1="-16" y1="-11" x2="0" y2="0"/><line class="dez-l" x1="16" y1="-11" x2="0" y2="0"/><circle class="dez-e" cx="-16" cy="-11" r="4.2"/><circle class="dez-e" cx="16" cy="-11" r="4.2"/><circle class="dez-c" r="8"/></g>
+    <g id="m-h2o"><circle class="h2o-h" cx="-10.5" cy="-8" r="3.8"/><circle class="h2o-h" cx="10.5" cy="-8" r="3.8"/><circle class="h2o-o" r="7"/></g>
+  </defs>
+</svg>
+<svg class="ald-film" viewBox="0 0 100 58" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <rect class="sub" x="0" y="36" width="100" height="22"/><rect class="l l1" x="0" y="31" width="100" height="5"/><rect class="l l2" x="0" y="25" width="100" height="5"/><rect class="l l3" x="0" y="19" width="100" height="5"/><rect class="l l4" x="0" y="13" width="100" height="5"/><rect class="l l5" x="0" y="7" width="100" height="5"/><rect class="l l6" x="0" y="1" width="100" height="5"/>
+</svg>
+<svg class="ald-chamber ald-chamber--desk" viewBox="0 0 560 480" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false"><g class="ald-dez"><g transform="translate(50,471)"><use class="mol" href="#m-dez" style="--d:0.000s"/></g><g transform="translate(150,471)"><use class="mol" href="#m-dez" style="--d:0.017s"/></g><g transform="translate(250,471)"><use class="mol" href="#m-dez" style="--d:0.034s"/></g><g transform="translate(350,471)"><use class="mol" href="#m-dez" style="--d:0.051s"/></g><g transform="translate(450,471)"><use class="mol" href="#m-dez" style="--d:0.068s"/></g><g transform="translate(530,471)"><use class="mol" href="#m-dez" style="--d:0.085s"/></g></g><g class="ald-h2o"><g transform="translate(100,472)"><use class="mol" href="#m-h2o" style="--d:0.000s"/></g><g transform="translate(200,472)"><use class="mol" href="#m-h2o" style="--d:0.017s"/></g><g transform="translate(300,472)"><use class="mol" href="#m-h2o" style="--d:0.034s"/></g><g transform="translate(400,472)"><use class="mol" href="#m-h2o" style="--d:0.051s"/></g><g transform="translate(490,472)"><use class="mol" href="#m-h2o" style="--d:0.068s"/></g></g></svg>
+<svg class="ald-chamber ald-chamber--phone" viewBox="0 0 360 170" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false"><g class="ald-dez"><g transform="translate(40,161)"><use class="mol" href="#m-dez" style="--d:0.000s"/></g><g transform="translate(130,161)"><use class="mol" href="#m-dez" style="--d:0.017s"/></g><g transform="translate(220,161)"><use class="mol" href="#m-dez" style="--d:0.034s"/></g><g transform="translate(310,161)"><use class="mol" href="#m-dez" style="--d:0.051s"/></g></g><g class="ald-h2o"><g transform="translate(85,162)"><use class="mol" href="#m-h2o" style="--d:0.000s"/></g><g transform="translate(175,162)"><use class="mol" href="#m-h2o" style="--d:0.017s"/></g><g transform="translate(265,162)"><use class="mol" href="#m-h2o" style="--d:0.034s"/></g><g transform="translate(340,162)"><use class="mol" href="#m-h2o" style="--d:0.051s"/></g></g></svg>

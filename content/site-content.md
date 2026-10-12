@@ -165,6 +165,17 @@ Long term, I want to work on analog and mixed-signal silicon in the US and then 
 
 Photo next to the bio: cleanroom gown photo.
 
+## Animations (numbers they show)
+
+- Hero: ALD cycle (DEZ pulse, N2 purge, H2O pulse, N2 purge), one monolayer per cycle, thickness counter to 85 nm.
+- TIA card: Bode plot, flat at 109 dBΩ, -3 dB at 492 MHz.
+- PLL card: reference and VCO square waves locking, frequency settling at 4.44 GHz.
+- SRAM card: 6T cell read, read access 3.348 ps.
+- Power device card: diode and MOSFET I-V from 0.02 to 4 A, VFWD = 0.330 V, RDS(on) = 65.1 mΩ.
+- QNF entry: ellipsometer beam on the film; band edge 3.35 to 3.58 eV as doping steps 99:1, 49:1, 19:1.
+- p-Chip entry: sine drive, mirror at resonance, beam sweeping a row of targets. Abstract only.
+- FPGA card: static block diagram.
+
 ## Blog
 
 Start with an empty blog section and a simple way to add posts as Markdown files. Hide the Blog nav link until a post exists. Suggested first post topics (do not write these, just leave placeholders): fitting AZO ellipsometry data in WVASE, lessons from a first 45 nm TIA tape-out-style design, what 60 hours in a cleanroom teaches you.
