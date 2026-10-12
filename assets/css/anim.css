@@ -7,7 +7,7 @@
    ========================================================================== */
 
 .anim { display: block; width: 100%; height: auto; }
-.anim text { font-family: var(--font-mono); font-size: 14px; fill: var(--muted); }
+.anim text { font-family: var(--font-mono); font-size: 15px; fill: var(--muted); }
 .anim .w { fill: var(--text); }
 .anim .v { fill: var(--copper-2); }
 .anim .c { fill: var(--cyan); }

@@ -1,15 +1,15 @@
 <svg class="anim anim--fpga" viewBox="0 0 360 225" role="img" aria-label="Block diagram: RC receiver into four PWM decoders and an MPU-6050 IMU over I2C feed a PID controller on the FPGA, which drives a PWM encoder and four ESCs">
-  <rect class="fpga" x="120" y="4" width="232" height="162" rx="6"/>
-  <text class="w" x="236" y="18" text-anchor="middle">Basys-3 (Artix-7) FPGA</text>
-  <rect class="blk" x="16" y="26" width="92" height="32" rx="4"/><text x="62.0" y="39" text-anchor="middle">RC</text><text x="62.0" y="53" text-anchor="middle">receiver</text>
-  <rect class="blk" x="16" y="90" width="92" height="32" rx="4"/><text x="62.0" y="103" text-anchor="middle">MPU-6050</text><text x="62.0" y="117" text-anchor="middle">IMU</text>
-  <rect class="blk dash" x="16" y="160" width="92" height="32" rx="4"/><text x="62.0" y="173" text-anchor="middle">FPV</text><text x="62.0" y="187" text-anchor="middle">camera</text>
-  <rect class="blk" x="130" y="26" width="100" height="32" rx="4"/><text x="180.0" y="39" text-anchor="middle">PWM</text><text x="180.0" y="53" text-anchor="middle">decoders ×4</text>
-  <rect class="blk" x="130" y="90" width="100" height="32" rx="4"/><text x="180.0" y="103" text-anchor="middle">I2C</text><text x="180.0" y="117" text-anchor="middle">master</text>
-  <rect class="blk" x="252" y="58" width="92" height="32" rx="4"/><text x="298.0" y="71" text-anchor="middle">PID</text><text x="298.0" y="85" text-anchor="middle">controller</text>
-  <rect class="blk" x="252" y="122" width="92" height="32" rx="4"/><text x="298.0" y="135" text-anchor="middle">PWM</text><text x="298.0" y="149" text-anchor="middle">encoder</text>
-  <rect class="blk" x="252" y="184" width="92" height="32" rx="4"/><text x="298.0" y="197" text-anchor="middle">ESC ×4</text><text x="298.0" y="211" text-anchor="middle">motors</text>
-  <g class="arr"><path d="M108,42 H130"/><path d="M108,106 H130"/><path d="M230,42 H240 V74 H252"/><path d="M230,106 H240 V74"/><path d="M298,90 V122"/><path d="M298,154 V184"/></g>
-  <g class="ah"><path d="M125,38 L130,42 L125,46 Z"/><path d="M125,102 L130,106 L125,110 Z"/><path d="M247,70 L252,74 L247,78 Z"/><path d="M294,117 L298,122 L302,117 Z"/><path d="M294,179 L298,184 L302,179 Z"/></g>
-  <text class="n" x="16" y="212">FPV video link is separate</text>
+  <rect class="fpga" x="114" y="4" width="242" height="162" rx="6"/>
+  <text class="w" x="235" y="18" text-anchor="middle">Basys-3 (Artix-7) FPGA</text>
+  <rect class="blk" x="14" y="26" width="92" height="32" rx="4"/><text x="60.0" y="39" text-anchor="middle">RC</text><text x="60.0" y="53" text-anchor="middle">receiver</text>
+  <rect class="blk" x="14" y="90" width="92" height="32" rx="4"/><text x="60.0" y="103" text-anchor="middle">MPU-6050</text><text x="60.0" y="117" text-anchor="middle">IMU</text>
+  <rect class="blk dash" x="14" y="160" width="92" height="32" rx="4"/><text x="60.0" y="173" text-anchor="middle">FPV</text><text x="60.0" y="187" text-anchor="middle">camera</text>
+  <rect class="blk" x="122" y="26" width="112" height="32" rx="4"/><text x="178.0" y="39" text-anchor="middle">PWM</text><text x="178.0" y="53" text-anchor="middle">decoders ×4</text>
+  <rect class="blk" x="122" y="90" width="112" height="32" rx="4"/><text x="178.0" y="103" text-anchor="middle">I2C</text><text x="178.0" y="117" text-anchor="middle">master</text>
+  <rect class="blk" x="248" y="58" width="102" height="32" rx="4"/><text x="299.0" y="71" text-anchor="middle">PID</text><text x="299.0" y="85" text-anchor="middle">controller</text>
+  <rect class="blk" x="248" y="122" width="102" height="32" rx="4"/><text x="299.0" y="135" text-anchor="middle">PWM</text><text x="299.0" y="149" text-anchor="middle">encoder</text>
+  <rect class="blk" x="248" y="184" width="102" height="32" rx="4"/><text x="299.0" y="197" text-anchor="middle">ESC ×4</text><text x="299.0" y="211" text-anchor="middle">motors</text>
+  <g class="arr"><path d="M106,42 H122"/><path d="M106,106 H122"/><path d="M234,42 H241 V74 H248"/><path d="M234,106 H241 V74"/><path d="M299,90 V122"/><path d="M299,154 V184"/></g>
+  <g class="ah"><path d="M117,38 L122,42 L117,46 Z"/><path d="M117,102 L122,106 L117,110 Z"/><path d="M243,70 L248,74 L243,78 Z"/><path d="M295,117 L299,122 L303,117 Z"/><path d="M295,179 L299,184 L303,179 Z"/></g>
+  <text class="n" x="14" y="212">FPV link is separate</text>
 </svg>

@@ -8,5 +8,5 @@
   <g class="pd"><circle class="d p0" cx="184.2" cy="189.2" r="3"/><circle class="d p1" cx="197.7" cy="169.2" r="3"/><circle class="d p2" cx="211.7" cy="148.5" r="3"/><circle class="d p3" cx="239.8" cy="107.0" r="3"/><circle class="d p4" cx="268.0" cy="65.5" r="3"/><circle class="d p5" cx="296.1" cy="24.0" r="3"/></g>
   <g class="pm"><circle class="m p0" cx="44.6" cy="189.2" r="3"/><circle class="m p1" cx="57.8" cy="169.2" r="3"/><circle class="m p2" cx="71.5" cy="148.5" r="3"/><circle class="m p3" cx="99.1" cy="107.0" r="3"/><circle class="m p4" cx="126.6" cy="65.5" r="3"/><circle class="m p5" cx="154.1" cy="24.0" r="3"/></g>
   <g class="lab lm"><line x1="44" y1="12" x2="56" y2="12"/><text x="62" y="16">IRLML0040 · RDS(on) = 65.1 mΩ</text></g>
-  <g class="lab ld"><text x="240" y="126">STPS360AF</text><text class="v" x="240" y="142">VFWD = 0.330 V</text></g>
+  <g class="lab ld"><text x="232" y="126">STPS360AF</text><text class="v" x="232" y="142">VFWD = 0.330 V</text></g>
 </svg>
