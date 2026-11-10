@@ -3,17 +3,17 @@ layout: base
 ---
 {% assign words = content | strip_html | number_of_words %}
 {% assign minutes = words | divided_by: 200 | at_least: 1 %}
-<article class="post wrap-narrow">
-  <a class="back-link" href="{{ '/blog/' | relative_url }}">&larr; All posts</a>
-  <header class="post-header">
-    <p class="mono-label"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time> &middot; {{ minutes }} min read</p>
-    <h1>{{ page.title }}</h1>
-    {% if page.description %}<p class="post-dek">{{ page.description }}</p>{% endif %}
-  </header>
-  <div class="prose">
+<article class="page">
+  <div class="wrap narrow">
+    <a class="link back" href="{{ '/blog/' | relative_url }}">&larr; All writing</a>
+    <header class="post-head" style="margin-top: 28px">
+      <p class="meta num"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time> &middot; {{ minutes }} min read</p>
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
+    </header>
+    <div class="prose">
 {{ content }}
+    </div>
+    <p style="margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line);"><a class="link back" href="{{ '/blog/' | relative_url }}">&larr; All writing</a></p>
   </div>
-  <footer class="post-footer">
-    <a class="back-link" href="{{ '/blog/' | relative_url }}">&larr; All posts</a>
-  </footer>
 </article>

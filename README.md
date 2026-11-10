@@ -1,6 +1,6 @@
 # girisharora.com
 
-Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitHub Pages builds and hosts it.
+Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitHub Pages builds and hosts it from the `main` branch.
 
 ## Where things are
 
@@ -9,43 +9,36 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Source text for the whole site | `content/site-content.md` |
 | Original photos | `content/photos/` (not published) |
 | Home page (all sections, including Contact) | `index.html` |
-| Blog list page | `blog.html` |
-| Header, footer, page shell | `_layouts/base.html` |
-| Blog post page design | `_layouts/post.html` |
-| Image slot (shows a photo or a placeholder) | `_includes/slot.html` |
+| Writing list page | `blog.html` |
+| Header, page shell, fonts | `_layouts/base.html` |
+| Post page design | `_layouts/post.html` |
+| Hero figure (TIA gain curve) | `_includes/fig-tia.svg` |
+| Lazy YouTube embed | `_includes/yt.html` |
 | Blog posts | `_posts/` |
 | Styles | `assets/css/style.css` |
-| Scroll animations and photo enlarge | `assets/js/main.js` |
-| Animations (SVG files) | `_includes/anim/` |
-| Animation styles and timing | `assets/css/anim.css` |
+| Photo enlarge and video loading | `assets/js/main.js` |
 | Web-sized photos | `assets/img/` |
 | Custom domain | `CNAME` |
 | Site settings (email, links) | `_config.yml` |
 
-## Animations
+## Design
 
-The hero (ALD cycle), five project cards, and two experience entries use inline SVG animations driven by CSS. Each one plays once when it scrolls into view, then holds its last frame. Visitors who set "reduce motion" see only the last frame. The SVGs live in `_includes/anim/` and the timing is in `assets/css/anim.css`. No JavaScript libraries.
+Paper background, near-black text, one blue accent for links and buttons. Instrument Serif for the statement and headings, Instrument Sans for everything else (loaded from Google Fonts). Body text is 17 px; nothing is under 13 px. The only animation is the hero entrance on load; nothing moves on scroll. Hover gives quick feedback: underlines draw, buttons step, photos zoom 3%.
+
+## Photos
+
+Square crops for the About grid are `assets/img/photo-*.jpg` (900 px), each with a `-full` version for the enlarged view. To swap a photo, replace both files and keep the names.
 
 ## Videos
 
 YouTube videos are embedded with `_includes/yt.html`. Only the thumbnail loads until a visitor clicks play. To change a video, edit its `id="..."` in `index.html`. To start a video partway through, set `start=` to the number of seconds.
-
-## Fill an image slot
-
-The Cleanroom and Compute-in-Memory cards show photos. Other cards show animations (see below). An image slot still exists for photos you may add later. Upload a JPG to the matching path and the placeholder is replaced on the next build. No HTML edit needed.
-
-| Slot | Upload to |
-|------|-----------|
-
-Schematics and plots are shown whole (not cropped). Photos are cropped to fill the slot. Keep files under about 300 KB; 1600 px wide is plenty.
-On github.com: open the folder (create it by typing `assets/img/projects/` in the file name box), click **Add file > Upload files**, then **Commit changes**.
 
 ## Add a blog post
 
 1. Copy `_drafts/post-template.md`.
 2. Save the copy in the `_posts` folder. Name it `YYYY-MM-DD-short-title.md`, for example `_posts/2026-11-02-azo-ellipsometry-in-wvase.md`.
 3. Change the `title` and `description` at the top, then write the post in Markdown.
-4. Commit and push. The post shows up on the Blog page in about a minute. The Blog link in the menu appears once the first post exists.
+4. Commit and push to `main`. The post shows up on the Writing page in about a minute. The Writing link in the menu appears once the first post exists, and the three latest posts also show under Elsewhere on the home page.
 
 On github.com you can do this in the browser: open the `_posts` folder, click **Add file > Create new file**, type the file name, paste the post, and click **Commit changes**.
 

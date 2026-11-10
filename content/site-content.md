@@ -2,6 +2,8 @@
 
 Source: Girish Arora's resume, October 2026. Use this file as the single source of truth for site text. Do not invent facts.
 
+Revision 3 (Nov 2026): redesign. Light paper page, Instrument Serif and Instrument Sans, one blue accent. Hero statement and section copy below. Projects shown as a list led by each project's number, in three groups. Awards folded into project rows; press under "Elsewhere"; contact as the closing band.
+
 Revision 2 (Oct 2026): added the PLL and FPGA flight controller projects (from Girish's GitHub repos), device descriptions for NeuroSense and NeuroBand (from the Elektor and Circuit Digest contest pages), the availability line, and rewritten Experience prose. Removed coursework, the resume download, the Awards section, and the separate Contact page.
 
 ## Identity
@@ -16,6 +18,20 @@ Revision 2 (Oct 2026): added the PLL and FPGA flight controller projects (from G
 - GitHub: github.com/Girish501
 - Do not publish phone number or street address anywhere on the site.
 - No resume download on the site. The resume PDF contains a phone number and detailed p-Chip work.
+
+## Hero (revision 3)
+
+- Statement (h1): I design analog circuits, and grow the thin films they are built on.
+- Lead: MSE Electrical Engineering at the University of Pennsylvania, graduating May 2027. Graduate Student Fellow at Penn's Quattrone Nanofabrication Facility, where I am developing an ALD process for aluminum-doped zinc oxide.
+- Facts line: Open to analog and mixed-signal roles, 2027 · Philadelphia, PA
+- Buttons: See the work · Email me
+- Figure: transimpedance gain of the 45 nm TIA (Spectre, 1 V): flat at 109 dBΩ, −3 dB at 492 MHz. Drawn in ink once on load.
+
+## Closing band (revision 3)
+
+- Heading: Graduating May 2027.
+- Line: Open to analog and mixed-signal design roles. Email is the fastest way to reach me.
+- Email, LinkedIn, GitHub. Footer: © year Girish Arora · Philadelphia, PA.
 
 ## One-line summary
 
@@ -81,7 +97,10 @@ Keep this entry high level on the site. Do not describe board layout, firmware, 
 
 ## Projects
 
-Order on the site: TIA, PLL, SRAM, Cleanroom fabrication, Power device characterization, Compute-in-memory, NeuroSense, NeuroBand, FPGA flight controller.
+Order on the site (revision 3), as a list in three groups, each row led by its number:
+- Circuits: TIA (109 dBΩ), PLL (4.44 GHz), SRAM (33 µW).
+- Devices and fabrication: AZO by ALD (85 to 88 nm; from the QNF work), Cleanroom fabrication (60 hours), Power device characterization (65.1 mΩ).
+- Systems: Compute-in-memory (11% lower EDP), NeuroSense (3rd of 423+), NeuroBand (Top 10 of 2,959), FPGA flight controller (4 motors).
 Each card has one image slot and one headline metric (marked **bold** below). Link a card to its GitHub repo where one exists.
 
 ### Wideband Transimpedance Amplifier in 45 nm CMOS

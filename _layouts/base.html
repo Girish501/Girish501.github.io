@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% if page.title and page.url != "/" %}{% assign page_title = page.title | append: " | " | append: site.title %}{% else %}{% assign page_title = site.title | append: " | Analog and mixed-signal IC design" %}{% endif %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  {% if page.title and page.url != "/" %}{% assign page_title = page.title | append: " · " | append: site.title %}{% else %}{% assign page_title = site.title | append: " · Analog and mixed-signal IC design" %}{% endif %}
   <title>{{ page_title }}</title>
   {% assign desc = page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 %}
   <meta name="description" content="{{ desc }}">
@@ -11,55 +11,39 @@
   <meta property="og:title" content="{{ page_title }}">
   <meta property="og:description" content="{{ desc }}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
-  <meta property="og:image" content="{{ '/assets/img/headshot-640.jpg' | absolute_url }}">
+  <meta property="og:image" content="{{ '/assets/img/photo-headshot.jpg' | absolute_url }}">
   <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
-  <meta name="theme-color" content="#11161d">
+  <meta name="theme-color" content="#f8f7f3">
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400..600;1,400..600&display=swap">
   {% comment %} ?v= is the build time, so browsers fetch fresh copies after every deploy instead of reusing cached ones. {% endcomment %}
   {% assign v = site.time | date: "%s" %}
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ v }}">
   {% feed_meta %}
-  <script>document.documentElement.className = "js";</script>
+  <script>document.documentElement.classList.add("js");</script>
   <script src="{{ '/assets/js/main.js' | relative_url }}?v={{ v }}" defer></script>
-  {% if page.hero %}<link rel="stylesheet" href="{{ '/assets/css/anim.css' | relative_url }}?v={{ v }}">{% endif %}
 </head>
-<body class="page-{{ page.slug | default: page.name | remove: '.html' | remove: '.md' }}">
+<body>
   <a class="skip" href="#main">Skip to content</a>
 
-  <header class="site-header">
-    <nav class="nav wrap" aria-label="Main">
-      <a class="brand" href="{{ '/' | relative_url }}" aria-label="Girish Arora, home">
-        <span class="brand-chip" aria-hidden="true">GA</span>
-        <span class="brand-name">Girish Arora</span>
-      </a>
-      <ul class="nav-links">
-        <li class="nav-sec"><a href="{{ '/#about' | relative_url }}">About</a></li>
-        <li class="nav-sec"><a href="{{ '/#experience' | relative_url }}">Experience</a></li>
-        <li><a href="{{ '/#projects' | relative_url }}">Projects</a></li>
-        <li class="nav-sec"><a href="{{ '/#skills' | relative_url }}">Skills</a></li>
-        {% if site.posts.size > 0 %}<li><a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a></li>{% endif %}
-        <li><a href="{{ '/#contact' | relative_url }}">Contact</a></li>
-      </ul>
-    </nav>
+  <header class="nav">
+    <div class="wrap">
+      <a class="nav-name" href="{{ '/' | relative_url }}">Girish Arora</a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="{{ '/#projects' | relative_url }}">Projects</a>
+        <a href="{{ '/#experience' | relative_url }}" class="nav-hide">Experience</a>
+        <a href="{{ '/#about' | relative_url }}">About</a>
+        {% if site.posts.size > 0 %}<a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Writing</a>{% endif %}
+        <a class="btn btn--primary btn--small" href="mailto:{{ site.email }}">Email</a>
+      </nav>
+    </div>
   </header>
 
   <main id="main">
 {{ content }}
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <p>&copy; {{ site.time | date: "%Y" }} Girish Arora &middot; Philadelphia, PA</p>
-      <ul class="footer-links">
-        <li><a href="mailto:{{ site.email }}">Email</a></li>
-        <li><a href="{{ site.linkedin }}" rel="noopener">LinkedIn</a></li>
-        <li><a href="{{ site.github }}" rel="noopener">GitHub</a></li>
-      </ul>
-    </div>
-  </footer>
 
   <dialog class="lightbox" id="lightbox" aria-label="Enlarged photo">
     <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
