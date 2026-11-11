@@ -87,7 +87,7 @@
     var l1 = Math.hypot(e1[0], e1[1], e1[2]), l2 = Math.hypot(e2[0], e2[1], e2[2]);
     return function (i, cnt) {
       var n1 = Math.max(1, Math.round(Math.sqrt(cnt * l1 / l2))), n2 = Math.ceil(cnt / n1);
-      var s = ((i % n1) + 0.5 + 0.6 * (rnd() - 0.5)) / n1, t = (Math.floor(i / n1) + 0.5 + 0.6 * (rnd() - 0.5)) / n2;
+      var s = ((i % n1) + 0.5 + 0.4 * (rnd() - 0.5)) / n1, t = (Math.floor(i / n1) + 0.5 + 0.4 * (rnd() - 0.5)) / n2;
       return [o[0] + e1[0] * s + e2[0] * t, o[1] + e1[1] * s + e2[1] * t, o[2] + e1[2] * s + e2[2] * t, colorAt(s, t), size];
     };
   }
@@ -115,7 +115,7 @@
     corners.sort(function (p, q) { return Math.atan2(p[1], p[0]) - Math.atan2(q[1], q[0]); });
     var cy = 0.5 * C_LAT, P = atoms.map(function (p) { return [p[0] * SC, (p[1] - cy) * SC + YC, p[2] * SC, p[3]]; });
     var parts = [], y0 = -cy * SC + YC, y1 = y0 + C_LAT * SC;
-    P.forEach(function (p) { parts.push({ w: p[3] ? 0.7 : 1, emit: ball(p, p[3] ? RO : RZN, p[3] ? BLUE : SLATE, V, 1.3 * COV) }); });
+    P.forEach(function (p) { parts.push({ w: p[3] ? 0.7 : 1, emit: ball(p, p[3] ? RO : RZN, p[3] ? BLUE : SLATE, V, 1.7 * COV) }); });
     P.forEach(function (p) {
       if (p[3]) return;
       P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.3, emit: rod(p, q, RB, GRAY, COV, RZN / d, 1 - RO / d) }); });
@@ -157,7 +157,7 @@
   // a thickness bracket on the left and labelled leaders on the right.
   var CAM_FILM = [0.5, 0.3, 10];
   function shapeFilm() {
-    var W = 3.1, D = 2.0, H = 2.4, SUB = 0.9, X0 = 0.05, y0 = -0.9, zf = D / 2, FS = 1.25 * COV;
+    var W = 3.1, D = 2.0, H = 2.4, SUB = 0.9, X0 = 0.05, y0 = -0.9, zf = D / 2, FS = 1.6 * COV;
     var xl = X0 - W / 2, xr = X0 + W / 2, yt = y0 + H, yb = y0 - SUB, planes = Math.round(CYCLES / (RATIO + 1));
     var grain = function (s) { return 0.86 + 0.12 * Math.sin(s * 57) + 0.07 * Math.sin(s * 131 + 1); }; // columnar grains across the cut
     var parts = [];
