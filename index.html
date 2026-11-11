@@ -23,13 +23,13 @@ title: Girish Arora
 <!-- PROCESS WORK -->
 <section class="section" id="process">
   <div class="wrap">
-    <a class="photo-wide zoom" href="{{ '/assets/img/photo-cleanroom-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-cleanroom-wide.jpg' | relative_url }}" width="1600" height="1067" alt="Girish in a full cleanroom gown, hood, and safety glasses"></a>
-    <header class="section-head">
+    <a class="photo-wide zoom" data-anim="settle" data-anim-start=".95" data-anim-span=".45" href="{{ '/assets/img/photo-cleanroom-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-cleanroom-wide.jpg' | relative_url }}" width="1600" height="1067" alt="Girish in a full cleanroom gown, hood, and safety glasses"></a>
+    <header class="section-head" data-anim="rise">
       <h2>Process work</h2>
     </header>
 
     <article class="case" id="azo">
-      <header class="case-head">
+      <header class="case-head" data-anim="rise">
         <h3>Aluminum-doped zinc oxide by ALD and sputtering</h3>
         <span class="meta">Quattrone Nanofabrication Facility, Sep 2026 to present</span>
       </header>
@@ -80,15 +80,15 @@ title: Girish Arora
       </div>
       <script src="{{ '/assets/js/stage.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
       <dl class="case-grid">
-        <div>
+        <div data-anim="rise">
           <dt>Excursion</dt>
           <dd><p>The 29:1 run came out off-trend. Re-mounting the sample brought back the missing XRD peaks. A run-log comparison showed one heater zone 19 °C below setpoint.</p></dd>
         </div>
-        <div>
+        <div data-anim="rise">
           <dt>Sputtering, in progress</dt>
           <dd><p>Co-sputtering AZO on a Kurt J. Lesker PVD-03 (ZnO on RF, Al on DC, 100% O₂). Calibrating each gun alone before a DOE against the ALD series.</p></dd>
         </div>
-        <div>
+        <div data-anim="rise">
           <dt>Tools</dt>
           <dd><p>Cambridge NanoTech Savannah S200 ALD (qualified for 24/7 independent use, precursor changes). PVD-03 (sputter target changes).</p></dd>
         </div>
@@ -96,8 +96,8 @@ title: Girish Arora
     </article>
 
     <ol class="rows" style="margin-top: 40px">
-      <li>
-        <div class="row-metric">23 nm<small>DSA feature height</small></div>
+      <li data-anim="rise">
+        <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">23 nm<small>DSA feature height</small></div>
         <div class="row-body">
           <h3 class="row-title">Cleanroom device fabrication, ESE 5360 <span class="row-year">Jan to May 2026</span></h3>
           <p>Patterned PS-b-PMMA by directed self-assembly with 23 nm feature heights. Fabricated MEMS actuators on SOI and verified the 2.6 µm device layer by reflectometry. 60 hours of hands-on cleanroom work: photolithography, EBL, RIE/DRIE plasma etch, PECVD and sputtered thin films, ALD, wet processing, device release. Also graphene transistors and CdSe quantum dot synthesis.</p>
@@ -110,40 +110,40 @@ title: Girish Arora
 <!-- CIRCUITS -->
 <section class="section" id="circuits">
   <div class="wrap">
-    <header class="section-head">
+    <header class="section-head" data-anim="rise">
       <h2>Circuits</h2>
     </header>
     <ol class="rows">
-      <li>
-        <div class="row-metric">109 dBΩ<small>transimpedance gain</small></div>
+      <li data-anim="rise">
+        <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">109 dBΩ<small>transimpedance gain</small></div>
         <div class="row-body">
           <h3 class="row-title">Wideband transimpedance amplifier, 45 nm CMOS <span class="row-year">Aug to Dec 2025</span></h3>
           <p>A 1 V CMOS TIA for photodiode front ends: ~492 MHz bandwidth, ~4.5e-14 A²/Hz input-referred noise, 2.76 mW. Designed and simulated in Cadence Virtuoso and Spectre.</p>
           {% if tauc_files.size > 0 %}
-          <figure class="fig row-fig">
+          <figure class="fig row-fig" data-anim="draw">
             <p class="fig-title"><b>45 nm CMOS TIA.</b> Spectre simulation, 1 V supply.</p>
             {% include fig-tia.svg %}
           </figure>
           {% endif %}
         </div>
       </li>
-      <li>
-        <div class="row-metric">4.44 GHz<small>output clock</small></div>
+      <li data-anim="rise">
+        <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">4.44 GHz<small>output clock</small></div>
         <div class="row-body">
           <h3 class="row-title"><a href="https://github.com/Girish501/Phase-Locked-Loop-for-Clock-Generation-in-SerDes-in-180nm-CMOS" rel="noopener">Phase-locked loop for SerDes clocking, 180 nm CMOS</a> <span class="row-year">2024</span></h3>
           <p>A charge-pump PLL: phase-frequency detector, charge pump and loop filter, 3-stage ring VCO, and frequency divider. 4.44 GHz at 1.8 V with a 50% duty cycle in transient simulation. Undergraduate capstone, team of four.</p>
           <p class="row-links"><a href="https://github.com/Girish501/Phase-Locked-Loop-for-Clock-Generation-in-SerDes-in-180nm-CMOS" rel="noopener">Repository</a></p>
         </div>
       </li>
-      <li>
-        <div class="row-metric">33 µW<small>at 1.0 V, from 131 µW</small></div>
+      <li data-anim="rise">
+        <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">33 µW<small>at 1.0 V, from 131 µW</small></div>
         <div class="row-body">
           <h3 class="row-title">16×4 SRAM memory circuit <span class="row-year">Sep to Dec 2025</span></h3>
           <p>Read access delay of 3.348 ps. Supply-voltage scaling from 1.2 V to 1.0 V cut power from 131 µW to 33 µW.</p>
         </div>
       </li>
-      <li>
-        <div class="row-metric">11% lower<small>energy-delay product</small></div>
+      <li data-anim="rise">
+        <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">11% lower<small>energy-delay product</small></div>
         <div class="row-body">
           <h3 class="row-title">Compute-in-memory for ECG classification, ESE 5760 <span class="row-year">Jan to May 2026</span></h3>
           <p>OxRAM and PCM 2T2R crossbar non-idealities (RTN, conductance drift) modeled inside hardware-aware training of a 1D-CNN ECG classifier. PCM came out 11% lower in energy-delay product, at 0.0275 µJ per inference.</p>
@@ -156,12 +156,12 @@ title: Girish Arora
 <!-- HARDWARE AND POWER -->
 <section class="section" id="hardware">
   <div class="wrap">
-    <header class="section-head">
+    <header class="section-head" data-anim="rise">
       <h2>Hardware and power</h2>
     </header>
     <ol class="rows">
-      <li>
-        <div class="row-metric">65.1 mΩ<small>R<sub>DS(on)</sub>, fitted</small></div>
+      <li data-anim="rise">
+        <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">65.1 mΩ<small>R<sub>DS(on)</sub>, fitted</small></div>
         <div class="row-body">
           <h3 class="row-title">Power device characterization, ESE 5800 <span class="row-year">Sep 2026 to present</span></h3>
           <p>An STPS360AF Schottky diode and an IRLML0040 MOSFET characterized from 0.02 to 4 A with pulsed bench measurements, automated in Python/PyVISA on Keysight E36441A and 34461A instruments. Simplified models (V<sub>FWD</sub> = 0.330 V, R<sub>ON</sub> = 66.5 mΩ, R<sub>DS(on)</sub> = 65.1 mΩ) validated against vendor SPICE models and datasheet curves.</p>
@@ -169,7 +169,7 @@ title: Girish Arora
       </li>
     </ol>
     <ol class="compact">
-      <li>
+      <li data-anim="rise">
         <div class="meta">2025</div>
         <div class="row-body">
           <h3 class="row-title"><a href="https://www.elektormagazine.com/labs/neurosense-real-time-mental-health-monitoring-system-on-stm32n6" rel="noopener">NeuroSense</a></h3>
@@ -177,7 +177,7 @@ title: Girish Arora
           <p class="row-links"><a href="https://www.elektormagazine.com/labs/neurosense-real-time-mental-health-monitoring-system-on-stm32n6" rel="noopener">Project page on Elektor Labs</a><a href="https://www.youtube.com/watch?v=n8w2AGcf5HU" rel="noopener">Demo video</a><a href="https://www.eenewseurope.com/en/stm32-edge-ai-contest-2025" rel="noopener">Nominee announcement</a></p>
         </div>
       </li>
-      <li>
+      <li data-anim="rise">
         <div class="meta">2025</div>
         <div class="row-body">
           <h3 class="row-title"><a href="https://circuitdigest.com/microcontroller-projects/neuroband-the-smart-safety-band" rel="noopener">NeuroBand</a></h3>
@@ -185,7 +185,7 @@ title: Girish Arora
           <p class="row-links"><a href="https://circuitdigest.com/microcontroller-projects/neuroband-the-smart-safety-band" rel="noopener">Project page on Circuit Digest</a><a href="https://www.youtube.com/watch?v=41hNWNWDTYc" rel="noopener">Demo video</a></p>
         </div>
       </li>
-      <li>
+      <li data-anim="rise">
         <div class="meta">2024</div>
         <div class="row-body">
           <h3 class="row-title"><a href="https://github.com/Girish501/FPGA-Drone" rel="noopener">FPGA flight controller for a quadcopter</a></h3>
@@ -200,11 +200,11 @@ title: Girish Arora
 <!-- EXPERIENCE -->
 <section class="section" id="experience">
   <div class="wrap">
-    <header class="section-head">
+    <header class="section-head" data-anim="rise">
       <h2>Experience</h2>
     </header>
     <ol class="exp">
-      <li>
+      <li data-anim="rise">
         <div class="exp-head">
           <p class="exp-org">Quattrone Nanofabrication Facility, Penn</p>
           <p class="exp-role">Graduate Student Fellow</p>
@@ -215,7 +215,7 @@ title: Girish Arora
           <p>Cambridge NanoTech Savannah S200 ALD, qualified for 24/7 independent use.</p>
         </div>
       </li>
-      <li>
+      <li data-anim="rise">
         <div class="exp-head">
           <p class="exp-org">p-Chip Corporation, Philadelphia</p>
           <p class="exp-role">Hardware Development Intern</p>
@@ -225,7 +225,7 @@ title: Girish Arora
           <p>I worked on a mirror driver board for p-Chip's laser reader. An oscillating mirror sweeps the beam to extend the reader's working distance. The mirror is a resonant load, so the drive circuit has to hold a clean sine at resonance with stable amplitude and phase. I took it from the first scope measurement to a design ready to build. <a href="https://blog.ese.upenn.edu/ee-masters-student-girish-arora-reflects-on-his-summer-internship-at-p-chip-corporation/" rel="noopener">Penn ESE wrote about this internship.</a></p>
         </div>
       </li>
-      <li>
+      <li data-anim="rise">
         <div class="exp-head">
           <p class="exp-org">Addverb Technologies, India</p>
           <p class="exp-role">Embedded Systems Intern</p>
@@ -235,7 +235,7 @@ title: Girish Arora
           <p>I built motor-drive hardware and firmware for Zippy warehouse robots. I designed a BLDC motor driver board, wrote STM32 firmware for its current-sense amplifier with moving-average filtering, and integrated an R320M Wi-Fi 6 SOM as a TCP server on the robots.</p>
         </div>
       </li>
-      <li>
+      <li data-anim="rise">
         <div class="exp-head">
           <p class="exp-org">Detkin Lab, Penn ESE</p>
           <p class="exp-role">ESE Lab Leader</p>
@@ -257,23 +257,23 @@ title: Girish Arora
 <!-- TOOLS -->
 <section class="section" id="tools">
   <div class="wrap">
-    <header class="section-head">
+    <header class="section-head" data-anim="rise">
       <h2>Tools</h2>
     </header>
     <div class="kit-group">
-      <h3>Qualified for independent use</h3>
+      <h3 data-anim="rise">Qualified for independent use</h3>
       <dl class="kit">
-        <div><dt>ALD</dt><dd>Cambridge NanoTech Savannah S200 ALD (qualified for 24/7 independent use, precursor changes)</dd></div>
+        <div data-anim="rise"><dt>ALD</dt><dd>Cambridge NanoTech Savannah S200 ALD (qualified for 24/7 independent use, precursor changes)</dd></div>
       </dl>
     </div>
     <div class="kit-group">
-      <h3>Used in research and coursework</h3>
+      <h3 data-anim="rise">Used in research and coursework</h3>
       <dl class="kit">
-        <div><dt>Fab and process</dt><dd>Photolithography, EBL (Raith EBPG), sputtering (Kurt J. Lesker PVD-03, sputter target changes), PECVD, RIE/DRIE, wet processing, device release</dd></div>
-        <div><dt>Metrology and characterization</dt><dd>SEM, AFM, spectroscopic ellipsometry (WVASE), XRD (Rigaku SmartLab), reflectometry, profilometry, white-light interferometry, pulsed I-V (PyVISA)</dd></div>
-        <div><dt>Design and simulation</dt><dd>Cadence Virtuoso, Spectre, LTspice, NVSim, NeuroSim, Tanner, Xilinx Vivado, Mentor PADS, KiCad</dd></div>
-        <div><dt>Test and debug</dt><dd>Oscilloscope (differential and current probes), logic analyzer, spectrum analyzer, signal generator, DMM, LCR meter</dd></div>
-        <div><dt>Programming</dt><dd>Python (data analysis, PyVISA instrument automation, PyTorch), MATLAB, C, Verilog</dd></div>
+        <div data-anim="rise"><dt>Fab and process</dt><dd>Photolithography, EBL (Raith EBPG), sputtering (Kurt J. Lesker PVD-03, sputter target changes), PECVD, RIE/DRIE, wet processing, device release</dd></div>
+        <div data-anim="rise"><dt>Metrology and characterization</dt><dd>SEM, AFM, spectroscopic ellipsometry (WVASE), XRD (Rigaku SmartLab), reflectometry, profilometry, white-light interferometry, pulsed I-V (PyVISA)</dd></div>
+        <div data-anim="rise"><dt>Design and simulation</dt><dd>Cadence Virtuoso, Spectre, LTspice, NVSim, NeuroSim, Tanner, Xilinx Vivado, Mentor PADS, KiCad</dd></div>
+        <div data-anim="rise"><dt>Test and debug</dt><dd>Oscilloscope (differential and current probes), logic analyzer, spectrum analyzer, signal generator, DMM, LCR meter</dd></div>
+        <div data-anim="rise"><dt>Programming</dt><dd>Python (data analysis, PyVISA instrument automation, PyTorch), MATLAB, C, Verilog</dd></div>
       </dl>
     </div>
   </div>
@@ -283,20 +283,20 @@ title: Girish Arora
 <section class="section" id="about">
   <div class="wrap about-grid">
     <div>
-      <header class="section-head">
+      <header class="section-head" data-anim="rise">
         <h2>About</h2>
       </header>
-      <div class="about-text">
+      <div class="about-text" data-anim="rise">
         <p>I am an MSE Electrical Engineering student at the University of Pennsylvania, graduating May 2027. My work sits between analog IC design and the fab. I design circuits in Cadence (a 45 nm TIA, an SRAM array) and I also grow and characterize the films those circuits depend on. At Penn's Quattrone Nanofabrication Facility I am developing an ALD process for aluminum-doped zinc oxide as a replacement for ITO. Before Penn I did a B.E. in Electronics and Communication at Thapar in India and spent a summer building motor driver hardware and firmware for warehouse robots.</p>
         <p>Long term, I want to work on analog and mixed-signal silicon in the US and then build a semiconductor manufacturing business in India.</p>
       </div>
       <ul class="edu">
-        <li>
+        <li data-anim="rise">
           <span class="edu-school">University of Pennsylvania</span>
           <span class="edu-when">2025 to 2027</span>
           <span class="edu-degree">MSE, Electrical Engineering</span>
         </li>
-        <li>
+        <li data-anim="rise">
           <span class="edu-school">Thapar Institute of Engineering and Technology</span>
           <span class="edu-when">2021 to 2025</span>
           <span class="edu-degree">B.E., Electronics and Communication. GPA 3.89/4.0. Merit-III Scholarship, 2nd and 3rd year, top 10% of class.</span>
@@ -304,9 +304,9 @@ title: Girish Arora
       </ul>
     </div>
     <div class="photos">
-      <a class="photo zoom" href="{{ '/assets/img/photo-headshot-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-headshot.jpg' | relative_url }}" width="900" height="900" loading="lazy" alt="Portrait of Girish Arora"></a>
-      <a class="photo zoom" href="{{ '/assets/img/photo-chip-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-chip.jpg' | relative_url }}" width="900" height="900" loading="lazy" alt="An SOI die mounted on a gold-plated carrier board, held in a gloved hand under cleanroom yellow light"></a>
-      <a class="photo photo--wide zoom" href="{{ '/assets/img/photo-poster-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-poster-wide.jpg' | relative_url }}" width="1024" height="512" loading="lazy" alt="Girish next to the Robust Compute-in-Memory for Edge Healthcare poster"></a>
+      <a class="photo zoom" data-anim="settle" data-anim-span=".4" href="{{ '/assets/img/photo-headshot-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-headshot.jpg' | relative_url }}" width="900" height="900" loading="lazy" alt="Portrait of Girish Arora"></a>
+      <a class="photo zoom" data-anim="settle" data-anim-span=".4" href="{{ '/assets/img/photo-chip-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-chip.jpg' | relative_url }}" width="900" height="900" loading="lazy" alt="An SOI die mounted on a gold-plated carrier board, held in a gloved hand under cleanroom yellow light"></a>
+      <a class="photo photo--wide zoom" data-anim="settle" data-anim-span=".4" href="{{ '/assets/img/photo-poster-full.jpg' | relative_url }}"><img src="{{ '/assets/img/photo-poster-wide.jpg' | relative_url }}" width="1024" height="512" loading="lazy" alt="Girish next to the Robust Compute-in-Memory for Edge Healthcare poster"></a>
     </div>
   </div>
 </section>
@@ -314,10 +314,10 @@ title: Girish Arora
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="wrap">
-    <h2>Graduating May 2027.</h2>
-    <p class="contact-lead">Open to process, integration and equipment engineering, and analog/RF design roles, 2027. Will relocate anywhere in the US.</p>
-    <a class="contact-email" href="mailto:{{ site.email }}">{{ site.email }}</a>
-    <p class="contact-links">
+    <h2 data-anim="rise">Graduating May 2027.</h2>
+    <p class="contact-lead" data-anim="rise">Open to process, integration and equipment engineering, and analog/RF design roles, 2027. Will relocate anywhere in the US.</p>
+    <a class="contact-email" data-anim="rise" href="mailto:{{ site.email }}">{{ site.email }}</a>
+    <p class="contact-links" data-anim="rise">
       <a href="{{ site.linkedin }}" rel="noopener">LinkedIn</a>
       <a href="{{ site.github }}" rel="noopener">GitHub</a>
     </p>
