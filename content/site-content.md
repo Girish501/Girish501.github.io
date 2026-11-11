@@ -10,13 +10,15 @@ Revision 2 (Oct 2026): added the PLL and FPGA flight controller projects (from G
 
 Positioning: fab process, integration and equipment roles first; analog/RF design second. The AZO work leads; circuits come second.
 
-### Hero point cloud (revision 5, Nov 2026; shapes redrawn in revision 6)
+### Hero point cloud (revision 5, Nov 2026; shapes redrawn in revision 6; TIA shapes from the report in revision 7)
 On desktop the hero pins and a point cloud morphs through shapes built from the site's numbers, with a panel per shape:
 - 1 of 4: wurtzite ZnO unit cell, ball and stick (hexagonal prism, Zn dark, O blue, bonds gray). Labels on the shape: Zn, O, "a 3.252 Å", "c 5.213 Å". Panel: 3.252 Å, "lattice constant a, single-phase wurtzite ZnO, XRD", link Process work.
 - 2 of 4: the 600-cycle film in cross-section on its substrate, a blue plane per Al cycle at 19:1, thickness bracket. Labels on the shape: "85 to 88 nm", "ZnO:Al", "Al cycle", "Si / glass". Panel: 85 to 88 nm, "thickness, all films, 600 cycles, 19:1 ZnO:Al shown".
 - (Tauc curves join once data/azo/tauc_*.csv exist. Panel: +0.23 eV, "optical band edge, 99:1 to 19:1".)
-- 3 of 4: fitted diode and MOSFET I-V, 0.02 to 4 A, as a chart. Axes "Voltage (V)" 0 to 0.6 and "Current (A)" 0 to 4, grid, series labels "STPS360AF diode" and "IRLML0040 MOSFET", marks "VFWD 0.330 V" and "RDS(on) 65.1 mΩ". Panel: 65.1 mΩ, "RDS(on), fitted. STPS360AF diode and IRLML0040 MOSFET, 0.02 to 4 A", link Hardware and power.
-- 4 of 4: TIA gain against frequency, as a chart. Axes "Frequency (Hz)" 1 MHz to 10 GHz and "Transimpedance gain (dBΩ)" 80 to 120, grid, marks "109 dBΩ" and "−3 dB at 492 MHz". Panel: 109 dBΩ, "transimpedance gain, 45 nm CMOS TIA", link Circuits.
+- 3 of 5: the TIA signal chain, drawn from the ESE 5720 report schematics: photodiode model with 100 fF, 50 pF coupling, common-gate stage (NM0, 10 kΩ load, current source), differential pair with PMOS loads and tail, four common-source stages per path, source followers, 600 Ω load between VOP and VON. Blue pulses run along both signal paths. Labels: Photodiode, 100 fF, Common gate, Differential pair, Four common-source stages, Source follower, 1 V, VOP, VON, 600 Ω. Panel: 109 dBΩ, "transimpedance gain, 45 nm CMOS TIA. 1 V supply, 2.76 mW", link Circuits.
+- 4 of 5: input current and output voltage against time (report, transient simulation): photodiode current 2.67 µA peak to peak at 300 MHz above, VOP minus VON 594 mV peak to peak below, 20 ns shown, the sines travel. Panel: 594 mV, "differential output swing from 2.67 µA peak to peak at 300 MHz".
+- 5 of 5: transimpedance gain against frequency, digitized from the report's Spectre plot of VOP minus VON over the photodiode current. 100 kHz to 10 GHz, 0 to 120 dBΩ, the 104.7 dB line with dots at 2.31 MHz and 492.88 MHz, "109 dBΩ" over the plateau. Panel: 492 MHz, "upper −3 dB corner. Gain flat at 109 dBΩ from 2.31 MHz".
+- The diode and MOSFET I-V shape was removed in revision 7 at Girish's request. The hero track is 85vh per shape plus 40vh.
 Phones, reduced motion, and software GPUs keep the static hero figure.
 
 ### Hero

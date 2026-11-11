@@ -1,7 +1,8 @@
 // Hero point cloud. One cloud of points morphs through shapes built from the site's own numbers as
-// the pinned hero is scrolled: a ball-and-stick chunk of the wurtzite ZnO lattice (a, c from XRD),
-// a cross-section of the 600-cycle AZO film with its Al planes on the substrate, the fitted diode
-// and MOSFET I-V lines, the TIA gain curve, and the Tauc curves once data/azo/tauc_*.csv exist.
+// the pinned hero is scrolled: the wurtzite ZnO unit cell (a, c from XRD), a cross-section of the
+// 600-cycle AZO film with its Al planes on the substrate, the Tauc curves once data/azo/tauc_*.csv
+// exist, and three views of the 45 nm TIA from its report: the signal chain with the signal running
+// through it, the input current and output voltage against time, and the gain against frequency.
 // three.js draws the points; the scroll scrub is this file's own (progress read from scrollY each
 // frame and eased toward, no scroll library). The small labels (.cloud-tag) are HTML, moved each
 // frame to the projected position of a point in the shape they belong to.
@@ -36,7 +37,7 @@
   var seed = 7;
   function rnd() { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }
 
-  var INK = [0.09, 0.094, 0.102], SLATE = [0.3, 0.32, 0.36], GRAY = [0.6, 0.62, 0.65], LIGHT = [0.78, 0.77, 0.73], BLUE = [0.12, 0.29, 0.79];
+  var INK = [0.09, 0.094, 0.102], SLATE = [0.3, 0.32, 0.36], GRAY = [0.6, 0.62, 0.65], LIGHT = [0.78, 0.77, 0.73], BLUE = [0.12, 0.29, 0.79], BLUE2 = [0.55, 0.65, 0.9];
   function shade(c, k) { return [Math.min(1, c[0] * k), Math.min(1, c[1] * k), Math.min(1, c[2] * k)]; }
   function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
   function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
@@ -45,20 +46,26 @@
 
   // A shape is a list of parts. Each part takes a share of the N points (its weight) and emits one
   // point at a time as [x, y, z, color, size]. Shapes sit in a box about 6 wide, 3.6 tall, 3.6 deep.
+  // A part may ask for an exact count (n) instead of a weight; a named part's index range is returned.
   function build(parts, tags) {
-    var pos = new Float32Array(3 * N), col = new Float32Array(3 * N), siz = new Float32Array(N), wsum = 0, idx = 0;
-    parts.forEach(function (p) { wsum += p.w; });
+    var pos = new Float32Array(3 * N), col = new Float32Array(3 * N), siz = new Float32Array(N), wav = new Float32Array(N), wsum = 0, fixed = 0, idx = 0, ranges = {}, order = [], last = -1;
+    parts.forEach(function (p, pi) { if (p.n) fixed += p.n; else { wsum += p.w; last = pi; } });
+    var pool = Math.max(0, N - fixed);
     parts.forEach(function (p, pi) {
-      var cnt = pi === parts.length - 1 ? Math.max(0, N - idx) : Math.min(N - idx, Math.round(N * p.w / wsum));
+      var cnt = p.n ? Math.min(p.n, N - idx) : pi === last ? Math.max(0, N - idx - remainingFixed(parts, pi)) : Math.min(N - idx, Math.round(pool * p.w / wsum));
+      if (p.name) ranges[p.name] = { start: idx, count: cnt };
+      order.push({ start: idx, count: cnt, w: p.w || 0, n: p.n || 0 });
       for (var i = 0; i < cnt; i++, idx++) {
         var r = p.emit(i, cnt);
         pos[3 * idx] = r[0]; pos[3 * idx + 1] = r[1]; pos[3 * idx + 2] = r[2];
         col[3 * idx] = r[3][0]; col[3 * idx + 1] = r[3][1]; col[3 * idx + 2] = r[3][2];
-        siz[idx] = r[4] || 1;
+        siz[idx] = r[4] || 1; wav[idx] = r[5] || 0;
       }
     });
-    return { pos: pos, col: col, siz: siz, tags: tags || {} };
+    for (; idx < N; idx++) { pos[3 * idx] = pos[3 * idx - 3]; pos[3 * idx + 1] = pos[3 * idx - 2]; pos[3 * idx + 2] = pos[3 * idx - 1]; col[3 * idx] = col[3 * idx - 3]; col[3 * idx + 1] = col[3 * idx - 2]; col[3 * idx + 2] = col[3 * idx - 1]; siz[idx] = siz[idx - 1]; }
+    return { pos: pos, col: col, siz: siz, wav: wav, tags: tags || {}, ranges: ranges, order: order };
   }
+  function remainingFixed(parts, pi) { var n = 0; for (var i = pi + 1; i < parts.length; i++) if (parts[i].n) n += parts[i].n; return n; }
   var LIGHT_DIR = norm([-0.35, 0.8, 0.5]);
   // A shaded sphere. Points cover the side facing the view direction V evenly (a Fibonacci spiral
   // around V, down to 0.3 past the rim), so the sphere looks solid with few points.
@@ -191,57 +198,208 @@
   // Charts. A flat chart in the x-y plane: ink axes with ticks, a light grid, and curves as thin
   // tubes. Values are mapped to the box X0..X1 by Y0..Y1; labels are HTML tags anchored to points.
   var X0 = -1.95, X1 = 2.25, Y0 = -1.4, Y1 = 1.9;
-  function chart(xs, ys) {
-    var parts = [];
-    xs.forEach(function (x) { parts.push({ w: 0.08, emit: rod([x, Y0, -0.02], [x, Y1, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([x, Y0 - 0.07, 0], [x, Y0, 0], 0.012, INK, 0.9 * COV) }); });
-    ys.forEach(function (y) { parts.push({ w: 0.1, emit: rod([X0, y, -0.02], [X1, y, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([X0 - 0.07, y, 0], [X0, y, 0], 0.012, INK, 0.9 * COV) }); });
-    parts.push({ w: 0.4, emit: rod([X0, Y0, 0], [X1, Y0, 0], 0.012, INK, 0.9 * COV) });
-    parts.push({ w: 0.32, emit: rod([X0, Y0, 0], [X0, Y1, 0], 0.012, INK, 0.9 * COV) });
+  function axesParts(parts, x0, x1, y0, y1, xs, ys) {
+    xs.forEach(function (x) { parts.push({ w: 0.08, emit: rod([x, y0, -0.02], [x, y1, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([x, y0 - 0.07, 0], [x, y0, 0], 0.012, INK, 0.9 * COV) }); });
+    ys.forEach(function (y) { parts.push({ w: 0.1, emit: rod([x0, y, -0.02], [x1, y, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([x0 - 0.07, y, 0], [x0, y, 0], 0.012, INK, 0.9 * COV) }); });
+    parts.push({ w: 0.4, emit: rod([x0, y0, 0], [x1, y0, 0], 0.012, INK, 0.9 * COV) });
+    parts.push({ w: 0.32, emit: rod([x0, y0, 0], [x0, y1, 0], 0.012, INK, 0.9 * COV) });
     return parts;
   }
+  function chart(xs, ys) { return axesParts([], X0, X1, Y0, Y1, xs, ys); }
   // Points along a curve given as [x,y] in scene units, as a tube of the given radius at depth z.
-  function curve(fn, radius, z, color) {
-    return function () { var s = rnd(), xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius, color, 1.1 * COV]; };
+  // wave is the amplitude the vertex shader adds as a travelling sine (0 for still points).
+  function curve(fn, radius, z, color, wave) {
+    return function () { var s = rnd(), xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius, color, 1.1 * COV, wave || 0]; };
   }
   function disc(c, r, color) {
     return function () { var th = rnd() * 6.2832, q = r * Math.sqrt(rnd()); return [c[0] + q * Math.cos(th), c[1] + q * Math.sin(th), c[2], color, 1.1 * COV]; };
   }
 
-  // Diode and MOSFET I-V, 0.02 to 4 A: the fitted models V = VFWD + RON I and V = RDS I.
-  var CAM_IV = [0.14, 0.1, 11];
-  function shapeIV() {
-    var VMAX = 0.65, fx = function (v) { return X0 + v / VMAX * (X1 - X0); }, fy = function (a) { return Y0 + a / I_MAX * (Y1 - Y0); };
-    var diode = function (s) { var a = I_MIN + s * (I_MAX - I_MIN); return [fx(VFWD + RON * a), fy(a)]; };
-    var mos = function (s) { var a = I_MIN + s * (I_MAX - I_MIN); return [fx(RDS * a), fy(a)]; };
-    var parts = chart([0.1, 0.2, 0.3, 0.4, 0.5, 0.6].map(fx), [1, 2, 3, 4].map(fy));
-    parts.push({ w: 1.0, emit: curve(diode, 0.03, 0.03, BLUE) });
-    parts.push({ w: 1.0, emit: curve(mos, 0.03, 0.03, INK) });
-    parts.push({ w: 0.06, emit: disc([fx(VFWD), Y0, 0.04], 0.07, BLUE) });
+  // ---- Schematic drawing: wires and symbols in the x-y plane, as parts ----
+  var WIRE = 0.012, SYM = 1.25;
+  function W(parts, a, b, color, r) { var len = Math.hypot(b[0] - a[0], b[1] - a[1]); if (len < 1e-6) return; parts.push({ w: 0.42 * len, emit: rod([a[0], a[1], 0], [b[0], b[1], 0], r || WIRE, color, SYM * COV) }); }
+  function poly(parts, pts, color) { for (var i = 1; i < pts.length; i++) W(parts, pts[i - 1], pts[i], color); }
+  function arc(parts, c, r, a0, a1, color) { var n = 14, pts = []; for (var i = 0; i <= n; i++) { var a = a0 + (a1 - a0) * i / n; pts.push([c[0] + r * Math.cos(a), c[1] + r * Math.sin(a)]); } poly(parts, pts, color); }
+  function dot(parts, p, color) { parts.push({ w: 0.05, emit: disc([p[0], p[1], 0.01], 0.038, color) }); }
+  function chevron(parts, tip, dir, color) { var s = 0.055, nx = -dir[1], ny = dir[0]; W(parts, [tip[0] - dir[0] * s + nx * s, tip[1] - dir[1] * s + ny * s], tip, color); W(parts, [tip[0] - dir[0] * s - nx * s, tip[1] - dir[1] * s - ny * s], tip, color); }
+  // MOSFET, channel vertical at x, centred on y. side: -1 gate on the left, +1 gate on the right. Returns its terminals.
+  function mos(parts, x, y, side, pType, color) {
+    var h = 0.19, gx = x - side * 0.07;
+    W(parts, [x, y - h], [x, y + h], color);                       // channel
+    W(parts, [gx, y - 0.15], [gx, y + 0.15], color);               // gate
+    var gl = pType ? gx - side * 0.09 : gx;
+    if (pType) arc(parts, [gx - side * 0.045, y], 0.045, 0, 6.2832, color);
+    W(parts, [gl, y], [x - side * 0.32, y], color);                // gate lead
+    W(parts, [x, y + h], [x, y + 0.36], color);                    // drain or source lead (top)
+    W(parts, [x, y - h], [x, y - 0.36], color);                    // (bottom)
+    if (pType) chevron(parts, [x, y + h + 0.01], [0, -1], color); else chevron(parts, [x, y - 0.3], [0, -1], color);
+    return { top: [x, y + 0.36], bot: [x, y - 0.36], gate: [x - side * 0.32, y] };
+  }
+  function resistor(parts, a, b, color) {
+    var dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len, nx = -uy, ny = ux;
+    var l0 = Math.max(0.04, (len - 0.42) / 2), pts = [a, [a[0] + ux * l0, a[1] + uy * l0]], n = 6, amp = 0.065;
+    for (var i = 0; i < n; i++) { var t = l0 + 0.42 * (i + 0.5) / n, sgn = i % 2 ? -1 : 1; pts.push([a[0] + ux * t + nx * amp * sgn, a[1] + uy * t + ny * amp * sgn]); }
+    pts.push([b[0] - ux * l0, b[1] - uy * l0]); pts.push(b); poly(parts, pts, color);
+  }
+  function cap(parts, a, b, color) {
+    var dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len, nx = -uy, ny = ux, m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], g = 0.035, pl = 0.12;
+    W(parts, a, [m[0] - ux * g, m[1] - uy * g], color); W(parts, [m[0] + ux * g, m[1] + uy * g], b, color);
+    [-1, 1].forEach(function (s) { var c = [m[0] + ux * g * s, m[1] + uy * g * s]; W(parts, [c[0] - nx * pl, c[1] - ny * pl], [c[0] + nx * pl, c[1] + ny * pl], color, 0.014); });
+  }
+  function gnd(parts, p, color) { W(parts, p, [p[0], p[1] - 0.1], color); [[0.13, 0], [0.085, 0.05], [0.04, 0.1]].forEach(function (s) { W(parts, [p[0] - s[0], p[1] - 0.1 - s[1]], [p[0] + s[0], p[1] - 0.1 - s[1]], color, 0.014); }); }
+  function photodiode(parts, top, bot, color) {
+    var x = top[0], m = (top[1] + bot[1]) / 2, s = 0.14;
+    W(parts, top, [x, m + s], color); W(parts, [x, m - s], bot, color);
+    poly(parts, [[x - s, m + s], [x + s, m + s], [x, m - s], [x - s, m + s]], color);      // triangle, anode up
+    W(parts, [x - s, m - s], [x + s, m - s], color, 0.014);                                  // bar
+    [[-0.42, 0.2], [-0.42, 0.02]].forEach(function (o) { var a = [x + o[0], m + o[1] + 0.2], b = [x + o[0] + 0.2, m + o[1]]; W(parts, a, b, color); chevron(parts, b, [0.707, -0.707], color); }); // light
+  }
+
+  // The TIA signal chain, from the report's schematics: photodiode model (current source and 100 fF),
+  // 50 pF coupling, common-gate input stage with a 10 kΩ load, differential pair with PMOS loads,
+  // four cascaded common-source stages per path, source followers, 600 Ω differential load.
+  var CAM_TIA = [0.08, 0.1, 12.4];
+  function shapeTIA() {
+    var parts = [], tags = {}, S = 0.93, OX = -0.3, OY = 0.4, pathP = [], pathN = [];
+    function P(x, y) { return [x * S + OX, y * S + OY]; }
+    var pw = function (pts, color) { poly(parts, pts, color); };
+    var yIn = 0.25, yG = 0.5, railT = 1.65, gndM = -0.15, railL = -0.5, gndL = -2.2, yUp = 1.0, yVn = 0.82, yNodeU = 0.86, yNodeL = -1.35;
+    // Photodiode model and coupling
+    var xPD = -3.05, xCP = -2.74, xC1 = -2.35, xCG = -1.85, yGndL = -0.95;
+    photodiode(parts, P(xPD, yIn), P(xPD, yGndL), INK);
+    cap(parts, P(xCP, yIn - 0.3), P(xCP, yGndL + 0.3), INK); W(parts, P(xCP, yIn), P(xCP, yIn - 0.3), INK); W(parts, P(xCP, yGndL + 0.3), P(xCP, yGndL), INK);
+    pw([P(xPD, yGndL), P(xCP, yGndL)], INK); gnd(parts, P((xPD + xCP) / 2, yGndL), INK); W(parts, P((xPD + xCP) / 2, yGndL), P((xPD + xCP) / 2, yGndL), INK);
+    pw([P(xPD, yIn), P(xC1 - 0.16, yIn)], INK); dot(parts, P(xCP, yIn), INK); dot(parts, P((xPD + xCP) / 2, yGndL), INK);
+    cap(parts, P(xC1 - 0.16, yIn), P(xC1 + 0.16, yIn), INK);
+    // Common gate: NM0 with its source on the input node, R3 to VDD, a current source below
+    var t0 = mos(parts, P(xCG, yG)[0], P(xCG, yG)[1], -1, false, INK);
+    pw([P(xC1 + 0.16, yIn), [t0.bot[0], P(0, yIn)[1]]], INK); dot(parts, [t0.bot[0], P(0, yIn)[1]], INK);
+    W(parts, t0.gate, [t0.gate[0] - 0.12 * S, t0.gate[1]], INK); dot(parts, [t0.gate[0] - 0.12 * S, t0.gate[1]], GRAY);
+    var cgOut = [t0.top[0], P(0, 0.92)[1]];
+    W(parts, t0.top, cgOut, INK); dot(parts, cgOut, INK);
+    resistor(parts, [cgOut[0], cgOut[1]], P(xCG, railT), INK);
+    var isC = P(xCG, -0.45); W(parts, t0.bot, [isC[0], isC[1] + 0.17 * S], INK); arc(parts, isC, 0.17 * S, 0, 6.2832, INK); W(parts, [isC[0], isC[1] + 0.09], [isC[0], isC[1] - 0.09], INK); chevron(parts, [isC[0], isC[1] - 0.09], [0, -1], INK);
+    W(parts, [isC[0], isC[1] - 0.17 * S], P(xCG, yGndL), INK); gnd(parts, P(xCG, yGndL), INK);
+    // VDD rail
+    pw([P(xCG, railT), P(3.25, railT)], INK);
+    // Differential pair: NM4 (driven, left) and NM5 (right), PMOS loads, tail NM3
+    var xA = -1.2, xB = -0.62, xT = (xA + xB) / 2;
+    var c2a = [cgOut[0] + 0.08, cgOut[1]], c2b = P(xA - 0.7, 0.92);
+    cap(parts, c2a, c2b, INK);
+    var tA = mos(parts, P(xA, yG)[0], P(xA, yG)[1], -1, false, INK), tB = mos(parts, P(xB, yG)[0], P(xB, yG)[1], 1, false, INK);
+    pw([c2b, [tA.gate[0] - 0.08, c2b[1]], [tA.gate[0] - 0.08, tA.gate[1]], tA.gate], INK);
+    W(parts, tB.gate, [tB.gate[0] + 0.12 * S, tB.gate[1]], INK); dot(parts, [tB.gate[0] + 0.12 * S, tB.gate[1]], GRAY);
+    var tail = P(xT, 0.02); pw([tA.bot, [tA.bot[0], tail[1]], [tB.bot[0], tail[1]], tB.bot], INK); dot(parts, tail, INK);
+    var t3 = mos(parts, tail[0], P(0, -0.42)[1], -1, false, INK); W(parts, tail, t3.top, INK); W(parts, t3.gate, [t3.gate[0] - 0.12 * S, t3.gate[1]], INK); dot(parts, [t3.gate[0] - 0.12 * S, t3.gate[1]], GRAY);
+    W(parts, t3.bot, P(xT, yGndL), INK); gnd(parts, P(xT, yGndL), INK);
+    var pA_ = mos(parts, P(xA, 1.3)[0], P(xA, 1.3)[1], -1, true, INK), pB_ = mos(parts, P(xB, 1.3)[0], P(xB, 1.3)[1], 1, true, INK);
+    W(parts, pA_.top, [pA_.top[0], P(0, railT)[1]], INK); W(parts, pB_.top, [pB_.top[0], P(0, railT)[1]], INK); dot(parts, [pA_.top[0], P(0, railT)[1]], INK); dot(parts, [pB_.top[0], P(0, railT)[1]], INK);
+    W(parts, pA_.gate, [pA_.gate[0] - 0.1 * S, pA_.gate[1]], INK); dot(parts, [pA_.gate[0] - 0.1 * S, pA_.gate[1]], GRAY); W(parts, pB_.gate, [pB_.gate[0] + 0.1 * S, pB_.gate[1]], INK); dot(parts, [pB_.gate[0] + 0.1 * S, pB_.gate[1]], GRAY);
+    var vp = [tA.top[0], P(0, yUp)[1]], vn = [tB.top[0], P(0, yVn)[1]];
+    W(parts, tA.top, pA_.bot, INK); W(parts, tB.top, pB_.bot, INK); dot(parts, vp, BLUE); dot(parts, vn, BLUE);
+    // VP goes right at yUp with a hop over NM5's drain wire; VN goes right then down to the lower chain
+    var hopR = 0.085, xHop = tB.top[0];
+    W(parts, vp, [xHop - hopR, vp[1]], INK); arc(parts, [xHop, vp[1]], hopR, Math.PI, 0, INK);
+    var xDrop = P(-0.3, 0)[0];
+    pw([[xHop + hopR, vp[1]], [xDrop, vp[1]], [xDrop, P(0, yG)[1]]], INK);
+    var xDropN = P(-0.1, 0)[0];
+    pw([vn, [xDropN, vn[1]], [xDropN, P(0, yNodeL + 0.33)[1]]], INK);
+    // Two chains of four common-source stages and a source follower
+    function chain(yRail, yNode, yGnd, start, path, railFrom, color) {
+      var xs = [0.36, 1.08, 1.8, 2.52], yN = yNode - 0.36, yP = yNode + 0.36, prev = start, node;
+      var yGate = yN;
+      pw([P(railFrom, yRail), P(3.25, yRail)], color); pw([P(railFrom, yGnd), P(3.25, yGnd)], color);
+      path.push(prev);
+      xs.forEach(function (x) {
+        var g = P(x - 0.32, yGate), cA = [prev[0], g[1]], cB = [prev[0] + 0.3, g[1]];
+        pw([prev, cA], color); cap(parts, cA, cB, color); pw([cB, g], color); path.push(cA, g);
+        var n = mos(parts, P(x, yN)[0], P(x, yN)[1], -1, false, color), p = mos(parts, P(x, yP)[0], P(x, yP)[1], -1, true, color);
+        W(parts, p.gate, [p.gate[0] - 0.08, p.gate[1]], color); dot(parts, [p.gate[0] - 0.08, p.gate[1]], GRAY);
+        node = [n.top[0], (n.top[1] + p.bot[1]) / 2]; W(parts, n.top, p.bot, color); dot(parts, node, BLUE);
+        W(parts, p.top, [p.top[0], P(0, yRail)[1]], color); W(parts, n.bot, [n.bot[0], P(0, yGnd)[1]], color); dot(parts, [p.top[0], P(0, yRail)[1]], color); dot(parts, [n.bot[0], P(0, yGnd)[1]], color);
+        path.push([n.top[0], g[1]], node);
+        prev = [node[0] + 0.14, node[1]]; W(parts, node, prev, color);
+      });
+      // source follower
+      var xS = 3.18, g = P(xS - 0.32, yN), cA = [prev[0], g[1]], cB = [prev[0] + 0.3, g[1]];
+      pw([prev, cA], color); cap(parts, cA, cB, color); pw([cB, g], color); path.push(cA, g);
+      var sf = mos(parts, P(xS, yN)[0], P(xS, yN)[1], -1, false, color);
+      W(parts, sf.top, [sf.top[0], P(0, yRail)[1]], color); dot(parts, [sf.top[0], P(0, yRail)[1]], color);
+      var out = [sf.bot[0], sf.bot[1] - 0.05]; W(parts, sf.bot, out, color); dot(parts, out, BLUE);
+      resistor(parts, out, [out[0], P(0, yGnd)[1]], color); dot(parts, [out[0], P(0, yGnd)[1]], color);
+      path.push([sf.top[0], g[1]], out);
+      return out;
+    }
+    var outP = chain(railT, yNodeU, gndM, [xDrop, P(0, yG)[1]], pathP, 0.08, INK);
+    var outN = chain(railL, yNodeL, gndL, [xDropN, P(0, yNodeL + 0.33)[1]], pathN, 0.08, INK);
+    // 600 Ω differential load between VOP and VON
+    var xL = outP[0] + 0.28; pw([outP, [xL, outP[1]]], INK); pw([outN, [xL, outN[1]]], INK); dot(parts, [xL, outP[1]], INK); dot(parts, [xL, outN[1]], INK);
+    W(parts, [xL, outP[1]], [xL, -0.95 + 0.4], INK); resistor(parts, [xL, -0.95 + 0.4], [xL, -0.95 - 0.4], INK); W(parts, [xL, -0.95 - 0.4], [xL, outN[1]], INK);
+    pathP.push([xL, outP[1]]); pathN.push([xL, outN[1]]);
+    // The signal path from the photodiode to the pair, shared by both chains
+    var head = [P(xPD, yIn), [t0.bot[0], P(0, yIn)[1]], t0.top, cgOut, c2b, [tA.gate[0] - 0.08, c2b[1]], [tA.gate[0] - 0.08, tA.gate[1]], tA.gate, [tA.top[0], tA.gate[1]], vp, [xHop, vp[1]], [xDrop, vp[1]]];
+    pathP = head.concat(pathP);
+    pathN = [tA.gate, [tA.top[0], tA.gate[1]], [tA.bot[0], tail[1]], [tB.bot[0], tail[1]], [tB.top[0], tail[1]], vn].concat(pathN);
+    // Flow particles: blue dots that run along both paths (their positions are set each frame)
+    var flows = [{ path: pathP, n: 26 }, { path: pathN, n: 18 }];
+    flows.forEach(function (f, i) { f.name = "flow" + i; f.per = 12; parts.push({ name: f.name, n: f.n * f.per, emit: function (k) { var tail = k % f.per >= 7; return [0, 0, 0.03, tail ? BLUE2 : BLUE, (tail ? 1.1 : 1.6) * COV]; } }); });
+    tags = {
+      pd: { p: [P(xPD, yGndL)[0] - 0.14, P(0, yGndL)[1] - 0.3, 0] },
+      cp: { p: [P(xCP, 0)[0] + 0.14, P(0, -0.03)[1], 0] },
+      cg: { p: [P(xCG, yGndL)[0], P(0, yGndL)[1] - 0.58, 0] },
+      dp: { p: [P(xT, yGndL)[0], P(0, yGndL)[1] - 0.3, 0] },
+      cs: { p: [P(1.33, 0)[0], P(0, gndL)[1] - 0.3, 0] },
+      sf: { p: [P(3.18, 0)[0], P(0, railT)[1] + 0.2, 0] },
+      vdd: { p: [P(xCG, railT)[0] - 0.08, P(0, railT)[1], 0] },
+      vop: { p: [xL, outP[1], 0], dx: 7, dy: -11 },
+      von: { p: [xL, outN[1], 0], dx: 7, dy: 11 },
+      load: { p: [xL, -0.95, 0], dx: 10 }
+    };
+    var g = build(parts, tags); g.flows = flows; return g;
+  }
+
+  // Input current and differential output voltage against time: 2.67 µA peak to peak in at 300 MHz,
+  // 594 mV peak to peak out (VOP minus VON). The sines travel; the vertex shader moves them.
+  var CAM_SCOPE = [0.1, 0.08, 11], CYCLES_SHOWN = 6;
+  function shapeScope() {
+    var parts = [], yiT = 1.95, yiB = 1.15, yvT = 0.75, yvB = -1.4, ci = (yiT + yiB) / 2, cv = (yvT + yvB) / 2, ai = 0.27, av = 0.297 / 0.33 * (yvT - cv);
+    axesParts(parts, X0, X1, yiB, yiT, [], [ci]);
+    axesParts(parts, X0, X1, yvB, yvT, [(X0 + X1) / 2], [cv, cv + av, cv - av]);
+    parts.push({ w: 1.0, emit: curve(function (s) { return [X0 + s * (X1 - X0), ci]; }, 0.024, 0.03, BLUE, ai) });
+    parts.push({ w: 1.6, emit: curve(function (s) { return [X0 + s * (X1 - X0), cv]; }, 0.03, 0.03, INK, av) });
+    // peak-to-peak brackets at the right edge
+    [[ci, ai], [cv, av]].forEach(function (b) { var x = X1 + 0.14; parts.push({ w: 0.12, emit: rod([x, b[0] - b[1], 0], [x, b[0] + b[1], 0], 0.01, INK, 0.9 * COV) }); [-1, 1].forEach(function (s) { parts.push({ w: 0.03, emit: rod([x - 0.06, b[0] + s * b[1], 0], [x + 0.06, b[0] + s * b[1], 0], 0.01, INK, 0.9 * COV) }); }); });
     var tags = {
-      origin: { p: [X0, Y0, 0], dx: -6, dy: 12 }, x02: { p: [fx(0.2), Y0, 0], dy: 12 }, x04: { p: [fx(0.4), Y0, 0], dy: 12 }, x06: { p: [fx(0.6), Y0, 0], dy: 12 },
-      y2: { p: [X0, fy(2), 0], dx: -8 }, y4: { p: [X0, fy(4), 0], dx: -8 },
-      xlabel: { p: [(X0 + X1) / 2, Y0, 0], dy: 34 }, ylabel: { p: [X0, (Y0 + Y1) / 2, 0], dx: -44 },
-      diode: { p: [fx(VFWD + RON * I_MAX), Y1, 0], dy: -13 }, mosfet: { p: [fx(RDS * I_MAX), Y1, 0], dy: -13 },
-      vfwd: { p: [fx(VFWD + RON * 0.45), fy(0.45), 0], dx: 10 }, rds: { p: [fx(RDS * 2.4), fy(2.4), 0], dx: 10 }
+      iLabel: { p: [X0, yiT, 0], dx: 0, dy: -12 }, vLabel: { p: [X0, yvT, 0], dx: 0, dy: -12 },
+      ipp: { p: [X1 + 0.14, ci, 0], dx: 10 }, vpp: { p: [X1 + 0.14, cv, 0], dx: 10 },
+      i0: { p: [X0, ci, 0], dx: -8 }, v0: { p: [X0, cv, 0], dx: -8 }, vUp: { p: [X0, cv + av, 0], dx: -8 }, vDn: { p: [X0, cv - av, 0], dx: -8 },
+      iunit: { p: [X0, ci, 0], dx: -40 }, vunit: { p: [X0, cv, 0], dx: -48 },
+      t0: { p: [X0, yvB, 0], dy: 12 }, t10: { p: [(X0 + X1) / 2, yvB, 0], dy: 12 }, t20: { p: [X1, yvB, 0], dy: 12 }, tlabel: { p: [(X0 + X1) / 2, yvB, 0], dy: 34 },
+      freq: { p: [X1, yiT, 0], dy: -12 }
     };
     return build(parts, tags);
   }
 
-  // TIA transimpedance gain against frequency: flat at 109 dBΩ, 3 dB down at 492 MHz.
-  var CAM_TIA = [-0.1, 0.12, 11];
-  function shapeTIA() {
-    var fx = function (lg) { return X0 + (lg - 6) / 4 * (X1 - X0); }, fy = function (db) { return Y0 + (db - 70) / 50 * (Y1 - Y0); };
-    var gain = function (lg) { var f = Math.pow(10, lg); return TIA_GAIN - 10 * Math.log10(1 + (f / TIA_FC) * (f / TIA_FC)); };
-    var lgc = Math.log10(TIA_FC), fc = [fx(lgc), fy(gain(lgc))];
-    var parts = chart([7, 8, 9].map(fx), [80, 90, 100, 110, 120].map(fy));
-    parts.push({ w: 1.4, emit: curve(function (s) { var lg = 6 + s * 4; return [fx(lg), fy(gain(lg))]; }, 0.03, 0.03, INK) });
-    parts.push({ w: 0.2, emit: rod([fc[0], Y0, 0.01], [fc[0], fc[1], 0.01], 0.008, BLUE, 0.9 * COV) });
-    parts.push({ w: 0.07, emit: disc([fc[0], fc[1], 0.05], 0.08, BLUE) });
+  // Transimpedance gain against frequency, read from the report's Spectre plot (VOP minus VON over the
+  // photodiode current): flat near 109 dBΩ, 3 dB down at 2.31 MHz and 492.88 MHz.
+  var CAM_BODE = [-0.1, 0.12, 11];
+  var BODE = [[4.706,-11.0],[4.765,-4.1],[4.824,2.8],[4.882,9.6],[4.941,16.3],[5.0,22.9],[5.059,29.4],[5.118,35.8],[5.176,41.9],[5.235,47.9],[5.294,53.7],[5.353,59.1],[5.412,64.2],[5.471,69.1],[5.529,73.6],[5.588,77.7],[5.647,81.6],[5.706,85.1],[5.765,88.0],[5.824,90.6],[5.882,93.1],[5.941,95.2],[6.0,97.1],[6.059,98.5],[6.118,99.9],[6.176,101.3],[6.235,102.8],[6.294,103.8],[6.353,104.7],[6.412,105.5],[6.471,106.2],[6.529,106.9],[6.588,107.3],[6.647,107.6],[6.706,107.9],[6.765,108.2],[6.824,108.5],[6.882,108.7],[6.941,108.9],[7.0,109.0],[7.059,109.1],[7.118,109.3],[7.176,109.3],[7.235,109.3],[7.294,109.3],[7.353,109.3],[7.412,109.3],[7.471,109.3],[7.529,109.3],[7.588,109.3],[7.647,109.3],[7.706,109.3],[7.765,109.3],[7.824,109.3],[7.882,109.3],[7.941,109.3],[8.0,109.3],[8.059,109.2],[8.118,109.1],[8.176,109.0],[8.235,108.9],[8.294,108.9],[8.353,108.8],[8.412,108.6],[8.471,108.3],[8.529,107.8],[8.588,107.0],[8.647,105.8],[8.706,104.3],[8.765,102.8],[8.824,101.2],[8.882,99.5],[8.941,97.5],[9.0,95.1],[9.059,92.6],[9.118,89.8],[9.176,87.1],[9.235,84.0],[9.294,80.6],[9.353,76.9],[9.412,72.9],[9.471,68.7],[9.529,64.4],[9.588,60.0],[9.647,55.5],[9.706,50.8],[9.765,46.0],[9.824,41.1],[9.882,36.9],[9.941,33.3],[10.0,30.4]];
+  function shapeBode() {
+    var LG0 = 5, LG1 = 10, DB0 = 0, DB1 = 120, L3 = 104.7;
+    var fx = function (lg) { return X0 + (lg - LG0) / (LG1 - LG0) * (X1 - X0); }, fy = function (db) { return Y0 + (db - DB0) / (DB1 - DB0) * (Y1 - Y0); };
+    var data = BODE.filter(function (p) { return p[0] >= LG0 - 0.05 && p[1] >= DB0 - 5; });
+    var gainAt = function (lg) { var i = 0; while (i < data.length - 2 && data[i + 1][0] < lg) i++; var a = data[i], b = data[i + 1], f = Math.min(1, Math.max(0, (lg - a[0]) / (b[0] - a[0]))); return a[1] + (b[1] - a[1]) * f; };
+    var lgStart = Math.max(LG0, data[0][0]);
+    var parts = chart([6, 7, 8, 9].map(fx), [40, 80, 120].map(fy));
+    parts.push({ w: 1.6, emit: curve(function (s) { var lg = lgStart + s * (LG1 - lgStart); return [fx(lg), fy(Math.max(DB0, gainAt(lg)))]; }, 0.03, 0.03, INK) });
+    parts.push({ w: 0.25, emit: rod([X0, fy(L3), 0.01], [X1, fy(L3), 0.01], 0.006, shade(BLUE, 1.0), 0.8 * COV) });
+    var lo = Math.log10(2.31102e6), hi = Math.log10(492.868e6);
+    parts.push({ w: 0.07, emit: disc([fx(lo), fy(L3), 0.05], 0.08, BLUE) }); parts.push({ w: 0.07, emit: disc([fx(hi), fy(L3), 0.05], 0.08, BLUE) });
     var tags = {
-      f1m: { p: [fx(6), Y0, 0], dy: 12 }, f10m: { p: [fx(7), Y0, 0], dy: 12 }, f100m: { p: [fx(8), Y0, 0], dy: 12 }, f1g: { p: [fx(9), Y0, 0], dy: 12 }, f10g: { p: [fx(10), Y0, 0], dy: 12 },
-      g80: { p: [X0, fy(80), 0], dx: -8 }, g100: { p: [X0, fy(100), 0], dx: -8 }, g120: { p: [X0, fy(120), 0], dx: -8 },
+      f100k: { p: [fx(5), Y0, 0], dy: 12 }, f1m: { p: [fx(6), Y0, 0], dy: 12 }, f10m: { p: [fx(7), Y0, 0], dy: 12 }, f100m: { p: [fx(8), Y0, 0], dy: 12 }, f1g: { p: [fx(9), Y0, 0], dy: 12 }, f10g: { p: [fx(10), Y0, 0], dy: 12 },
+      g0: { p: [X0, fy(0), 0], dx: -8 }, g40: { p: [X0, fy(40), 0], dx: -8 }, g80: { p: [X0, fy(80), 0], dx: -8 }, g120: { p: [X0, fy(120), 0], dx: -8 },
       xlabel: { p: [(X0 + X1) / 2, Y0, 0], dy: 34 }, ylabel: { p: [X0, (Y0 + Y1) / 2, 0], dx: -48 },
-      plateau: { p: [fx(6.1), fy(TIA_GAIN), 0], dx: 6, dy: -13 }, corner: { p: fc, dx: 12, dy: -8 }
+      plateau: { p: [fx(7.5), fy(109.3), 0], dy: -14 }, lo: { p: [fx(lo), fy(L3), 0], dx: -10, dy: 12 }, hi: { p: [fx(hi), fy(L3), 0], dx: 10, dy: 12 }, m3: { p: [X0, fy(L3), 0], dx: 6, dy: -11 }
     };
     return build(parts, tags);
   }
@@ -273,11 +431,12 @@
   }
 
   var VERT = [
-    "attribute vec3 pA; attribute vec3 pB; attribute vec3 cA; attribute vec3 cB; attribute float sA; attribute float sB; attribute vec3 sc; attribute float rnd;",
-    "uniform float uT; uniform float uIntro; uniform float uSize; uniform float uScale; varying vec3 vCol;",
+    "attribute vec3 pA; attribute vec3 pB; attribute vec3 cA; attribute vec3 cB; attribute float sA; attribute float sB; attribute float wA; attribute float wB; attribute vec3 sc; attribute float rnd;",
+    "uniform float uT; uniform float uIntro; uniform float uSize; uniform float uScale; uniform float uK; uniform float uPhase; varying vec3 vCol;",
     "void main(){",
     "  float tt = smoothstep(0.0, 1.0, clamp((uT - rnd * 0.35) / 0.65, 0.0, 1.0));",
     "  vec3 p = mix(pA, pB, tt); vCol = mix(cA, cB, tt); float s = mix(sA, sB, tt);",
+    "  float w = mix(wA, wB, tt); p.y += w * sin(uK * p.x - uPhase);",
     "  float ti = smoothstep(0.0, 1.0, clamp((uIntro - rnd * 0.4) / 0.6, 0.0, 1.0));",
     "  p = mix(sc, p, ti);",
     "  vec4 mv = modelViewMatrix * vec4(p, 1.0);",
@@ -296,10 +455,15 @@
       { key: "film", build: shapeFilm, cam: CAM_FILM }
     ];
     if (tauc) shapes.push({ key: "tauc", build: function () { return shapeTauc(tauc); }, cam: [0.2, 0.12, 11] });
-    shapes.push({ key: "iv", build: shapeIV, cam: CAM_IV });
     shapes.push({ key: "tia", build: shapeTIA, cam: CAM_TIA });
+    shapes.push({ key: "tiaout", build: shapeScope, cam: CAM_SCOPE });
+    shapes.push({ key: "tiagain", build: shapeBode, cam: CAM_BODE });
     var S = shapes.length;
-    shapes.forEach(function (s) { var g = s.build(); s.pos = g.pos; s.col = g.col; s.siz = g.siz; s.tags = g.tags; });
+    if (params.has("debug")) window.__cloud = shapes;
+    shapes.forEach(function (s, i) { var g = s.build(); s.pos = g.pos; s.col = g.col; s.siz = g.siz; s.wav = g.wav; s.tags = g.tags; s.index = i; s.order = g.order;
+      s.flows = (g.flows || []).map(function (f) { var r = g.ranges[f.name], cum = [0]; for (var k = 1; k < f.path.length; k++) cum.push(cum[k - 1] + Math.hypot(f.path[k][0] - f.path[k - 1][0], f.path[k][1] - f.path[k - 1][1]));
+        var jit = []; for (var j = 0; j < r.count; j++) { var th = rnd() * 6.2832, q = 0.028 * Math.sqrt(rnd()); jit.push(q * Math.cos(th), q * Math.sin(th)); }
+        return { start: r.start, count: r.count, per: f.per, n: f.n, path: f.path, cum: cum, len: cum[cum.length - 1], jit: jit }; }); });
 
     // Panel entries, labels and the DOM
     var panels = Array.prototype.slice.call(hero.querySelectorAll(".cloud-item"));
@@ -327,20 +491,21 @@
     var pA = new THREE.BufferAttribute(new Float32Array(shapes[0].pos), 3), pB = new THREE.BufferAttribute(new Float32Array(shapes[b].pos), 3);
     var cA = new THREE.BufferAttribute(new Float32Array(shapes[0].col), 3), cB = new THREE.BufferAttribute(new Float32Array(shapes[b].col), 3);
     var sA = new THREE.BufferAttribute(new Float32Array(shapes[0].siz), 1), sB = new THREE.BufferAttribute(new Float32Array(shapes[b].siz), 1);
+    var wA = new THREE.BufferAttribute(new Float32Array(shapes[0].wav), 1), wB = new THREE.BufferAttribute(new Float32Array(shapes[b].wav), 1);
     var scat = new Float32Array(3 * N), rn = new Float32Array(N);
     for (var i = 0; i < N; i++) { var r = 4 + rnd() * 5, th = rnd() * 6.2832, ph = Math.acos(2 * rnd() - 1); scat[3 * i] = r * Math.sin(ph) * Math.cos(th); scat[3 * i + 1] = r * Math.cos(ph) * 0.6; scat[3 * i + 2] = r * Math.sin(ph) * Math.sin(th); rn[i] = rnd(); }
-    geo.setAttribute("pA", pA); geo.setAttribute("pB", pB); geo.setAttribute("cA", cA); geo.setAttribute("cB", cB); geo.setAttribute("sA", sA); geo.setAttribute("sB", sB);
+    geo.setAttribute("pA", pA); geo.setAttribute("pB", pB); geo.setAttribute("cA", cA); geo.setAttribute("cB", cB); geo.setAttribute("sA", sA); geo.setAttribute("sB", sB); geo.setAttribute("wA", wA); geo.setAttribute("wB", wB);
     geo.setAttribute("sc", new THREE.BufferAttribute(scat, 3)); geo.setAttribute("rnd", new THREE.BufferAttribute(rn, 1));
     geo.setAttribute("position", pA); // bounding sphere
-    var mat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms: { uT: { value: 0 }, uIntro: { value: 0 }, uSize: { value: 0.026 }, uScale: { value: 900 } } });
+    var mat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms: { uT: { value: 0 }, uIntro: { value: 0 }, uSize: { value: 0.026 }, uScale: { value: 900 }, uK: { value: 2 * Math.PI * CYCLES_SHOWN / (X1 - X0) }, uPhase: { value: 0 } } });
     scene.add(new THREE.Points(geo, mat));
 
-    var curSeg = -1;
+    var curSeg = -1, switched = false;
     function setSegment(seg) {
-      if (seg === curSeg) return; curSeg = seg;
+      if (seg === curSeg) return; curSeg = seg; switched = true;
       var a = shapes[seg], b = shapes[Math.min(S - 1, seg + 1)];
-      pA.array.set(a.pos); pB.array.set(b.pos); cA.array.set(a.col); cB.array.set(b.col); sA.array.set(a.siz); sB.array.set(b.siz);
-      pA.needsUpdate = pB.needsUpdate = cA.needsUpdate = cB.needsUpdate = sA.needsUpdate = sB.needsUpdate = true;
+      pA.array.set(a.pos); pB.array.set(b.pos); cA.array.set(a.col); cB.array.set(b.col); sA.array.set(a.siz); sB.array.set(b.siz); wA.array.set(a.wav); wB.array.set(b.wav);
+      pA.needsUpdate = pB.needsUpdate = cA.needsUpdate = cB.needsUpdate = sA.needsUpdate = sB.needsUpdate = wA.needsUpdate = wB.needsUpdate = true;
     }
     setSegment(0);
 
@@ -374,6 +539,26 @@
       var tt = ease((t - 0.2) / 0.6), wi = 1 - Math.pow(1 - intro, 3);
       mat.uniforms.uT.value = tt;
       mat.uniforms.uIntro.value = wi;
+      mat.uniforms.uPhase.value = now * 0.0025;   // the waveforms travel: one cycle every 2.5 s
+      // Signal particles run along the schematic's paths while that shape is on either side of the morph.
+      [seg, seg + 1].forEach(function (si) {
+        var sh = shapes[si]; if (!sh || !sh.flows.length) return;
+        var attr = si === seg ? pA : pB, arr = attr.array;
+        sh.flows.forEach(function (f) {
+          for (var j = 0; j < f.count; j++) {
+            var pt = Math.floor(j / f.per), m = j % f.per, back = m >= 7 ? (m - 6) * 0.045 : 0;   // the last five points trail behind the head
+            var u = ((pt / f.n) + now * 0.00009 - back / f.len + 1) % 1, d = u * f.len, k = 1;
+            while (k < f.cum.length - 1 && f.cum[k] < d) k++;
+            var a = f.path[k - 1], b = f.path[k], t = (d - f.cum[k - 1]) / Math.max(1e-6, f.cum[k] - f.cum[k - 1]), o = f.start + j, jx = m >= 7 ? 0.3 : 1;
+            arr[3 * o] = a[0] + (b[0] - a[0]) * t + f.jit[2 * j] * jx; arr[3 * o + 1] = a[1] + (b[1] - a[1]) * t + f.jit[2 * j + 1] * jx; arr[3 * o + 2] = 0.03;
+          }
+          // A partial upload would replace the full upload queued by a segment switch, so only
+          // narrow the upload on frames where the whole array is not already being sent.
+          if (!switched && attr.addUpdateRange) attr.addUpdateRange(3 * f.start, 3 * f.count);
+          attr.needsUpdate = true;
+        });
+      });
+      switched = false;
       // Camera between the two shapes' viewpoints, with a slow drift.
       var ca = shapes[seg].cam, cb = shapes[Math.min(S - 1, seg + 1)].cam;
       var az = ca[0] + (cb[0] - ca[0]) * tt + Math.sin(now * 0.00018) * 0.05, el = ca[1] + (cb[1] - ca[1]) * tt, d = (ca[2] + (cb[2] - ca[2]) * tt) * Math.max(1, 0.9 / camera.aspect); // step back on narrow canvases
