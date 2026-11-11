@@ -118,6 +118,9 @@
     fig.querySelector(".fig-slot").replaceWith(svg);
     if (dashed.length && fig.getAttribute("data-footnote")) {
       var foot = document.createElement("p"); foot.className = "fig-foot"; foot.textContent = fig.getAttribute("data-footnote"); fig.appendChild(foot);
+      // The footnote appears with the dashed curve it explains.
+      var di = -1; series.forEach(function (s, i) { if (di < 0 && dashed.indexOf(s.ratio.text) >= 0) di = i; });
+      if (!reduce && di >= 0) { foot.style.opacity = "0"; foot.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, delay: 300 + di * 650, fill: "forwards" }); }
     }
   }).catch(fail);
 })();
