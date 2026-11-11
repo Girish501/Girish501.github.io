@@ -154,7 +154,7 @@ cloud: true
         <h3>Wideband transimpedance amplifier, 45 nm CMOS</h3>
         <span class="meta">ESE 5720, Aug to Dec 2025</span>
       </header>
-      <div class="stage" data-stage data-stage-at="0.25,0.75" style="--steps: 3" data-cloud data-cloud-shapes="tia,tiaout,tiagain" data-cloud-look="0.05" data-cloud-mq="(min-width: 1024px) and (min-height: 860px) and (prefers-reduced-motion: no-preference)">
+      <div class="stage" data-stage data-stage-at="0.25,0.75" data-stage-mq="(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)" style="--steps: 3" data-cloud data-cloud-shapes="tia,tiaout,tiagain" data-cloud-look="0.05" data-cloud-mq="(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)">
         <div class="stage-pin">
           <div class="stage-grid">
             <div class="stage-steps">
@@ -169,16 +169,28 @@ cloud: true
                   <li>Four cascaded common-source gain stages.</li>
                   <li>Source-follower buffer into a 600 Ω load.</li>
                 </ul>
+                <figure class="fig fig--static step-fig">
+                  <p class="fig-title"><b>45 nm CMOS TIA.</b> Signal chain.</p>
+                  <img src="{{ '/assets/img/tia-chain.png' | relative_url }}" width="2028" height="1360" alt="Schematic of the TIA signal chain: photodiode model, common-gate stage, differential pair, four common-source stages per path, source followers, 600 Ω load" loading="lazy">
+                </figure>
               </div>
               <div class="stage-step" data-step="1">
                 <p class="stage-label">Output</p>
                 <p class="row-metric">594 mV<small>differential output swing, peak to peak</small></p>
                 <p class="case-intro">Transient simulation: 2.67 µA peak to peak at 300 MHz in, 594 mV peak to peak across VOP and VON out.</p>
+                <figure class="fig fig--static step-fig">
+                  <p class="fig-title"><b>45 nm CMOS TIA.</b> Transient simulation, 300 MHz.</p>
+                  <img src="{{ '/assets/img/tia-output.png' | relative_url }}" width="1879" height="1417" alt="Photodiode current, 2.67 µA peak to peak, and the differential output, 594 mV peak to peak, against time" loading="lazy">
+                </figure>
               </div>
               <div class="stage-step" data-step="2">
                 <p class="stage-label">Frequency response</p>
                 <p class="row-metric">492 MHz<small>upper −3 dB corner</small></p>
                 <p class="case-intro">Gain flat at 109 dBΩ from 2.31 MHz to 492.88 MHz, from the Spectre AC sweep of VOP minus VON over the photodiode current.</p>
+                <figure class="fig fig--static step-fig">
+                  <p class="fig-title"><b>45 nm CMOS TIA.</b> Spectre simulation, 1 V supply.</p>
+                  <img src="{{ '/assets/img/tia-gain.png' | relative_url }}" width="1733" height="1363" alt="Transimpedance gain against frequency: flat at 109 dBΩ, 3 dB down at 2.31 MHz and 492.88 MHz" loading="lazy">
+                </figure>
               </div>
             </div>
             <div class="stage-fig">
@@ -227,9 +239,17 @@ cloud: true
                   <span class="cloud-tag cloud-tag--chip cloud-tag--blue" data-key="tiagain" data-at="hi">492.88 MHz</span>
                   <span class="cloud-tag cloud-tag--blue" data-key="tiagain" data-at="m3">−3 dB</span>
                 </div>
-                <figure class="fig fig--static">
+                <figure class="fig fig--static box-fig" data-for="0">
                   <p class="fig-title"><b>45 nm CMOS TIA.</b> Signal chain.</p>
-                  <img src="{{ '/assets/img/tia-chain.png' | relative_url }}" width="1352" height="960" alt="Schematic of the TIA signal chain: photodiode model, common-gate stage, differential pair, four common-source stages per path, source followers, 600 Ω load" loading="lazy">
+                  <img src="{{ '/assets/img/tia-chain.png' | relative_url }}" width="2028" height="1360" alt="Schematic of the TIA signal chain: photodiode model, common-gate stage, differential pair, four common-source stages per path, source followers, 600 Ω load" loading="lazy">
+                </figure>
+                <figure class="fig fig--static box-fig" data-for="1">
+                  <p class="fig-title"><b>45 nm CMOS TIA.</b> Transient simulation, 300 MHz.</p>
+                  <img src="{{ '/assets/img/tia-output.png' | relative_url }}" width="1879" height="1417" alt="Photodiode current, 2.67 µA peak to peak, and the differential output, 594 mV peak to peak, against time" loading="lazy">
+                </figure>
+                <figure class="fig fig--static box-fig" data-for="2">
+                  <p class="fig-title"><b>45 nm CMOS TIA.</b> Spectre simulation, 1 V supply.</p>
+                  <img src="{{ '/assets/img/tia-gain.png' | relative_url }}" width="1733" height="1363" alt="Transimpedance gain against frequency: flat at 109 dBΩ, 3 dB down at 2.31 MHz and 492.88 MHz" loading="lazy">
                 </figure>
               </div>
             </div>

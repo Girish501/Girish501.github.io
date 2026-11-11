@@ -296,6 +296,13 @@ main { padding-top: var(--nav-h); }
 .case--tia .stage-step .case-intro + .steps { margin-top: 12px; }
 .fig--static img { display: block; width: 100%; height: auto; border-radius: 6px; }
 .stage.has-cloud .cloud-box { height: min(calc(100vh - var(--nav-h) - 72px), 760px); }
+/* Not pinned: each step carries its own figure and the box is empty. Pinned without the cloud: the box shows the schematic. */
+.step-fig { margin-top: 18px; max-width: 900px; }
+.box-fig { display: none; }
+.is-pinned .step-fig { display: none; }
+.is-pinned .stage:not(.has-cloud) .box-fig[data-for="0"], .is-pinned .stage:not(.has-cloud)[data-active="1"] .box-fig[data-for="1"], .is-pinned .stage:not(.has-cloud)[data-active="2"] .box-fig[data-for="2"] { display: block; }
+.is-pinned .stage:not(.has-cloud)[data-active="1"] .box-fig[data-for="0"], .is-pinned .stage:not(.has-cloud)[data-active="2"] .box-fig[data-for="0"] { display: none; }
+.box-fig img { max-height: calc(100vh - var(--nav-h) - 140px); width: auto; max-width: 100%; margin: 0 auto; }
 .case--tia.is-pinned .stage-grid { grid-template-columns: 340px minmax(0, 1fr); }
 .case--tia.is-pinned .stage-steps { min-height: 70vh; }
 

@@ -39,7 +39,7 @@
   var seed = 7;
   function rnd() { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }
 
-  var INK = [0.09, 0.094, 0.102], SLATE = [0.3, 0.32, 0.36], GRAY = [0.6, 0.62, 0.65], LIGHT = [0.78, 0.77, 0.73], BLUE = [0.12, 0.29, 0.79], BLUE2 = [0.55, 0.65, 0.9];
+  var INK = [0.09, 0.094, 0.102], SLATE = [0.22, 0.23, 0.26], GRAY = [0.6, 0.62, 0.65], LIGHT = [0.78, 0.77, 0.73], BLUE = [0.12, 0.29, 0.79], BLUE2 = [0.55, 0.65, 0.9];
   function shade(c, k) { return [Math.min(1, c[0] * k), Math.min(1, c[1] * k), Math.min(1, c[2] * k)]; }
   function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
   function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
@@ -124,10 +124,10 @@
     corners.sort(function (p, q) { return Math.atan2(p[1], p[0]) - Math.atan2(q[1], q[0]); });
     var cy = 0.5 * C_LAT, P = atoms.map(function (p) { return [p[0] * SC, (p[1] - cy) * SC + YC, p[2] * SC, p[3]]; });
     var parts = [], y0 = -cy * SC + YC, y1 = y0 + C_LAT * SC;
-    P.forEach(function (p) { parts.push({ w: p[3] ? 0.7 : 1, emit: ball(p, p[3] ? RO : RZN, p[3] ? BLUE : SLATE, V, 1.7 * COV) }); });
+    P.forEach(function (p) { parts.push({ w: p[3] ? 0.7 : 1, emit: ball(p, p[3] ? RO : RZN, p[3] ? GRAY : SLATE, V, 1.7 * COV) }); });   // Zn dark, O gray, as in the first version
     P.forEach(function (p) {
       if (p[3]) return;
-      P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.3, emit: rod(p, q, RB, GRAY, COV, RZN / d, 1 - RO / d) }); });
+      P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.3, emit: rod(p, q, RB, LIGHT, COV, RZN / d, 1 - RO / d) }); });
     });
     // Prism edges: thin ink lines through the corner atoms.
     var R = 0.01;
