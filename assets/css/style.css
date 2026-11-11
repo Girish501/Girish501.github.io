@@ -131,6 +131,7 @@ main { padding-top: var(--nav-h); }
 .hero { padding: clamp(40px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
 .hero h1 { max-width: 20ch; }
+.nowrap { white-space: nowrap; }
 .hero .lead { margin-top: 20px; max-width: 50ch; }
 .hero-facts { margin-top: 14px; color: var(--muted); font-size: 16px; max-width: 50ch; }
 .hero-facts span + span::before { content: "·"; margin: 0 10px; color: var(--line-strong); }
@@ -138,6 +139,30 @@ main { padding-top: var(--nav-h); }
 @media (max-width: 900px) {
   .hero .wrap { grid-template-columns: 1fr; gap: 32px; }
 }
+
+/* Hero point cloud (cloud.js adds .has-cloud when it runs; otherwise the hero is static) */
+.hero-track, .hero-pin { position: relative; }
+.cloud-canvas, .cloud-panel { display: none; }
+.hero.has-cloud { padding: 0; }
+.hero.has-cloud .hero-track { height: calc(var(--shapes, 4) * 100vh + 40vh); }
+.hero.has-cloud .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
+.hero.has-cloud .hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); width: 100%; }
+.hero.has-cloud .hero-visual { position: relative; height: min(72vh, 680px); }
+.hero.has-cloud .hero-text { padding-bottom: 48px; }
+.hero.has-cloud .cloud-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero.has-cloud .hero-visual .fig { display: none; }
+.hero.has-cloud .cloud-panel {
+  display: block; position: absolute; left: 0; bottom: 0; width: min(340px, 60%);
+  padding: 14px 18px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(23, 24, 26, .04), 0 12px 32px -20px rgba(23, 24, 26, .18);
+}
+.cloud-step { margin-bottom: 6px; }
+.cloud-item { display: none; }
+.cloud-item.is-on { display: block; animation: fade 300ms ease; }
+.cloud-num { font-size: 34px; font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
+.cloud-label { margin-top: 6px; font-size: 14px; color: var(--muted); line-height: 1.4; }
+.cloud-link { display: inline-block; margin-top: 8px; font-size: 14px; color: var(--accent); background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat; background-size: 0 1px; background-position: 0 100%; padding-bottom: 1px; transition: background-size 150ms var(--ease-out); }
+.cloud-link:hover { background-size: 100% 1px; }
 
 /* Figures: a plot on a white card. */
 .fig { position: relative; padding: 18px 18px 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 1px 2px rgba(23, 24, 26, .04), 0 12px 32px -20px rgba(23, 24, 26, .18); }

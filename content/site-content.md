@@ -10,6 +10,15 @@ Revision 2 (Oct 2026): added the PLL and FPGA flight controller projects (from G
 
 Positioning: fab process, integration and equipment roles first; analog/RF design second. The AZO work leads; circuits come second.
 
+### Hero point cloud (revision 5, Nov 2026)
+On desktop the hero pins and a point cloud morphs through shapes built from the site's numbers, with a panel per shape:
+- 1 of 4: wurtzite ZnO lattice (a = 3.252 Å, c = 5.213 Å). Panel: 3.252 Å, "lattice constant a, single-phase wurtzite ZnO, XRD", link Process work.
+- 2 of 4: the 600-cycle film with Al planes at 19:1. Panel: 85 to 88 nm, "thickness, all films, 600 cycles, 19:1 ZnO:Al shown".
+- (Tauc curves join once data/azo/tauc_*.csv exist. Panel: +0.23 eV, "optical band edge, 99:1 to 19:1".)
+- 3 of 4: fitted diode and MOSFET I-V, 0.02 to 4 A. Panel: 65.1 mΩ, "RDS(on), fitted. STPS360AF diode and IRLML0040 MOSFET, 0.02 to 4 A", link Hardware and power.
+- 4 of 4: TIA gain curve. Panel: 109 dBΩ, "transimpedance gain, 45 nm CMOS TIA", link Circuits.
+Phones, reduced motion, and software GPUs keep the static hero figure.
+
 ### Hero
 - Statement: I develop thin-film processes at Penn's nanofab and design analog circuits.
 - Sub text: MSE Electrical Engineering, University of Pennsylvania, May 2027. Graduate Student Fellow at the Quattrone Nanofabrication Facility, developing aluminum-doped zinc oxide by ALD and sputtering as an indium-free ITO replacement.

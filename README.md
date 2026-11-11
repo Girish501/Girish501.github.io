@@ -14,6 +14,7 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Post page design | `_layouts/post.html` |
 | Hero figure (Tauc plots from `data/azo/*.csv`, else the TIA curve) | `_includes/fig-tauc.html`, `assets/js/tauc.js`, `_includes/fig-tia.svg` |
 | ALD supercycle figure (Process work) | `_includes/fig-ald.html`, `assets/js/ald.js` |
+| Hero point cloud (three.js) | `assets/js/cloud.js` |
 | Pinned stage around the AZO case study | `assets/js/stage.js` |
 | Scroll-linked motion (rise, count, settle, draw) | `assets/js/anim.js` |
 | Lazy YouTube embed | `_includes/yt.html` |
@@ -27,6 +28,10 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 ## Hero figure: AZO Tauc plots
 
 Add CSV files to `data/azo/`, one per Al ratio, named `tauc_99-1.csv`, `tauc_49-1.csv`, `tauc_29-1.csv`, `tauc_19-1.csv`, `tauc_9-1.csv`. Two columns: photon energy in eV, then (αhν)². A header row is optional; if present, its two titles are used as the axis labels, so include units there (for example `Photon energy (eV)`). As soon as the files exist the hero draws them in order from 99:1 to 9:1, then moves a marker from 3.35 to 3.58 eV labeled +0.23 eV. Until then the hero shows the TIA figure. Ratios listed under `tauc_dashed` in `_config.yml` draw dashed, with the footnote from `tauc_footnote`.
+
+## Hero point cloud
+
+On desktop (at least 1024 x 700, no reduced motion, a hardware GPU) the hero pins and a cloud of about 42,000 points morphs through shapes built from the site's numbers as you scroll: the wurtzite ZnO lattice (a = 3.252 Å, c = 5.213 Å), the 600-cycle film with its Al planes at 19:1, the fitted diode and MOSFET I-V lines, and the TIA gain curve. Once `data/azo/tauc_*.csv` exist the Tauc curves join as a shape. A panel shows each shape's headline number, counting as it comes into focus. three.js (one library, from cdn.jsdelivr.net) draws the points; the scroll scrub is the site's own. Everywhere else the hero keeps its static figure. The numbers are at the top of `assets/js/cloud.js`; the panel text is in `index.html`.
 
 ## Scroll-linked motion
 

@@ -1,22 +1,58 @@
 ---
 layout: base
 title: Girish Arora
+cloud: true
 ---
 <!-- All text on this page comes from content/site-content.md. -->
 {% assign tauc_files = site.static_files | where_exp: "f", "f.path contains '/data/azo/tauc_'" %}
 
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-text">
-      <h1 class="enter" style="--i:0">I develop thin-film processes at Penn's nanofab and design analog circuits.</h1>
-      <p class="lead enter" style="--i:1">MSE Electrical Engineering, University of Pennsylvania, May 2027. Graduate Student Fellow at the Quattrone Nanofabrication Facility, developing aluminum-doped zinc oxide by ALD and sputtering as an indium-free ITO replacement.</p>
-      <p class="hero-facts enter" style="--i:2"><span>Open to process, integration and equipment engineering, and analog/RF design roles, 2027</span><span>Will relocate anywhere in the US</span></p>
-      <div class="hero-actions enter" style="--i:3">
+<section class="hero" data-cloud data-tauc-files='[{% for f in tauc_files %}"{{ f.path | relative_url }}"{% unless forloop.last %},{% endunless %}{% endfor %}]'>
+  <div class="hero-track">
+    <div class="hero-pin">
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          <h1 class="enter" style="--i:0">I develop <span class="nowrap">thin-film</span> processes at Penn's nanofab and design analog circuits.</h1>
+          <p class="lead enter" style="--i:1">MSE Electrical Engineering, University of Pennsylvania, May 2027. Graduate Student Fellow at the Quattrone Nanofabrication Facility, developing aluminum-doped zinc oxide by ALD and sputtering as an indium-free ITO replacement.</p>
+          <p class="hero-facts enter" style="--i:2"><span>Open to process, integration and equipment engineering, and analog/RF design roles, 2027</span><span>Will relocate anywhere in the US</span></p>
+          <div class="hero-actions enter" style="--i:3">
         <a class="btn btn--primary" href="#process">See the work</a>
         <a class="btn" href="mailto:{{ site.email }}">Email me</a>
       </div>
+        </div>
+        <div class="hero-visual">
+          <canvas class="cloud-canvas" aria-hidden="true"></canvas>
+          <div class="cloud-panel" aria-live="polite">
+            <p class="cloud-step label">1 of 4</p>
+            <div class="cloud-item is-on" data-key="lattice">
+              <p class="cloud-num"><span data-value="3.252" data-dec="3" data-suffix=" Å">3.252 Å</span></p>
+              <p class="cloud-label">lattice constant a, single-phase wurtzite ZnO, XRD</p>
+              <a class="cloud-link" href="#azo">Process work &rarr;</a>
+            </div>
+            <div class="cloud-item" data-key="film">
+              <p class="cloud-num"><span data-value="85" data-dec="0" data-suffix=" to 88 nm">85 to 88 nm</span></p>
+              <p class="cloud-label">thickness, all films, 600 cycles, 19:1 ZnO:Al shown</p>
+              <a class="cloud-link" href="#azo">Process work &rarr;</a>
+            </div>
+            <div class="cloud-item" data-key="tauc">
+              <p class="cloud-num"><span data-value="0.23" data-dec="2" data-prefix="+" data-suffix=" eV">+0.23 eV</span></p>
+              <p class="cloud-label">optical band edge, 99:1 to 19:1</p>
+              <a class="cloud-link" href="#azo">Process work &rarr;</a>
+            </div>
+            <div class="cloud-item" data-key="iv">
+              <p class="cloud-num"><span data-value="65.1" data-dec="1" data-suffix=" mΩ">65.1 mΩ</span></p>
+              <p class="cloud-label">R<sub>DS(on)</sub>, fitted. STPS360AF diode and IRLML0040 MOSFET, 0.02 to 4 A</p>
+              <a class="cloud-link" href="#hardware">Hardware and power &rarr;</a>
+            </div>
+            <div class="cloud-item" data-key="tia">
+              <p class="cloud-num"><span data-value="109" data-dec="0" data-suffix=" dBΩ">109 dBΩ</span></p>
+              <p class="cloud-label">transimpedance gain, 45 nm CMOS TIA</p>
+              <a class="cloud-link" href="#circuits">Circuits &rarr;</a>
+            </div>
+          </div>
+          {% include fig-tauc.html %}
+        </div>
+      </div>
     </div>
-    {% include fig-tauc.html %}
   </div>
 </section>
 
