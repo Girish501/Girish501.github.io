@@ -227,6 +227,35 @@ main { padding-top: var(--nav-h); }
   .results td:last-child { white-space: normal; }
 }
 
+/* ---------- Pinned stage (AZO case study) ---------- */
+
+.stage-label { font-weight: 600; font-size: 16px; margin-bottom: 8px; }
+.stage-step + .stage-step { margin-top: 28px; }
+.stage-step .case-intro { margin-bottom: 0; }
+.stage-fig { margin-top: 28px; }
+.stage-fig .fig--ald { margin: 0; }
+.stage { margin-top: 20px; }
+.stage + .case-grid { margin-top: 28px; }
+.stage + script + .case-grid { margin-top: 28px; }
+
+/* Pinned: wide and tall screens only (stage.js adds .is-pinned when its media query matches). */
+.is-pinned .stage { height: calc(var(--steps, 3) * 100vh + 60vh); margin-top: 8px; }
+.is-pinned .stage-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
+.is-pinned .stage-grid { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: clamp(40px, 5vw, 72px); align-items: center; width: 100%; }
+.is-pinned .stage-steps { position: relative; min-height: 62vh; }
+.is-pinned .stage-step {
+  position: absolute; left: 0; right: 0; top: 50%;
+  margin: 0; opacity: 0; transform: translateY(calc(-50% + 10px)); pointer-events: none;
+  transition: opacity 400ms ease, transform 400ms cubic-bezier(.25, .46, .45, .94);
+}
+.is-pinned .stage-step.is-active { opacity: 1; transform: translateY(-50%); pointer-events: auto; }
+.is-pinned .stage-step.is-past { transform: translateY(calc(-50% - 10px)); }
+.is-pinned .stage-fig { margin-top: 0; }
+.is-pinned .fig-controls .replay { display: none; }
+.is-pinned .stage-step .results { font-size: 15px; }
+.is-pinned .stage-step .results th, .is-pinned .stage-step .results td { padding: 7px 12px 7px 0; }
+.is-pinned .stage-step .case-intro, .is-pinned .stage-step .steps { max-width: 52ch; }
+
 /* ---------- Project rows ---------- */
 
 .rows li { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 8px 32px; padding: 24px 0; border-top: 1px solid var(--line); }

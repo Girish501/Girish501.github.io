@@ -20,6 +20,9 @@
 
   var n = parseInt(fig.getAttribute("data-ratio"), 10) || 19;
   var lineEls = [], raf = 0, t0 = 0, played = false;
+  // Public API for stage.js: render(ms) draws the figure at a point in its timeline; scrub turns off autoplay.
+  var api = { scrub: false, lastT: 0, END: 0, render: null, play: null, stop: null };
+  fig.ald = api;
 
   // Phase boundaries in ms. Pulse steps play short, purge steps long, like the recipe.
   var STEPS = [300, 600, 300, 600], CUM = [0, 300, 900, 1200, 1800];
@@ -28,6 +31,7 @@
   var C = B + CUM[4];        // Al cycle, step by step
   var D = C + 3000;          // remaining supercycles, fast
   var END = D + 400;
+  api.END = END;
 
   function build() {
     while (lines.firstChild) lines.removeChild(lines.firstChild);
@@ -68,6 +72,7 @@
   }
 
   function render(t) {
+    api.lastT = t;
     var supers = Math.round(TOTAL / (n + 1));
     var cycles, step, frac;
     if (t < A) {                                   // ZnO cycle 1
@@ -97,8 +102,10 @@
   }
 
   function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; }
+  api.render = render; api.stop = stop;
   function play() {
     stop(); played = true;
+    if (api.scrub) { render(api.lastT); return; }
     if (reduce) { render(END); return; }
     t0 = 0;
     var frame = function (now) {
@@ -118,14 +125,16 @@
     if (!r) return;
     n = r; fig.setAttribute("data-ratio", n);
     Array.prototype.forEach.call(fig.querySelectorAll("button[data-ratio]"), function (x) { x.setAttribute("aria-pressed", x === btn ? "true" : "false"); });
-    build(); play();
+    build();
+    if (api.scrub) render(api.lastT); else play();
   });
 
+  api.play = play;
   build();
   render(END); // static final state until it scrolls into view
   if (reduce || !("IntersectionObserver" in window)) return;
   var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (en) { if (en.isIntersecting && !played) { play(); io.disconnect(); } });
+    entries.forEach(function (en) { if (en.isIntersecting && !played && !api.scrub) { play(); io.disconnect(); } });
   }, { threshold: 0.4 });
   io.observe(fig);
 })();

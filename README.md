@@ -14,6 +14,7 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Post page design | `_layouts/post.html` |
 | Hero figure (Tauc plots from `data/azo/*.csv`, else the TIA curve) | `_includes/fig-tauc.html`, `assets/js/tauc.js`, `_includes/fig-tia.svg` |
 | ALD supercycle figure (Process work) | `_includes/fig-ald.html`, `assets/js/ald.js` |
+| Pinned stage around the AZO case study | `assets/js/stage.js` |
 | Lazy YouTube embed | `_includes/yt.html` |
 | Blog posts | `_posts/` |
 | Styles | `assets/css/style.css` |
@@ -25,6 +26,10 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 ## Hero figure: AZO Tauc plots
 
 Add CSV files to `data/azo/`, one per Al ratio, named `tauc_99-1.csv`, `tauc_49-1.csv`, `tauc_29-1.csv`, `tauc_19-1.csv`, `tauc_9-1.csv`. Two columns: photon energy in eV, then (αhν)². A header row is optional; if present, its two titles are used as the axis labels, so include units there (for example `Photon energy (eV)`). As soon as the files exist the hero draws them in order from 99:1 to 9:1, then moves a marker from 3.35 to 3.58 eV labeled +0.23 eV. Until then the hero shows the TIA figure. Ratios listed under `tauc_dashed` in `_config.yml` draw dashed, with the footnote from `tauc_footnote`.
+
+## Pinned stage
+
+On wide, tall screens (1024 px wide and 800 px tall or more) the AZO case study pins for about three screens of scroll. The ALD figure follows the scroll position and the three text steps (What and why, Process, Results) swap in turn. On smaller screens and under reduced motion nothing pins and the content stacks. Thresholds are at the top of `assets/js/stage.js`.
 
 ## ALD supercycle figure
 

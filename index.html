@@ -33,25 +33,27 @@ title: Girish Arora
         <h3>Aluminum-doped zinc oxide by ALD and sputtering</h3>
         <span class="meta">Quattrone Nanofabrication Facility, Sep 2026 to present</span>
       </header>
-      <p class="case-intro">I am developing aluminum-doped zinc oxide (AZO) by ALD and sputtering as an indium-free ITO replacement. I grow ZnO:Al films on a Cambridge NanoTech Savannah S200 ALD tool, fit each film's optical response with spectroscopic ellipsometry in WVASE, and use XRD and my own Python analysis to tie doping level to film properties.</p>
-      {% include fig-ald.html %}
-      <dl class="case-grid">
-        <div>
-          <dt>Process</dt>
-          <dd>
-            <ul class="steps">
+      <div class="stage" data-stage style="--steps: 3">
+        <div class="stage-pin">
+          <div class="stage-grid">
+            <div class="stage-steps">
+              <div class="stage-step is-active" data-step="0">
+                <p class="stage-label">What and why</p>
+                <p class="case-intro">I am developing aluminum-doped zinc oxide (AZO) by ALD and sputtering as an indium-free ITO replacement. I grow ZnO:Al films on a Cambridge NanoTech Savannah S200 ALD tool, fit each film's optical response with spectroscopic ellipsometry in WVASE, and use XRD and my own Python analysis to tie doping level to film properties.</p>
+              </div>
+              <div class="stage-step" data-step="1">
+                <p class="stage-label">Process</p>
+                <ul class="steps">
               <li>Starting Al levels from a literature survey of ALD AZO.</li>
               <li>Five-ratio series at 200 °C (99:1, 49:1, 29:1, 19:1, 9:1 ZnO:Al supercycles, 600 cycles, DEZ/TMA/H₂O) on Si and glass.</li>
               <li>WVASE fit: Cauchy, then point-by-point n,k, then a PSemi-M0 oscillator with a free-carrier term and a roughness layer.</li>
               <li>Symmetric and grazing-incidence XRD on a Rigaku SmartLab.</li>
               <li>Python tools for n,k overlays, Tauc plots, XRD peak fitting (pseudo-Voigt, Scherrer grain size) and a one-page report per sample.</li>
             </ul>
-          </dd>
-        </div>
-        <div>
-          <dt>Results</dt>
-          <dd>
-            <div class="results-wrap">
+              </div>
+              <div class="stage-step" data-step="2">
+                <p class="stage-label">Results</p>
+                <div class="results-wrap">
               <table class="results">
                 <thead><tr><th>Parameter</th><th>Condition</th><th>Value</th></tr></thead>
                 <tbody>
@@ -68,8 +70,16 @@ title: Girish Arora
                 </tbody>
               </table>
             </div>
-          </dd>
+              </div>
+            </div>
+            <div class="stage-fig">
+              {% include fig-ald.html %}
+            </div>
+          </div>
         </div>
+      </div>
+      <script src="{{ '/assets/js/stage.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+      <dl class="case-grid">
         <div>
           <dt>Excursion</dt>
           <dd><p>The 29:1 run came out off-trend. Re-mounting the sample brought back the missing XRD peaks. A run-log comparison showed one heater zone 19 °C below setpoint.</p></dd>
