@@ -24,10 +24,12 @@
     var type = el.getAttribute("data-anim") || "rise";
     var it = { el: el, type: type, start: parseFloat(el.getAttribute("data-anim-start")) || 0.88, span: parseFloat(el.getAttribute("data-anim-span")) || 0.28, y: parseFloat(el.getAttribute("data-anim-y")) || 12, last: -1 };
     if (type === "count") {
-      var t = el.textContent;
-      var m = /^(\s*)(\d[\d,]*(?:\.\d+)?)([\s\S]*)$/.exec(t);
-      if (m) { it.pre = m[1]; it.num = parseFloat(m[2].replace(/,/g, "")); it.dec = (m[2].split(".")[1] || "").length; it.post = m[3]; it.node = el.firstChild && el.firstChild.nodeType === 3 ? el.firstChild : null; }
-      if (!it.node) it.type = "fade";
+      // Only the element's first text node counts (for example "109 dBΩ"); child elements such as the
+      // small label underneath are left alone.
+      var node = el.firstChild && el.firstChild.nodeType === 3 ? el.firstChild : null;
+      var m = node ? /^(\s*)(\d[\d,]*(?:\.\d+)?)([\s\S]*)$/.exec(node.nodeValue) : null;
+      if (m) { it.pre = m[1]; it.num = parseFloat(m[2].replace(/,/g, "")); it.dec = (m[2].split(".")[1] || "").length; it.post = m[3]; it.node = node; }
+      else it.type = "fade";
     }
     if (type === "settle") { it.img = el.tagName === "IMG" ? el : el.querySelector("img"); if (!it.img) it.type = "fade"; }
     if (type === "draw") { it.path = el.tagName === "path" ? el : el.querySelector("path[pathLength]"); if (!it.path) it.type = "fade"; }
