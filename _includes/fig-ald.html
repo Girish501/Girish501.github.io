@@ -1,0 +1,48 @@
+{%- comment -%}
+ALD supercycle figure, driven by assets/js/ald.js. Left: the valve sequence of one cycle. Right: the
+film growing on the substrate, with a blue line at every Al cycle. Buttons pick the ZnO:Al ratio.
+Plays once when scrolled into view; Replay restarts it. Reduced motion shows the final state.
+Without JavaScript the figure shows the 19:1 final state drawn here.
+{%- endcomment -%}
+<figure class="fig fig--ald" data-ald data-ratio="19">
+  <p class="fig-title"><b>ALD supercycle.</b> Five-ratio series at 200 °C (99:1, 49:1, 29:1, 19:1, 9:1 ZnO:Al supercycles, 600 cycles, DEZ/TMA/H₂O) on Si and glass.</p>
+  <div class="fig-controls" role="group" aria-label="ZnO:Al ratio">
+    <span class="label">ZnO:Al</span>
+    <button type="button" data-ratio="99">99:1</button>
+    <button type="button" data-ratio="49">49:1</button>
+    <button type="button" data-ratio="29">29:1</button>
+    <button type="button" data-ratio="19" aria-pressed="true">19:1</button>
+    <button type="button" data-ratio="9">9:1</button>
+    <button type="button" class="replay" data-replay>Replay</button>
+  </div>
+  <div class="ald">
+    <svg class="ald-seq" viewBox="0 0 360 300" role="img" aria-label="One ALD cycle: a precursor pulse, a purge, a water pulse, a purge. DEZ for ZnO cycles, TMA for Al cycles.">
+      <g class="ald-rows">
+        <text x="14" y="52">DEZ</text><line x1="92" y1="56" x2="346" y2="56"/>
+        <text x="14" y="102">TMA</text><line x1="92" y1="106" x2="346" y2="106"/>
+        <text x="14" y="152">H₂O</text><line x1="92" y1="156" x2="346" y2="156"/>
+        <text x="14" y="202">purge</text><line x1="92" y1="206" x2="346" y2="206"/>
+      </g>
+      <g class="ald-blocks">
+        <rect class="ald-block" id="ald-b0" x="92" y="34" width="63.5" height="22" rx="2"/>
+        <rect class="ald-block al" id="ald-b0al" x="92" y="84" width="63.5" height="22" rx="2" opacity="0"/>
+        <rect class="ald-block" id="ald-b1" x="155.5" y="184" width="63.5" height="22" rx="2"/>
+        <rect class="ald-block" id="ald-b2" x="219" y="134" width="63.5" height="22" rx="2"/>
+        <rect class="ald-block" id="ald-b3" x="282.5" y="184" width="63.5" height="22" rx="2"/>
+      </g>
+      <text class="ald-axis" x="92" y="228">one cycle</text>
+      <text class="ink" id="ald-cycle" x="14" y="262">ZnO cycle 19 of 19</text>
+      <text id="ald-super" x="14" y="284">supercycle 30 of 30</text>
+    </svg>
+    <svg class="ald-stack" viewBox="0 0 360 300" role="img" aria-label="Cross-section of the film growing on the substrate, with a line at every Al cycle.">
+      <rect class="ald-film" id="ald-film" x="40" y="36" width="280" height="200"/>
+      <g id="ald-lines" class="ald-lines"></g>
+      <rect class="ald-sub" x="40" y="236" width="280" height="36"/>
+      <text x="180" y="292" text-anchor="middle">Si / glass · 200 °C</text>
+      <text class="ink" id="ald-count" x="320" y="24" text-anchor="end">600 cycles · 85 to 88 nm</text>
+      <text id="ald-key" x="40" y="24">Al cycle</text>
+      <line class="ald-al" x1="100" y1="19.5" x2="124" y2="19.5"/>
+    </svg>
+  </div>
+</figure>
+<script src="{{ '/assets/js/ald.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

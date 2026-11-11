@@ -40,6 +40,9 @@ Process work, Circuits, Hardware and power, Experience, Tools, About, Contact.
 - Tools: Cambridge NanoTech Savannah S200 ALD (qualified for 24/7 independent use, precursor changes). PVD-03 (sputter target changes).
 - Then ESE 5360 device fabrication, led by 23 nm (DSA feature height).
 
+### ALD supercycle figure (in the case study)
+Title: the process line, verbatim. Left: one cycle, rows DEZ, TMA, H2O, purge, label "one cycle"; status lines "ZnO cycle k of N", "Al cycle", "supercycle k of S". Right: film on "Si / glass · 200 °C", a blue line per Al cycle, counter to "600 cycles · 85 to 88 nm". Ratio buttons 99:1 to 9:1 and Replay.
+
 ### Circuits
 TIA (109 dBΩ lead, static plot), PLL, SRAM, compute-in-memory.
 

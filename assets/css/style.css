@@ -164,6 +164,41 @@ main { padding-top: var(--nav-h); }
 .tauc-mark text { font-family: var(--sans); font-size: 14px; font-weight: 600; fill: var(--accent); }
 @media (max-width: 640px) { .tauc-mark text { font-size: 20px; } }
 
+/* ---------- ALD supercycle figure ---------- */
+
+.fig--ald { max-width: 860px; margin: 20px 0 28px; }
+.fig-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 14px; }
+.fig-controls .label { margin-right: 4px; }
+.fig-controls button {
+  font: inherit; font-size: 14px; line-height: 1; padding: 7px 10px;
+  border: 1px solid var(--line-strong); border-radius: 6px; background: transparent; color: var(--ink-2); cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 160ms var(--ease-out);
+}
+.fig-controls button:active { transform: scale(.97); }
+.fig-controls button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.fig-controls .replay { margin-left: auto; border-color: transparent; color: var(--accent); }
+@media (hover: hover) and (pointer: fine) {
+  .fig-controls button:hover { border-color: var(--ink); color: var(--ink); }
+  .fig-controls button[aria-pressed="true"]:hover { color: var(--paper); }
+  .fig-controls .replay:hover { border-color: var(--accent); color: var(--accent-hover); }
+}
+.ald { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ald svg { display: block; width: 100%; height: auto; }
+.ald text { font-family: var(--sans); font-size: 14px; fill: var(--muted); }
+.ald .ink { fill: var(--ink); font-weight: 600; }
+.ald-rows line { stroke: var(--line-strong); stroke-width: 1; }
+.ald-block { fill: var(--ink); }
+.ald-block.al { fill: var(--accent); }
+.ald-axis { font-size: 13px; }
+.ald-film { fill: var(--line); stroke: var(--ink); stroke-width: 1; }
+.ald-sub { fill: var(--paper-2); stroke: var(--line-strong); stroke-width: 1; }
+.ald-al { stroke: var(--accent); stroke-width: 1.5; }
+@media (max-width: 640px) {
+  .ald { grid-template-columns: 1fr; gap: 12px; }
+  .ald text { font-size: 16px; }   /* viewBox units: about 14px on a 390px phone */
+  .ald .ald-axis { font-size: 15px; }
+}
+
 /* ---------- Process work: case study ---------- */
 
 .photo-wide { display: block; overflow: hidden; border-radius: 12px; background: var(--paper-2); aspect-ratio: 3 / 2; margin-bottom: clamp(32px, 4vw, 56px); }

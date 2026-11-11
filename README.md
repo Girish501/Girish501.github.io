@@ -13,6 +13,7 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 | Header, page shell, fonts | `_layouts/base.html` |
 | Post page design | `_layouts/post.html` |
 | Hero figure (Tauc plots from `data/azo/*.csv`, else the TIA curve) | `_includes/fig-tauc.html`, `assets/js/tauc.js`, `_includes/fig-tia.svg` |
+| ALD supercycle figure (Process work) | `_includes/fig-ald.html`, `assets/js/ald.js` |
 | Lazy YouTube embed | `_includes/yt.html` |
 | Blog posts | `_posts/` |
 | Styles | `assets/css/style.css` |
@@ -24,6 +25,10 @@ Personal website of Girish Arora. Plain HTML, CSS, and a little JavaScript. GitH
 ## Hero figure: AZO Tauc plots
 
 Add CSV files to `data/azo/`, one per Al ratio, named `tauc_99-1.csv`, `tauc_49-1.csv`, `tauc_29-1.csv`, `tauc_19-1.csv`, `tauc_9-1.csv`. Two columns: photon energy in eV, then (αhν)². A header row is optional; if present, its two titles are used as the axis labels, so include units there (for example `Photon energy (eV)`). As soon as the files exist the hero draws them in order from 99:1 to 9:1, then moves a marker from 3.35 to 3.58 eV labeled +0.23 eV. Until then the hero shows the TIA figure. Ratios listed under `tauc_dashed` in `_config.yml` draw dashed, with the footnote from `tauc_footnote`.
+
+## ALD supercycle figure
+
+The Process work section has an animated figure of the ALD recipe: one cycle's valve sequence on the left, the film growing on the substrate on the right with a blue line at every Al cycle. The ratio buttons change the cadence. It plays once when scrolled into view; Replay restarts it. The recipe numbers (ratios, 600 cycles, 200 °C) are in `_includes/fig-ald.html` and the top of `assets/js/ald.js`.
 
 ## Design
 
