@@ -1,7 +1,7 @@
 // Pinned stages (the AZO case study, the TIA case). On wide, tall screens a stage sticks for a few
 // screens of scroll: its figure follows the scroll position and the text steps swap one after another.
 // data-stage-at lists the progress values where the steps change (default 0.34 and 0.68);
-// data-stage-mq is the media query that allows pinning (default: at least 1024 x 820).
+// data-stage-mq is the media query that allows pinning (default: at least 1024 x 700).
 // Elsewhere (narrow or short screens, reduced motion) nothing pins and the content stacks.
 // Native scroll only: progress is read from scrollY on requestAnimationFrame.
 (function () {
@@ -13,7 +13,7 @@
   var steps = Array.prototype.slice.call(stage.querySelectorAll(".stage-step"));
   var fig = stage.querySelector("[data-ald]");
   var pin = stage.querySelector(".stage-pin");
-  var mq = window.matchMedia(stage.getAttribute("data-stage-mq") || "(min-width: 1024px) and (min-height: 820px) and (prefers-reduced-motion: no-preference)");
+  var mq = window.matchMedia(stage.getAttribute("data-stage-mq") || "(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)");
   var nav = 60;
   var active = false, ticking = false, top = 0, span = 1, current = -1;
 

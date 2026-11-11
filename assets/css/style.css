@@ -287,7 +287,21 @@ main { padding-top: var(--nav-h); }
 .is-pinned .fig--ald { max-width: none; }
 .is-pinned .fig-controls { margin: 6px 0 10px; }
 .is-pinned .ald { grid-template-columns: 1fr; gap: 8px; }   /* the two panels stack in the narrow column */
+.is-pinned .ald .ald-dur text { font-size: 14px; }           /* keeps the durations at 13px or more in the 380px column */
 .is-pinned .stage-step .case-intro, .is-pinned .stage-step .steps { max-width: 56ch; }
+/* Short windows (a laptop at 100% with display scaling): the results table tightens and the ALD figure
+   scales down a little so the tallest step and the figure both fit beside each other. */
+@media (max-height: 820px) {
+  .is-pinned .results { font-size: 15px; }
+  .is-pinned .results th, .is-pinned .results td { padding: 5px 12px 5px 0; }
+  .is-pinned .results th { font-size: 13px; }
+  .is-pinned .stage-fig .fig--ald { padding: 14px 16px 12px; }
+  .is-pinned .fig-controls { margin: 4px 0 6px; }
+  .is-pinned .ald svg { max-height: 36vh; }          /* the drawing scales down, centred in its column */
+  .is-pinned .ald text { font-size: 16px; }           /* viewBox units: about 13.5px once scaled */
+  .is-pinned .ald .ald-dur text { font-size: 16px; }
+  .is-pinned .stage-steps { min-height: 56vh; }
+}
 
 /* TIA case (Circuits): steps on the left, the point cloud on the right. The same cloud.js runs here with
    the three TIA shapes; without it the box shows the static schematic. */
