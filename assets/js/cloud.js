@@ -1,19 +1,21 @@
-// Hero point cloud. One cloud of points morphs through shapes built from the site's own numbers as
-// the pinned hero is scrolled: the wurtzite ZnO unit cell (a, c from XRD), a cross-section of the
-// 600-cycle AZO film with its Al planes on the substrate, the Tauc curves once data/azo/tauc_*.csv
-// exist, and three views of the 45 nm TIA from its report: the signal chain with the signal running
-// through it, the input current and output voltage against time, and the gain against frequency.
-// three.js draws the points; the scroll scrub is this file's own (progress read from scrollY each
-// frame and eased toward, no scroll library). The small labels (.cloud-tag) are HTML, moved each
-// frame to the projected position of a point in the shape they belong to.
+// Hero point cloud, and the TIA cloud in the Circuits section. Each [data-cloud] element gets one
+// cloud of points that morphs through the shapes its data-cloud-shapes lists as the element is
+// scrolled: the wurtzite ZnO unit cell (a, c from XRD), a cross-section of the 600-cycle AZO film with
+// its Al planes on the substrate, the Tauc curves once data/azo/tauc_*.csv exist, and three views of
+// the 45 nm TIA from its report: the signal chain with the signal running through it, the input
+// current and output voltage against time, and the gain against frequency. three.js draws the points;
+// the scroll scrub is this file's own (progress read from scrollY each frame and eased toward, no
+// scroll library). The small labels (.cloud-tag) are HTML, moved each frame to the projected
+// position of a point in the shape they belong to.
 //
-// Runs only on screens at least 1024 x 700, without reduced motion, with a hardware WebGL renderer.
-// Otherwise nothing loads and the hero keeps its static figure.
+// Runs only on screens that match the element's data-cloud-mq (by default at least 1024 x 700),
+// without reduced motion, with a hardware WebGL renderer. Otherwise nothing loads and the element
+// keeps its static figure.
 (function () {
   "use strict";
-  var hero = document.querySelector("[data-cloud]");
-  if (!hero) return;
-  if (!window.matchMedia("(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)").matches) return;
+  var DEFAULT_MQ = "(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
+  var roots = Array.prototype.filter.call(document.querySelectorAll("[data-cloud]"), function (r) { return window.matchMedia(r.getAttribute("data-cloud-mq") || DEFAULT_MQ).matches; });
+  if (!roots.length) return;
   var test = document.createElement("canvas");
   var gl = test.getContext("webgl2") || test.getContext("webgl");
   if (!gl) return;
@@ -258,7 +260,7 @@
   // The TIA signal chain, from the report's schematics: photodiode model (current source and 100 fF),
   // 50 pF coupling, common-gate input stage with a 10 kΩ load, differential pair with PMOS loads,
   // four cascaded common-source stages per path, source followers, 600 Ω differential load.
-  var CAM_TIA = [0.08, 0.1, 12.4];
+  var CAM_TIA = [0.08, 0.1, 11.2];
   function shapeTIA() {
     var parts = [], tags = {}, S = 0.93, OX = -0.3, OY = 0.4, pathP = [], pathN = [];
     function P(x, y) { return [x * S + OX, y * S + OY]; }
@@ -360,7 +362,7 @@
 
   // Input current and differential output voltage against time: 2.67 µA peak to peak in at 300 MHz,
   // 594 mV peak to peak out (VOP minus VON). The sines travel; the vertex shader moves them.
-  var CAM_SCOPE = [0.1, 0.08, 11], CYCLES_SHOWN = 6;
+  var CAM_SCOPE = [0.1, 0.08, 9.6], CYCLES_SHOWN = 6;
   function shapeScope() {
     var parts = [], yiT = 1.95, yiB = 1.15, yvT = 0.75, yvB = -1.4, ci = (yiT + yiB) / 2, cv = (yvT + yvB) / 2, ai = 0.27, av = 0.297 / 0.33 * (yvT - cv);
     axesParts(parts, X0, X1, yiB, yiT, [], [ci]);
@@ -382,7 +384,7 @@
 
   // Transimpedance gain against frequency, read from the report's Spectre plot (VOP minus VON over the
   // photodiode current): flat near 109 dBΩ, 3 dB down at 2.31 MHz and 492.88 MHz.
-  var CAM_BODE = [-0.1, 0.12, 11];
+  var CAM_BODE = [-0.1, 0.12, 9.6];
   var BODE = [[4.706,-11.0],[4.765,-4.1],[4.824,2.8],[4.882,9.6],[4.941,16.3],[5.0,22.9],[5.059,29.4],[5.118,35.8],[5.176,41.9],[5.235,47.9],[5.294,53.7],[5.353,59.1],[5.412,64.2],[5.471,69.1],[5.529,73.6],[5.588,77.7],[5.647,81.6],[5.706,85.1],[5.765,88.0],[5.824,90.6],[5.882,93.1],[5.941,95.2],[6.0,97.1],[6.059,98.5],[6.118,99.9],[6.176,101.3],[6.235,102.8],[6.294,103.8],[6.353,104.7],[6.412,105.5],[6.471,106.2],[6.529,106.9],[6.588,107.3],[6.647,107.6],[6.706,107.9],[6.765,108.2],[6.824,108.5],[6.882,108.7],[6.941,108.9],[7.0,109.0],[7.059,109.1],[7.118,109.3],[7.176,109.3],[7.235,109.3],[7.294,109.3],[7.353,109.3],[7.412,109.3],[7.471,109.3],[7.529,109.3],[7.588,109.3],[7.647,109.3],[7.706,109.3],[7.765,109.3],[7.824,109.3],[7.882,109.3],[7.941,109.3],[8.0,109.3],[8.059,109.2],[8.118,109.1],[8.176,109.0],[8.235,108.9],[8.294,108.9],[8.353,108.8],[8.412,108.6],[8.471,108.3],[8.529,107.8],[8.588,107.0],[8.647,105.8],[8.706,104.3],[8.765,102.8],[8.824,101.2],[8.882,99.5],[8.941,97.5],[9.0,95.1],[9.059,92.6],[9.118,89.8],[9.176,87.1],[9.235,84.0],[9.294,80.6],[9.353,76.9],[9.412,72.9],[9.471,68.7],[9.529,64.4],[9.588,60.0],[9.647,55.5],[9.706,50.8],[9.765,46.0],[9.824,41.1],[9.882,36.9],[9.941,33.3],[10.0,30.4]];
   function shapeBode() {
     var LG0 = 5, LG1 = 10, DB0 = 0, DB1 = 120, L3 = 104.7;
@@ -417,8 +419,8 @@
     return build(parts);
   }
 
-  function loadTauc() {
-    var attr = hero.getAttribute("data-tauc-files"), files = [];
+  function loadTauc(root) {
+    var attr = root.getAttribute("data-tauc-files"), files = [];
     try { files = JSON.parse(attr || "[]"); } catch (e) { files = []; }
     if (!files.length) return Promise.resolve(null);
     function ratioOf(url) { var m = /tauc[_-]?(\d+)\D+(\d+)/i.exec(url.split("/").pop()); return m ? +m[1] : 0; }
@@ -448,22 +450,37 @@
     "varying vec3 vCol;",
     "void main(){ vec2 d = gl_PointCoord - 0.5; if (dot(d, d) > 0.22) discard; gl_FragColor = vec4(vCol, 1.0); }"].join("\n");
 
-  Promise.all([import("three"), loadTauc()]).then(function (res) {
-    var THREE = res[0], tauc = res[1];
-    var shapes = [
-      { key: "lattice", build: shapeLattice, cam: CAM_LATTICE },
-      { key: "film", build: shapeFilm, cam: CAM_FILM }
-    ];
-    if (tauc) shapes.push({ key: "tauc", build: function () { return shapeTauc(tauc); }, cam: [0.2, 0.12, 11] });
-    shapes.push({ key: "tia", build: shapeTIA, cam: CAM_TIA });
-    shapes.push({ key: "tiaout", build: shapeScope, cam: CAM_SCOPE });
-    shapes.push({ key: "tiagain", build: shapeBode, cam: CAM_BODE });
+  var SPECS = {
+    lattice: { build: shapeLattice, cam: CAM_LATTICE },
+    film: { build: shapeFilm, cam: CAM_FILM },
+    tia: { build: shapeTIA, cam: CAM_TIA },
+    tiaout: { build: shapeScope, cam: CAM_SCOPE },
+    tiagain: { build: shapeBode, cam: CAM_BODE }
+  };
+  var debug = params.has("debug") ? (window.__cloud = []) : null;
+
+  import("three").then(function (THREE) {
+    roots.forEach(function (root) {
+      var keys = (root.getAttribute("data-cloud-shapes") || "lattice,film").split(",").map(function (k) { return k.trim(); });
+      var wantTauc = keys.indexOf("tauc") >= 0;
+      (wantTauc ? loadTauc(root) : Promise.resolve(null)).then(function (tauc) {
+        var shapes = [];
+        keys.forEach(function (k) {
+          if (k === "tauc") { if (tauc) shapes.push({ key: "tauc", build: function () { return shapeTauc(tauc); }, cam: [0.2, 0.12, 11] }); }
+          else if (SPECS[k]) shapes.push({ key: k, build: SPECS[k].build, cam: SPECS[k].cam });
+        });
+        if (shapes.length) mount(root, THREE, shapes);
+      }).catch(function (e) { root.classList.remove("has-cloud"); if (window.console) console.warn("cloud off:", e && e.message); });
+    });
+  }).catch(function (e) { if (window.console) console.warn("cloud off:", e && e.message); });
+
+  function mount(hero, THREE, shapes) {
     var S = shapes.length;
-    if (params.has("debug")) window.__cloud = shapes;
     shapes.forEach(function (s, i) { var g = s.build(); s.pos = g.pos; s.col = g.col; s.siz = g.siz; s.wav = g.wav; s.tags = g.tags; s.index = i; s.order = g.order;
       s.flows = (g.flows || []).map(function (f) { var r = g.ranges[f.name], cum = [0]; for (var k = 1; k < f.path.length; k++) cum.push(cum[k - 1] + Math.hypot(f.path[k][0] - f.path[k - 1][0], f.path[k][1] - f.path[k - 1][1]));
         var jit = []; for (var j = 0; j < r.count; j++) { var th = rnd() * 6.2832, q = 0.028 * Math.sqrt(rnd()); jit.push(q * Math.cos(th), q * Math.sin(th)); }
         return { start: r.start, count: r.count, per: f.per, n: f.n, path: f.path, cum: cum, len: cum[cum.length - 1], jit: jit }; }); });
+    if (debug) debug.push({ root: hero, shapes: shapes });
 
     // Panel entries, labels and the DOM
     var panels = Array.prototype.slice.call(hero.querySelectorAll(".cloud-item"));
@@ -478,8 +495,11 @@
     });
     hero.classList.add("has-cloud");
     hero.style.setProperty("--shapes", S);
-    var box = hero.querySelector(".hero-visual"), canvas = hero.querySelector(".cloud-canvas");
-    var track = hero.querySelector(".hero-track"), pin = hero.querySelector(".hero-pin");
+    // The element just grew (its track height depends on the shape count), so everything below it
+    // moved: tell the pinned stages and the other clouds to measure again.
+    window.dispatchEvent(new Event("cloud:mounted"));
+    var canvas = hero.querySelector(".cloud-canvas"), box = canvas.parentElement, lookY = parseFloat(hero.getAttribute("data-cloud-look")); if (isNaN(lookY)) lookY = -0.75;
+    var track = hero.querySelector(".hero-track") || hero, pin = hero.querySelector(".hero-pin, .stage-pin") || box;
 
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -563,7 +583,7 @@
       var ca = shapes[seg].cam, cb = shapes[Math.min(S - 1, seg + 1)].cam;
       var az = ca[0] + (cb[0] - ca[0]) * tt + Math.sin(now * 0.00018) * 0.05, el = ca[1] + (cb[1] - ca[1]) * tt, d = (ca[2] + (cb[2] - ca[2]) * tt) * Math.max(1, 0.9 / camera.aspect); // step back on narrow canvases
       camera.position.set(Math.sin(az) * Math.cos(el) * d, Math.sin(el) * d, Math.cos(az) * Math.cos(el) * d);
-      camera.lookAt(0, -0.75, 0);   // shapes sit in the upper part of the canvas, clear of the panel
+      camera.lookAt(0, lookY, 0);   // in the hero the shapes sit high, clear of the panel; data-cloud-look moves this
       renderer.render(scene, camera);
       // Labels follow their anchor points; a shape's labels fade out as it dissolves and in as the next forms.
       var wA = (1 - ease(tt / 0.3)) * wi, wB = ease((tt - 0.7) / 0.3) * wi, cw = box.clientWidth, ch = box.clientHeight;
@@ -587,6 +607,7 @@
     window.addEventListener("resize", function () { size(); measure(); start(); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
     window.addEventListener("load", measure);
+    window.addEventListener("cloud:mounted", measure);
     start();
-  }).catch(function (e) { hero.classList.remove("has-cloud"); if (window.console) console.warn("cloud off:", e && e.message); });
+  }
 })();

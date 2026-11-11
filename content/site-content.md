@@ -10,15 +10,19 @@ Revision 2 (Oct 2026): added the PLL and FPGA flight controller projects (from G
 
 Positioning: fab process, integration and equipment roles first; analog/RF design second. The AZO work leads; circuits come second.
 
-### Hero point cloud (revision 5, Nov 2026; shapes redrawn in revision 6; TIA shapes from the report in revision 7)
+### Hero point cloud (revision 5, Nov 2026; shapes redrawn in revision 6; TIA shapes moved to Circuits in revision 8)
 On desktop the hero pins and a point cloud morphs through shapes built from the site's numbers, with a panel per shape:
-- 1 of 4: wurtzite ZnO unit cell, ball and stick (hexagonal prism, Zn dark, O blue, bonds gray). Labels on the shape: Zn, O, "a 3.252 Å", "c 5.213 Å". Panel: 3.252 Å, "lattice constant a, single-phase wurtzite ZnO, XRD", link Process work.
-- 2 of 4: the 600-cycle film in cross-section on its substrate, a blue plane per Al cycle at 19:1, thickness bracket. Labels on the shape: "85 to 88 nm", "ZnO:Al", "Al cycle", "Si / glass". Panel: 85 to 88 nm, "thickness, all films, 600 cycles, 19:1 ZnO:Al shown".
-- (Tauc curves join once data/azo/tauc_*.csv exist. Panel: +0.23 eV, "optical band edge, 99:1 to 19:1".)
-- 3 of 5: the TIA signal chain, drawn from the ESE 5720 report schematics: photodiode model with 100 fF, 50 pF coupling, common-gate stage (NM0, 10 kΩ load, current source), differential pair with PMOS loads and tail, four common-source stages per path, source followers, 600 Ω load between VOP and VON. Blue pulses run along both signal paths. Labels: Photodiode, 100 fF, Common gate, Differential pair, Four common-source stages, Source follower, 1 V, VOP, VON, 600 Ω. Panel: 109 dBΩ, "transimpedance gain, 45 nm CMOS TIA. 1 V supply, 2.76 mW", link Circuits.
-- 4 of 5: input current and output voltage against time (report, transient simulation): photodiode current 2.67 µA peak to peak at 300 MHz above, VOP minus VON 594 mV peak to peak below, 20 ns shown, the sines travel. Panel: 594 mV, "differential output swing from 2.67 µA peak to peak at 300 MHz".
-- 5 of 5: transimpedance gain against frequency, digitized from the report's Spectre plot of VOP minus VON over the photodiode current. 100 kHz to 10 GHz, 0 to 120 dBΩ, the 104.7 dB line with dots at 2.31 MHz and 492.88 MHz, "109 dBΩ" over the plateau. Panel: 492 MHz, "upper −3 dB corner. Gain flat at 109 dBΩ from 2.31 MHz".
-- The diode and MOSFET I-V shape was removed in revision 7 at Girish's request. The hero track is 85vh per shape plus 40vh.
+- 1 of 2: wurtzite ZnO unit cell, ball and stick (hexagonal prism, Zn dark, O blue, bonds gray). Labels on the shape: Zn, O, "a 3.252 Å", "c 5.213 Å". Panel: 3.252 Å, "lattice constant a, single-phase wurtzite ZnO, XRD", link Process work.
+- 2 of 2: the 600-cycle film in cross-section on its substrate, a blue plane per Al cycle at 19:1, thickness bracket. Labels on the shape: "85 to 88 nm", "ZnO:Al", "Al cycle", "Si / glass". Panel: 85 to 88 nm, "thickness, all films, 600 cycles, 19:1 ZnO:Al shown".
+- (Tauc curves join as a third shape once data/azo/tauc_*.csv exist. Panel: +0.23 eV, "optical band edge, 99:1 to 19:1".)
+- The diode and MOSFET I-V shape was removed in revision 7 at Girish's request.
+
+### TIA case in Circuits (revision 8, Nov 2026)
+The TIA row became a pinned case like the AZO one: three steps on the left, the point cloud on the right, from the ESE 5720 report. Step copy (confirm or replace):
+- Signal chain. 109 dBΩ, "transimpedance gain, 282 kΩ". The existing row sentence, then: Photodiode model: a current source with 100 fF, 50 pF coupling. Common-gate input stage. Differential amplifier with active loads. Four cascaded common-source gain stages. Source-follower buffer into a 600 Ω load.
+- Output. 594 mV, "differential output swing, peak to peak". "Transient simulation: 2.67 µA peak to peak at 300 MHz in, 594 mV peak to peak across VOP and VON out."
+- Frequency response. 492 MHz, "upper −3 dB corner". "Gain flat at 109 dBΩ from 2.31 MHz to 492.88 MHz, from the Spectre AC sweep of VOP minus VON over the photodiode current."
+Shapes: the signal chain schematic (labels Photodiode, 100 fF, Common gate, Differential pair, Four common-source stages, Source follower, 1 V, VOP, VON, 600 Ω) with blue pulses on both paths; current in and voltage out against time, 20 ns, the sines travel; gain against frequency digitized from the report plot, 100 kHz to 10 GHz, the 104.7 dB line with dots at 2.31 MHz and 492.88 MHz. Static fallback: assets/img/tia-chain.png with the title "45 nm CMOS TIA. Signal chain." (confirm).
 Phones, reduced motion, and software GPUs keep the static hero figure.
 
 ### Hero

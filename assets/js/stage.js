@@ -1,11 +1,13 @@
-// Pinned stage for the AZO case study. On wide, tall screens the stage sticks for a few screens of
-// scroll: the ALD figure follows the scroll position and the text steps swap one after another.
+// Pinned stages (the AZO case study, the TIA case). On wide, tall screens a stage sticks for a few
+// screens of scroll: its figure follows the scroll position and the text steps swap one after another.
+// data-stage-at lists the progress values where the steps change (default 0.34 and 0.68).
 // Elsewhere (narrow or short screens, reduced motion) nothing pins and the content stacks.
 // Native scroll only: progress is read from scrollY on requestAnimationFrame.
 (function () {
   "use strict";
-  var stage = document.querySelector("[data-stage]");
-  if (!stage) return;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-stage]"), setup);
+  function setup(stage) {
+  var at = (stage.getAttribute("data-stage-at") || "0.34,0.68").split(",").map(parseFloat);
   var caseEl = stage.closest(".case") || stage.parentElement;
   var steps = Array.prototype.slice.call(stage.querySelectorAll(".stage-step"));
   var fig = stage.querySelector("[data-ald]");
@@ -35,7 +37,7 @@
     if (!active) return;
     var p = (window.scrollY - top) / span;
     p = p < 0 ? 0 : p > 1 ? 1 : p;
-    setStep(p < 0.34 ? 0 : p < 0.68 ? 1 : 2);
+    setStep(p < at[0] ? 0 : p < at[1] ? 1 : 2);
     if (fig && fig.ald) {
       var q = (p - 0.04) / 0.92; q = q < 0 ? 0 : q > 1 ? 1 : q;
       fig.ald.render(q * fig.ald.END);
@@ -70,6 +72,8 @@
   if (mq.addEventListener) mq.addEventListener("change", apply); else if (mq.addListener) mq.addListener(apply);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (active) { measure(); update(); } });
   window.addEventListener("load", function () { if (active) { measure(); update(); } });
+  window.addEventListener("cloud:mounted", function () { if (active) { measure(); update(); } });   // the hero grows when its cloud mounts
 
   apply();
+  }
 })();

@@ -6,7 +6,7 @@ cloud: true
 <!-- All text on this page comes from content/site-content.md. -->
 {% assign tauc_files = site.static_files | where_exp: "f", "f.path contains '/data/azo/tauc_'" %}
 
-<section class="hero" data-cloud data-tauc-files='[{% for f in tauc_files %}"{{ f.path | relative_url }}"{% unless forloop.last %},{% endunless %}{% endfor %}]'>
+<section class="hero" data-cloud data-cloud-shapes="lattice,film,tauc" data-tauc-files='[{% for f in tauc_files %}"{{ f.path | relative_url }}"{% unless forloop.last %},{% endunless %}{% endfor %}]'>
   <div class="hero-track">
     <div class="hero-pin">
       <div class="wrap hero-grid">
@@ -22,7 +22,7 @@ cloud: true
         <div class="hero-visual">
           <canvas class="cloud-canvas" aria-hidden="true"></canvas>
           <div class="cloud-panel" aria-live="polite">
-            <p class="cloud-step label">1 of 5</p>
+            <p class="cloud-step label">1 of 2</p>
             <div class="cloud-item is-on" data-key="lattice">
               <p class="cloud-num"><span data-value="3.252" data-dec="3" data-suffix=" Å">3.252 Å</span></p>
               <p class="cloud-label">lattice constant a, single-phase wurtzite ZnO, XRD</p>
@@ -38,21 +38,6 @@ cloud: true
               <p class="cloud-label">optical band edge, 99:1 to 19:1</p>
               <a class="cloud-link" href="#azo">Process work &rarr;</a>
             </div>
-            <div class="cloud-item" data-key="tia">
-              <p class="cloud-num"><span data-value="109" data-dec="0" data-suffix=" dBΩ">109 dBΩ</span></p>
-              <p class="cloud-label">transimpedance gain, 45 nm CMOS TIA. 1 V supply, 2.76 mW</p>
-              <a class="cloud-link" href="#circuits">Circuits &rarr;</a>
-            </div>
-            <div class="cloud-item" data-key="tiaout">
-              <p class="cloud-num"><span data-value="594" data-dec="0" data-suffix=" mV">594 mV</span></p>
-              <p class="cloud-label">differential output swing from 2.67 µA peak to peak at 300 MHz</p>
-              <a class="cloud-link" href="#circuits">Circuits &rarr;</a>
-            </div>
-            <div class="cloud-item" data-key="tiagain">
-              <p class="cloud-num"><span data-value="492" data-dec="0" data-suffix=" MHz">492 MHz</span></p>
-              <p class="cloud-label">upper −3 dB corner. Gain flat at 109 dBΩ from 2.31 MHz</p>
-              <a class="cloud-link" href="#circuits">Circuits &rarr;</a>
-            </div>
           </div>
           <div class="cloud-tags" aria-hidden="true">
             <span class="cloud-tag" data-key="lattice" data-at="zn" data-align="right">Zn</span>
@@ -63,47 +48,6 @@ cloud: true
             <span class="cloud-tag" data-key="film" data-at="film">ZnO:Al</span>
             <span class="cloud-tag cloud-tag--blue" data-key="film" data-at="al">Al cycle</span>
             <span class="cloud-tag" data-key="film" data-at="substrate">Si / glass</span>
-            <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="pd">Photodiode</span>
-            <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="cp">100 fF</span>
-            <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="cg" data-align="center">Common gate</span>
-            <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="dp" data-align="center">Differential pair</span>
-            <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="cs" data-align="center">Four common-source stages</span>
-            <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="sf" data-align="center">Source follower</span>
-            <span class="cloud-tag" data-key="tia" data-at="vdd" data-align="right">1 V</span>
-            <span class="cloud-tag cloud-tag--dim" data-key="tia" data-at="vop">VOP</span>
-            <span class="cloud-tag cloud-tag--dim" data-key="tia" data-at="von">VON</span>
-            <span class="cloud-tag" data-key="tia" data-at="load">600 Ω</span>
-            <span class="cloud-tag cloud-tag--blue" data-key="tiaout" data-at="iLabel">Photodiode current</span>
-            <span class="cloud-tag cloud-tag--dim" data-key="tiaout" data-at="vLabel">VOP − VON</span>
-            <span class="cloud-tag cloud-tag--blue" data-key="tiaout" data-at="ipp">2.67 µA</span>
-            <span class="cloud-tag cloud-tag--dim" data-key="tiaout" data-at="vpp">594 mV</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="i0" data-align="right">0</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="iunit" data-align="center" data-rotate="-90">I (µA)</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="vunit" data-align="center" data-rotate="-90">V (mV)</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="v0" data-align="right">0</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="vUp" data-align="right">300</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="vDn" data-align="right">−300</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="t0" data-align="center">0</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="t10" data-align="center">10</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="t20" data-align="center">20</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="tlabel" data-align="center">Time (ns)</span>
-            <span class="cloud-tag" data-key="tiaout" data-at="freq" data-align="right">300 MHz</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="f100k" data-align="center">100 kHz</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="f1m" data-align="center">1 MHz</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="f10m" data-align="center">10 MHz</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="f100m" data-align="center">100 MHz</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="f1g" data-align="center">1 GHz</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="f10g" data-align="center">10 GHz</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="g0" data-align="right">0</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="g40" data-align="right">40</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="g80" data-align="right">80</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="g120" data-align="right">120</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="xlabel" data-align="center">Frequency (Hz)</span>
-            <span class="cloud-tag" data-key="tiagain" data-at="ylabel" data-align="center" data-rotate="-90">Transimpedance gain (dBΩ)</span>
-            <span class="cloud-tag cloud-tag--chip cloud-tag--dim" data-key="tiagain" data-at="plateau" data-align="center">109 dBΩ</span>
-            <span class="cloud-tag cloud-tag--chip cloud-tag--blue" data-key="tiagain" data-at="lo" data-align="right">2.31 MHz</span>
-            <span class="cloud-tag cloud-tag--chip cloud-tag--blue" data-key="tiagain" data-at="hi">492.88 MHz</span>
-            <span class="cloud-tag cloud-tag--blue" data-key="tiagain" data-at="m3">−3 dB</span>
           </div>
           {% include fig-tauc.html %}
         </div>
@@ -205,20 +149,96 @@ cloud: true
     <header class="section-head" data-anim="rise">
       <h2>Circuits</h2>
     </header>
-    <ol class="rows">
-      <li data-anim="rise">
-        <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">109 dBΩ<small>transimpedance gain</small></div>
-        <div class="row-body">
-          <h3 class="row-title">Wideband transimpedance amplifier, 45 nm CMOS <span class="row-year">Aug to Dec 2025</span></h3>
-          <p>A 1 V CMOS TIA for photodiode front ends: ~492 MHz bandwidth, ~4.5e-14 A²/Hz input-referred noise, 2.76 mW. Designed and simulated in Cadence Virtuoso and Spectre.</p>
-          {% if tauc_files.size > 0 %}
-          <figure class="fig row-fig" data-anim="draw">
-            <p class="fig-title"><b>45 nm CMOS TIA.</b> Spectre simulation, 1 V supply.</p>
-            {% include fig-tia.svg %}
-          </figure>
-          {% endif %}
+    <article class="case case--tia" id="tia">
+      <header class="case-head" data-anim="rise">
+        <h3>Wideband transimpedance amplifier, 45 nm CMOS</h3>
+        <span class="meta">ESE 5720, Aug to Dec 2025</span>
+      </header>
+      <div class="stage" data-stage data-stage-at="0.25,0.75" style="--steps: 3" data-cloud data-cloud-shapes="tia,tiaout,tiagain" data-cloud-look="0.05" data-cloud-mq="(min-width: 1024px) and (min-height: 860px) and (prefers-reduced-motion: no-preference)">
+        <div class="stage-pin">
+          <div class="stage-grid">
+            <div class="stage-steps">
+              <div class="stage-step is-active" data-step="0">
+                <p class="stage-label">Signal chain</p>
+                <p class="row-metric">109 dBΩ<small>transimpedance gain, 282 kΩ</small></p>
+                <p class="case-intro">A 1 V CMOS TIA for photodiode front ends: ~492 MHz bandwidth, ~4.5e-14 A²/Hz input-referred noise, 2.76 mW. Designed and simulated in Cadence Virtuoso and Spectre.</p>
+                <ul class="steps">
+                  <li>Photodiode model: a current source with 100 fF, 50 pF coupling.</li>
+                  <li>Common-gate input stage.</li>
+                  <li>Differential amplifier with active loads.</li>
+                  <li>Four cascaded common-source gain stages.</li>
+                  <li>Source-follower buffer into a 600 Ω load.</li>
+                </ul>
+              </div>
+              <div class="stage-step" data-step="1">
+                <p class="stage-label">Output</p>
+                <p class="row-metric">594 mV<small>differential output swing, peak to peak</small></p>
+                <p class="case-intro">Transient simulation: 2.67 µA peak to peak at 300 MHz in, 594 mV peak to peak across VOP and VON out.</p>
+              </div>
+              <div class="stage-step" data-step="2">
+                <p class="stage-label">Frequency response</p>
+                <p class="row-metric">492 MHz<small>upper −3 dB corner</small></p>
+                <p class="case-intro">Gain flat at 109 dBΩ from 2.31 MHz to 492.88 MHz, from the Spectre AC sweep of VOP minus VON over the photodiode current.</p>
+              </div>
+            </div>
+            <div class="stage-fig">
+              <div class="cloud-box">
+                <canvas class="cloud-canvas" aria-hidden="true"></canvas>
+                <div class="cloud-tags" aria-hidden="true">
+                  <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="pd">Photodiode</span>
+                  <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="cp">100 fF</span>
+                  <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="cg" data-align="center">Common gate</span>
+                  <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="dp" data-align="center">Differential pair</span>
+                  <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="cs" data-align="center">Four common-source stages</span>
+                  <span class="cloud-tag cloud-tag--chip" data-key="tia" data-at="sf" data-align="center">Source follower</span>
+                  <span class="cloud-tag" data-key="tia" data-at="vdd" data-align="right">1 V</span>
+                  <span class="cloud-tag cloud-tag--dim" data-key="tia" data-at="vop">VOP</span>
+                  <span class="cloud-tag cloud-tag--dim" data-key="tia" data-at="von">VON</span>
+                  <span class="cloud-tag" data-key="tia" data-at="load">600 Ω</span>
+                  <span class="cloud-tag cloud-tag--blue" data-key="tiaout" data-at="iLabel">Photodiode current</span>
+                  <span class="cloud-tag cloud-tag--dim" data-key="tiaout" data-at="vLabel">VOP − VON</span>
+                  <span class="cloud-tag cloud-tag--blue" data-key="tiaout" data-at="ipp">2.67 µA</span>
+                  <span class="cloud-tag cloud-tag--dim" data-key="tiaout" data-at="vpp">594 mV</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="i0" data-align="right">0</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="iunit" data-align="center" data-rotate="-90">I (µA)</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="vunit" data-align="center" data-rotate="-90">V (mV)</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="v0" data-align="right">0</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="vUp" data-align="right">300</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="vDn" data-align="right">−300</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="t0" data-align="center">0</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="t10" data-align="center">10</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="t20" data-align="center">20</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="tlabel" data-align="center">Time (ns)</span>
+                  <span class="cloud-tag" data-key="tiaout" data-at="freq" data-align="right">300 MHz</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="f100k" data-align="center">100 kHz</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="f1m" data-align="center">1 MHz</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="f10m" data-align="center">10 MHz</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="f100m" data-align="center">100 MHz</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="f1g" data-align="center">1 GHz</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="f10g" data-align="center">10 GHz</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="g0" data-align="right">0</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="g40" data-align="right">40</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="g80" data-align="right">80</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="g120" data-align="right">120</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="xlabel" data-align="center">Frequency (Hz)</span>
+                  <span class="cloud-tag" data-key="tiagain" data-at="ylabel" data-align="center" data-rotate="-90">Transimpedance gain (dBΩ)</span>
+                  <span class="cloud-tag cloud-tag--chip cloud-tag--dim" data-key="tiagain" data-at="plateau" data-align="center">109 dBΩ</span>
+                  <span class="cloud-tag cloud-tag--chip cloud-tag--blue" data-key="tiagain" data-at="lo" data-align="right">2.31 MHz</span>
+                  <span class="cloud-tag cloud-tag--chip cloud-tag--blue" data-key="tiagain" data-at="hi">492.88 MHz</span>
+                  <span class="cloud-tag cloud-tag--blue" data-key="tiagain" data-at="m3">−3 dB</span>
+                </div>
+                <figure class="fig fig--static">
+                  <p class="fig-title"><b>45 nm CMOS TIA.</b> Signal chain.</p>
+                  <img src="{{ '/assets/img/tia-chain.png' | relative_url }}" width="1352" height="960" alt="Schematic of the TIA signal chain: photodiode model, common-gate stage, differential pair, four common-source stages per path, source followers, 600 Ω load" loading="lazy">
+                </figure>
+              </div>
+            </div>
+          </div>
         </div>
-      </li>
+      </div>
+    </article>
+
+    <ol class="rows" style="margin-top: 40px">
       <li data-anim="rise">
         <div class="row-metric" data-anim="count" data-anim-start=".8" data-anim-span=".35">4.44 GHz<small>output clock</small></div>
         <div class="row-body">
