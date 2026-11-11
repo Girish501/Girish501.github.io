@@ -15,8 +15,8 @@ On desktop the hero pins and a point cloud morphs through shapes built from the 
 - 1 of 4: wurtzite ZnO unit cell, ball and stick (hexagonal prism, Zn dark, O blue, bonds gray). Labels on the shape: Zn, O, "a 3.252 Å", "c 5.213 Å". Panel: 3.252 Å, "lattice constant a, single-phase wurtzite ZnO, XRD", link Process work.
 - 2 of 4: the 600-cycle film in cross-section on its substrate, a blue plane per Al cycle at 19:1, thickness bracket. Labels on the shape: "85 to 88 nm", "ZnO:Al", "Al cycle", "Si / glass". Panel: 85 to 88 nm, "thickness, all films, 600 cycles, 19:1 ZnO:Al shown".
 - (Tauc curves join once data/azo/tauc_*.csv exist. Panel: +0.23 eV, "optical band edge, 99:1 to 19:1".)
-- 3 of 4: fitted diode and MOSFET I-V, 0.02 to 4 A. Panel: 65.1 mΩ, "RDS(on), fitted. STPS360AF diode and IRLML0040 MOSFET, 0.02 to 4 A", link Hardware and power.
-- 4 of 4: TIA gain curve. Panel: 109 dBΩ, "transimpedance gain, 45 nm CMOS TIA", link Circuits.
+- 3 of 4: fitted diode and MOSFET I-V, 0.02 to 4 A, as a chart. Axes "Voltage (V)" 0 to 0.6 and "Current (A)" 0 to 4, grid, series labels "STPS360AF diode" and "IRLML0040 MOSFET", marks "VFWD 0.330 V" and "RDS(on) 65.1 mΩ". Panel: 65.1 mΩ, "RDS(on), fitted. STPS360AF diode and IRLML0040 MOSFET, 0.02 to 4 A", link Hardware and power.
+- 4 of 4: TIA gain against frequency, as a chart. Axes "Frequency (Hz)" 1 MHz to 10 GHz and "Transimpedance gain (dBΩ)" 80 to 120, grid, marks "109 dBΩ" and "−3 dB at 492 MHz". Panel: 109 dBΩ, "transimpedance gain, 45 nm CMOS TIA", link Circuits.
 Phones, reduced motion, and software GPUs keep the static hero figure.
 
 ### Hero

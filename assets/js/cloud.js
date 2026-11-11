@@ -188,37 +188,73 @@
     return build(parts, tags);
   }
 
-  // Points along a curve given as [x,y] in scene units, with a tube radius and a z offset.
-  function curve(fn, radius, z, color) {
-    return function () { var s = rnd(), xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius * 2, color, 1]; };
+  // Charts. A flat chart in the x-y plane: ink axes with ticks, a light grid, and curves as thin
+  // tubes. Values are mapped to the box X0..X1 by Y0..Y1; labels are HTML tags anchored to points.
+  var X0 = -1.95, X1 = 2.25, Y0 = -1.4, Y1 = 1.9;
+  function chart(xs, ys) {
+    var parts = [];
+    xs.forEach(function (x) { parts.push({ w: 0.08, emit: rod([x, Y0, -0.02], [x, Y1, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([x, Y0 - 0.07, 0], [x, Y0, 0], 0.012, INK, 0.9 * COV) }); });
+    ys.forEach(function (y) { parts.push({ w: 0.1, emit: rod([X0, y, -0.02], [X1, y, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([X0 - 0.07, y, 0], [X0, y, 0], 0.012, INK, 0.9 * COV) }); });
+    parts.push({ w: 0.4, emit: rod([X0, Y0, 0], [X1, Y0, 0], 0.012, INK, 0.9 * COV) });
+    parts.push({ w: 0.32, emit: rod([X0, Y0, 0], [X0, Y1, 0], 0.012, INK, 0.9 * COV) });
+    return parts;
   }
-  var axes = [{ w: 0.04, emit: rod([-3.2, -1.8, 0], [3.2, -1.8, 0], 0.03, LIGHT, 1) }, { w: 0.04, emit: rod([-3.2, -1.8, 0], [-3.2, 1.8, 0], 0.03, LIGHT, 1) }];
+  // Points along a curve given as [x,y] in scene units, as a tube of the given radius at depth z.
+  function curve(fn, radius, z, color) {
+    return function () { var s = rnd(), xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius, color, 1.1 * COV]; };
+  }
+  function disc(c, r, color) {
+    return function () { var th = rnd() * 6.2832, q = r * Math.sqrt(rnd()); return [c[0] + q * Math.cos(th), c[1] + q * Math.sin(th), c[2], color, 1.1 * COV]; };
+  }
 
+  // Diode and MOSFET I-V, 0.02 to 4 A: the fitted models V = VFWD + RON I and V = RDS I.
+  var CAM_IV = [0.14, 0.1, 11];
   function shapeIV() {
-    var fx = function (v) { return v / 0.65 * 6.4 - 3.2; }, fy = function (a) { return a / I_MAX * 3.6 - 1.8; };
+    var VMAX = 0.65, fx = function (v) { return X0 + v / VMAX * (X1 - X0); }, fy = function (a) { return Y0 + a / I_MAX * (Y1 - Y0); };
     var diode = function (s) { var a = I_MIN + s * (I_MAX - I_MIN); return [fx(VFWD + RON * a), fy(a)]; };
     var mos = function (s) { var a = I_MIN + s * (I_MAX - I_MIN); return [fx(RDS * a), fy(a)]; };
-    return build(axes.concat([{ w: 0.46, emit: curve(diode, 0.11, 0.9, BLUE) }, { w: 0.46, emit: curve(mos, 0.11, -0.9, INK) }]));
+    var parts = chart([0.1, 0.2, 0.3, 0.4, 0.5, 0.6].map(fx), [1, 2, 3, 4].map(fy));
+    parts.push({ w: 1.0, emit: curve(diode, 0.03, 0.03, BLUE) });
+    parts.push({ w: 1.0, emit: curve(mos, 0.03, 0.03, INK) });
+    parts.push({ w: 0.06, emit: disc([fx(VFWD), Y0, 0.04], 0.07, BLUE) });
+    var tags = {
+      origin: { p: [X0, Y0, 0], dx: -6, dy: 12 }, x02: { p: [fx(0.2), Y0, 0], dy: 12 }, x04: { p: [fx(0.4), Y0, 0], dy: 12 }, x06: { p: [fx(0.6), Y0, 0], dy: 12 },
+      y2: { p: [X0, fy(2), 0], dx: -8 }, y4: { p: [X0, fy(4), 0], dx: -8 },
+      xlabel: { p: [(X0 + X1) / 2, Y0, 0], dy: 34 }, ylabel: { p: [X0, (Y0 + Y1) / 2, 0], dx: -44 },
+      diode: { p: [fx(VFWD + RON * I_MAX), Y1, 0], dy: -13 }, mosfet: { p: [fx(RDS * I_MAX), Y1, 0], dy: -13 },
+      vfwd: { p: [fx(VFWD + RON * 0.45), fy(0.45), 0], dx: 10 }, rds: { p: [fx(RDS * 2.4), fy(2.4), 0], dx: 10 }
+    };
+    return build(parts, tags);
   }
 
+  // TIA transimpedance gain against frequency: flat at 109 dBΩ, 3 dB down at 492 MHz.
+  var CAM_TIA = [-0.1, 0.12, 11];
   function shapeTIA() {
-    var fx = function (lg) { return (lg - 6) / 4 * 6.4 - 3.2; }, fy = function (db) { return (db - 70) / 50 * 3.6 - 1.8; };
+    var fx = function (lg) { return X0 + (lg - 6) / 4 * (X1 - X0); }, fy = function (db) { return Y0 + (db - 70) / 50 * (Y1 - Y0); };
     var gain = function (lg) { var f = Math.pow(10, lg); return TIA_GAIN - 10 * Math.log10(1 + (f / TIA_FC) * (f / TIA_FC)); };
-    var ribbon = function (s) { var lg = 6 + s * 4; return [fx(lg), fy(gain(lg))]; };
-    var fc = [fx(Math.log10(TIA_FC)), fy(gain(Math.log10(TIA_FC)))];
-    var marker = function () { var th = rnd() * 6.2832, r = 0.26 * Math.sqrt(rnd()); return [fc[0] + r * Math.cos(th), fc[1] + r * Math.sin(th), 0.2, BLUE, 1]; };
-    return build(axes.concat([{ w: 0.8, emit: curve(ribbon, 0.12, 0, INK) }, { w: 0.12, emit: marker }]));
+    var lgc = Math.log10(TIA_FC), fc = [fx(lgc), fy(gain(lgc))];
+    var parts = chart([7, 8, 9].map(fx), [80, 90, 100, 110, 120].map(fy));
+    parts.push({ w: 1.4, emit: curve(function (s) { var lg = 6 + s * 4; return [fx(lg), fy(gain(lg))]; }, 0.03, 0.03, INK) });
+    parts.push({ w: 0.2, emit: rod([fc[0], Y0, 0.01], [fc[0], fc[1], 0.01], 0.008, BLUE, 0.9 * COV) });
+    parts.push({ w: 0.07, emit: disc([fc[0], fc[1], 0.05], 0.08, BLUE) });
+    var tags = {
+      f1m: { p: [fx(6), Y0, 0], dy: 12 }, f10m: { p: [fx(7), Y0, 0], dy: 12 }, f100m: { p: [fx(8), Y0, 0], dy: 12 }, f1g: { p: [fx(9), Y0, 0], dy: 12 }, f10g: { p: [fx(10), Y0, 0], dy: 12 },
+      g80: { p: [X0, fy(80), 0], dx: -8 }, g100: { p: [X0, fy(100), 0], dx: -8 }, g120: { p: [X0, fy(120), 0], dx: -8 },
+      xlabel: { p: [(X0 + X1) / 2, Y0, 0], dy: 34 }, ylabel: { p: [X0, (Y0 + Y1) / 2, 0], dx: -48 },
+      plateau: { p: [fx(6.1), fy(TIA_GAIN), 0], dx: 6, dy: -13 }, corner: { p: fc, dx: 12, dy: -8 }
+    };
+    return build(parts, tags);
   }
 
   function shapeTauc(series) {
     var xmin = 1e9, xmax = -1e9, ymax = 0;
     series.forEach(function (s) { s.rows.forEach(function (r) { xmin = Math.min(xmin, r[0]); xmax = Math.max(xmax, r[0]); ymax = Math.max(ymax, r[1]); }); });
-    var parts = axes.slice();
+    var parts = chart([], []);
     series.forEach(function (s, si) {
       var rows = s.rows;
-      var fn = function (t) { var i = Math.min(rows.length - 2, Math.floor(t * (rows.length - 1))), f = t * (rows.length - 1) - i, a = rows[i], b = rows[i + 1]; var x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f; return [(x - xmin) / (xmax - xmin) * 6.4 - 3.2, y / ymax * 3.6 - 1.8]; };
+      var fn = function (t) { var i = Math.min(rows.length - 2, Math.floor(t * (rows.length - 1))), f = t * (rows.length - 1) - i, a = rows[i], b = rows[i + 1]; var x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f; return [X0 + (x - xmin) / (xmax - xmin) * (X1 - X0), Y0 + y / ymax * (Y1 - Y0)]; };
       var k = series.length > 1 ? si / (series.length - 1) : 0;
-      parts.push({ w: 0.92 / series.length, emit: curve(fn, 0.07, (k - 0.5) * 1.6, shade(BLUE, 0.6 + 0.9 * (1 - k))) });
+      parts.push({ w: 1.2 / series.length, emit: curve(fn, 0.025, 0.03 + 0.02 * si, shade(BLUE, 0.6 + 0.9 * (1 - k))) });
     });
     return build(parts);
   }
@@ -259,9 +295,9 @@
       { key: "lattice", build: shapeLattice, cam: CAM_LATTICE },
       { key: "film", build: shapeFilm, cam: CAM_FILM }
     ];
-    if (tauc) shapes.push({ key: "tauc", build: function () { return shapeTauc(tauc); }, cam: [0.35, 0.22, 9.0] });
-    shapes.push({ key: "iv", build: shapeIV, cam: [0.18, 0.14, 9.2] });
-    shapes.push({ key: "tia", build: shapeTIA, cam: [-0.12, 0.18, 9.2] });
+    if (tauc) shapes.push({ key: "tauc", build: function () { return shapeTauc(tauc); }, cam: [0.2, 0.12, 11] });
+    shapes.push({ key: "iv", build: shapeIV, cam: CAM_IV });
+    shapes.push({ key: "tia", build: shapeTIA, cam: CAM_TIA });
     var S = shapes.length;
     shapes.forEach(function (s) { var g = s.build(); s.pos = g.pos; s.col = g.col; s.siz = g.siz; s.tags = g.tags; });
 
@@ -274,7 +310,7 @@
     Array.prototype.forEach.call(hero.querySelectorAll(".cloud-tag"), function (el) {
       var si = -1; shapes.forEach(function (s, i) { if (s.key === el.getAttribute("data-key")) si = i; });
       var spec = si >= 0 && shapes[si].tags[el.getAttribute("data-at")];
-      if (spec) tags.push({ el: el, shape: si, p: new THREE.Vector3(spec.p[0], spec.p[1], spec.p[2]), dx: spec.dx || 0, dy: spec.dy || 0, align: el.getAttribute("data-align") === "right" ? "-100%" : el.getAttribute("data-align") === "center" ? "-50%" : "0", on: false });
+      if (spec) tags.push({ el: el, shape: si, p: new THREE.Vector3(spec.p[0], spec.p[1], spec.p[2]), dx: spec.dx || 0, dy: spec.dy || 0, tail: (el.hasAttribute("data-rotate") ? " rotate(" + el.getAttribute("data-rotate") + "deg)" : "") + " translate(" + (el.getAttribute("data-align") === "right" ? "-100%" : el.getAttribute("data-align") === "center" ? "-50%" : "0") + ",-50%)", on: false });
     });
     hero.classList.add("has-cloud");
     hero.style.setProperty("--shapes", S);
@@ -350,7 +386,7 @@
         var g = tags[i], w = g.shape === seg ? wA : g.shape === seg + 1 ? wB : 0;
         if (w < 0.02) { if (g.on) { g.el.style.opacity = 0; g.on = false; } continue; }
         proj.copy(g.p).project(camera);
-        g.el.style.transform = "translate(" + ((proj.x + 1) / 2 * cw + g.dx).toFixed(1) + "px," + ((1 - proj.y) / 2 * ch + g.dy).toFixed(1) + "px) translate(" + g.align + ",-50%)";
+        g.el.style.transform = "translate(" + ((proj.x + 1) / 2 * cw + g.dx).toFixed(1) + "px," + ((1 - proj.y) / 2 * ch + g.dy).toFixed(1) + "px)" + g.tail;
         g.el.style.opacity = w.toFixed(2); g.on = true;
       }
       // Panel: the nearer shape. Its number counts up as the shape comes into focus and then holds.

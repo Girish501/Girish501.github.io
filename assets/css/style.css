@@ -157,8 +157,10 @@ main { padding-top: var(--nav-h); }
   box-shadow: 0 1px 2px rgba(23, 24, 26, .04), 0 12px 32px -20px rgba(23, 24, 26, .18);
 }
 .hero.has-cloud .cloud-tags { display: block; position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.cloud-tag { position: absolute; left: 0; top: 0; font-size: 13px; line-height: 1.2; color: var(--muted); white-space: nowrap; opacity: 0; will-change: transform, opacity; font-variant-numeric: tabular-nums; }
+.cloud-tag { position: absolute; left: 0; top: 0; transform-origin: 0 0; font-size: 13px; line-height: 1.2; color: var(--muted); white-space: nowrap; opacity: 0; will-change: transform, opacity; font-variant-numeric: tabular-nums; }
 .cloud-tag--dim { color: var(--ink); }
+.cloud-tag--chip { padding: 1px 5px; border-radius: 4px; background: rgba(248, 247, 243, .88); }
+.cloud-tag sub { font-size: 11px; }
 .cloud-tag--blue { color: var(--accent); }
 .cloud-step { margin-bottom: 6px; }
 .cloud-item { display: none; }
