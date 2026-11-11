@@ -189,14 +189,14 @@ main { padding-top: var(--nav-h); }
 .ald-rows line { stroke: var(--line-strong); stroke-width: 1; }
 .ald-block { fill: var(--ink); }
 .ald-block.al { fill: var(--accent); }
-.ald-axis { font-size: 13px; }
+.ald .ald-dur text { font-size: 13px; }
 .ald-film { fill: var(--line); stroke: var(--ink); stroke-width: 1; }
 .ald-sub { fill: var(--paper-2); stroke: var(--line-strong); stroke-width: 1; }
 .ald-al { stroke: var(--accent); stroke-width: 1.5; }
 @media (max-width: 640px) {
   .ald { grid-template-columns: 1fr; gap: 12px; }
   .ald text { font-size: 16px; }   /* viewBox units: about 14px on a 390px phone */
-  .ald .ald-axis { font-size: 15px; }
+  .ald .ald-dur text { font-size: 15px; }
 }
 
 /* ---------- Process work: case study ---------- */

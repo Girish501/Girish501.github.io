@@ -41,7 +41,7 @@ Process work, Circuits, Hardware and power, Experience, Tools, About, Contact.
 - Then ESE 5360 device fabrication, led by 23 nm (DSA feature height).
 
 ### ALD supercycle figure (in the case study)
-Title: the process line, verbatim. Left: one cycle, rows DEZ, TMA, H2O, purge, label "one cycle"; status lines "ZnO cycle k of N", "Al cycle", "supercycle k of S". Right: film on "Si / glass · 200 °C", a blue line per Al cycle, counter to "600 cycles · 85 to 88 nm". Ratio buttons 99:1 to 9:1 and Replay.
+Title: the process line, verbatim. Left: one cycle, rows DEZ, TMA, H2O, N2 purge, with the recipe times under the blocks (DEZ 0.02 s, N2 purge 10 s, H2O 0.015 s, N2 purge 10 s; TMA 0.02 s). Substrate line: Si / glass · 200 °C · N2 carrier 20 sccm. From the Savannah recipe screen (200C_AZO_LB.txt); status lines "ZnO cycle k of N", "Al cycle", "supercycle k of S". Right: film on "Si / glass · 200 °C", a blue line per Al cycle, counter to "600 cycles · 85 to 88 nm". Ratio buttons 99:1 to 9:1 and Replay.
 
 ### Circuits
 TIA (109 dBΩ lead, static plot), PLL, SRAM, compute-in-memory.

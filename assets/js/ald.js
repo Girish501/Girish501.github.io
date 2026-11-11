@@ -10,7 +10,8 @@
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var NS = "http://www.w3.org/2000/svg";
   var TOTAL = 600;
-  var SLOT = 63.5, X0 = 92;
+  // Slot widths for pulse, purge, pulse, purge (not to scale: the pulses are 0.02 and 0.015 s, the purges 10 s).
+  var SLOTW = [26, 95, 26, 95];
   var FILM_TOP = 36, FILM_BOTTOM = 236, FILM_H = FILM_BOTTOM - FILM_TOP;
 
   var $ = function (id) { return document.getElementById(id); };
@@ -20,11 +21,11 @@
   var n = parseInt(fig.getAttribute("data-ratio"), 10) || 19;
   var lineEls = [], raf = 0, t0 = 0, played = false;
 
-  // Phase boundaries in ms.
-  var STEP = 450;
-  var A = 4 * STEP;          // ZnO cycle 1, step by step
+  // Phase boundaries in ms. Pulse steps play short, purge steps long, like the recipe.
+  var STEPS = [300, 600, 300, 600], CUM = [0, 300, 900, 1200, 1800];
+  var A = CUM[4];            // ZnO cycle 1, step by step
   var B = A + 1600;          // ZnO cycles 2..N, fast
-  var C = B + 4 * STEP;      // Al cycle, step by step
+  var C = B + CUM[4];        // Al cycle, step by step
   var D = C + 3000;          // remaining supercycles, fast
   var END = D + 400;
 
@@ -48,8 +49,15 @@
     bAl.setAttribute("opacity", isAl ? (step < 0 ? 1 : step > 0 ? .45 : step === 0 ? 1 : 0) : 0);
     for (var i = 1; i < 4; i++) b[i].setAttribute("opacity", step < 0 ? dim : i < step ? .45 : i === step ? 1 : 0);
     var cur = isAl && step === 0 ? bAl : (step >= 0 ? b[step] : null);
-    [b[0], b[1], b[2], b[3], bAl].forEach(function (r) { r.setAttribute("width", SLOT); });
-    if (cur) cur.setAttribute("width", Math.max(2, SLOT * frac));
+    for (var j = 0; j < 4; j++) b[j].setAttribute("width", SLOTW[j]);
+    bAl.setAttribute("width", SLOTW[0]);
+    if (cur) cur.setAttribute("width", Math.max(2, SLOTW[step] * frac));
+  }
+
+  // Which step of a cycle is playing at local time u (0..1800), and how far into it.
+  function stepAt(u) {
+    var s = 0; while (s < 3 && u >= CUM[s + 1]) s++;
+    return { step: s, frac: (u - CUM[s]) / STEPS[s] };
   }
 
   function setFilm(cycles) {
@@ -63,7 +71,7 @@
     var supers = Math.round(TOTAL / (n + 1));
     var cycles, step, frac;
     if (t < A) {                                   // ZnO cycle 1
-      step = Math.min(3, Math.floor(t / STEP)); frac = (t - step * STEP) / STEP;
+      var sa = stepAt(t); step = sa.step; frac = sa.frac;
       setBlocks("zno", step, frac, 0); cycles = step === 3 && frac > .9 ? 1 : 0;
       tCycle.textContent = "ZnO cycle 1 of " + n; tSuper.textContent = "supercycle 1 of " + supers;
     } else if (t < B) {                            // ZnO cycles 2..n, fast
@@ -71,7 +79,7 @@
       setBlocks("zno", -1, 1, .35);
       tCycle.textContent = "ZnO cycle " + Math.max(1, cycles) + " of " + n; tSuper.textContent = "supercycle 1 of " + supers;
     } else if (t < C) {                            // Al cycle, step by step
-      step = Math.min(3, Math.floor((t - B) / STEP)); frac = ((t - B) - step * STEP) / STEP;
+      var sc = stepAt(t - B); step = sc.step; frac = sc.frac;
       setBlocks("al", step, frac, 0); cycles = n + (step === 3 && frac > .9 ? 1 : 0);
       tCycle.textContent = "Al cycle"; tSuper.textContent = "supercycle 1 of " + supers;
     } else if (t < D) {                            // remaining supercycles, fast
