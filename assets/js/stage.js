@@ -10,7 +10,7 @@
   var steps = Array.prototype.slice.call(stage.querySelectorAll(".stage-step"));
   var fig = stage.querySelector("[data-ald]");
   var pin = stage.querySelector(".stage-pin");
-  var mq = window.matchMedia("(min-width: 1024px) and (min-height: 800px) and (prefers-reduced-motion: no-preference)");
+  var mq = window.matchMedia("(min-width: 1024px) and (min-height: 860px) and (prefers-reduced-motion: no-preference)");
   var nav = 60;
   var active = false, ticking = false, top = 0, span = 1, current = -1;
 

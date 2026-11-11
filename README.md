@@ -29,7 +29,7 @@ Add CSV files to `data/azo/`, one per Al ratio, named `tauc_99-1.csv`, `tauc_49-
 
 ## Pinned stage
 
-On wide, tall screens (1024 px wide and 800 px tall or more) the AZO case study pins for about three screens of scroll. The ALD figure follows the scroll position and the three text steps (What and why, Process, Results) swap in turn. On smaller screens and under reduced motion nothing pins and the content stacks. Thresholds are at the top of `assets/js/stage.js`.
+On wide, tall screens (1024 px wide and 860 px tall or more) the AZO case study pins for about three screens of scroll. The ALD figure follows the scroll position and the three text steps (What and why, Process, Results) swap in turn. On smaller screens and under reduced motion nothing pins and the content stacks. Thresholds are at the top of `assets/js/stage.js`.
 
 ## ALD supercycle figure
 
