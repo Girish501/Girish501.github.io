@@ -1,0 +1,22 @@
+{%- comment -%}
+Hero figure. Jekyll lists every data/azo/tauc_<ratio>.csv in the repo; tauc.js fetches them in the
+browser and draws the curves. Nothing is drawn from placeholder data: when no CSV files exist, the
+TIA figure renders instead. Ratios listed in _config.yml under tauc_dashed draw dashed with the footnote.
+{%- endcomment -%}
+{%- assign tauc_files = site.static_files | where_exp: "f", "f.path contains '/data/azo/tauc_'" -%}
+{%- if tauc_files.size > 0 -%}
+<figure class="fig enter" style="--i:2" data-tauc='[{% for f in tauc_files %}{"url":"{{ f.path | relative_url }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]' data-dashed="{{ site.tauc_dashed }}" data-footnote="{{ site.tauc_footnote }}">
+  <p class="fig-title"><b>Tauc plots, ZnO:Al by ALD.</b> 600 cycles at 200 °C, one curve per Al ratio.</p>
+  <div class="fig-slot" style="aspect-ratio: 560 / 360"></div>
+</figure>
+<figure class="fig fig--fallback enter" style="--i:2" hidden>
+  <p class="fig-title"><b>45 nm CMOS TIA.</b> Spectre simulation, 1 V supply.</p>
+  {% include fig-tia.svg %}
+</figure>
+<script src="{{ '/assets/js/tauc.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+{%- else -%}
+<figure class="fig enter" style="--i:2">
+  <p class="fig-title"><b>45 nm CMOS TIA.</b> Spectre simulation, 1 V supply.</p>
+  {% include fig-tia.svg %}
+</figure>
+{%- endif -%}

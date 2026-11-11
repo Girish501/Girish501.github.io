@@ -6,6 +6,58 @@ Revision 3 (Nov 2026): redesign. Light paper page, Instrument Serif and Instrume
 
 Revision 2 (Oct 2026): added the PLL and FPGA flight controller projects (from Girish's GitHub repos), device descriptions for NeuroSense and NeuroBand (from the Elektor and Circuit Digest contest pages), the availability line, and rewritten Experience prose. Removed coursework, the resume download, the Awards section, and the separate Contact page.
 
+## Revision 4 (Nov 2026): positioning and copy
+
+Positioning: fab process, integration and equipment roles first; analog/RF design second. The AZO work leads; circuits come second.
+
+### Hero
+- Statement: I develop thin-film processes at Penn's nanofab and design analog circuits.
+- Sub text: MSE Electrical Engineering, University of Pennsylvania, May 2027. Graduate Student Fellow at the Quattrone Nanofabrication Facility, developing aluminum-doped zinc oxide by ALD and sputtering as an indium-free ITO replacement.
+- Facts line: Open to process, integration and equipment engineering, and analog/RF design roles, 2027 · Will relocate anywhere in the US
+- Figure: AZO Tauc plots from data/azo/tauc_<ratio>.csv once they exist (one curve per Al ratio, drawn 99:1 to 9:1, then a marker from 3.35 to 3.58 eV labeled +0.23 eV; 29:1 dashed with a footnote if off-trend). Until then, the TIA figure. Never placeholder curves. Every axis gets a label with units.
+
+### Section order
+Process work, Circuits, Hardware and power, Experience, Tools, About, Contact.
+
+### Process work: AZO case study
+- Title: Aluminum-doped zinc oxide by ALD and sputtering
+- Intro: I am developing aluminum-doped zinc oxide (AZO) by ALD and sputtering as an indium-free ITO replacement. I grow ZnO:Al films on a Cambridge NanoTech Savannah S200 ALD tool, fit each film's optical response with spectroscopic ellipsometry in WVASE, and use XRD and my own Python analysis to tie doping level to film properties.
+- Process: Starting Al levels from a literature survey of ALD AZO. Five-ratio series at 200 °C (99:1, 49:1, 29:1, 19:1, 9:1 ZnO:Al supercycles, 600 cycles, DEZ/TMA/H2O) on Si and glass. WVASE fit: Cauchy, then point-by-point n,k, then a PSemi-M0 oscillator with a free-carrier term and a roughness layer. Symmetric and grazing-incidence XRD on a Rigaku SmartLab. Python tools for n,k overlays, Tauc plots, XRD peak fitting (pseudo-Voigt, Scherrer grain size) and a one-page report per sample.
+- Results (Parameter | Condition | Value):
+  Thickness | all films, 600 cycles | 85 to 88 nm
+  Roughness | ellipsometry fit | 1.3 to 1.5 nm
+  Fit quality | all films | MSE below 7
+  Optical band edge | 99:1 to 19:1 | 3.35 to 3.58 eV (+0.23 eV)
+  Optical carrier density | 19:1 | about 7 × 10^19 cm^-3
+  Phase | XRD, all films | single-phase wurtzite ZnO, strong (100) texture
+  Lattice constant a | with increasing Al | 3.252 to 3.243 Å
+  Lattice constant c | with increasing Al | 5.213 to 5.190 Å
+  Sheet resistance | 19:1 on glass, four-point probe, one spot | 1155 Ω/sq
+  Resistivity | 19:1 | about 1 × 10^-2 Ω·cm
+  (Mobility left out until confirmed.)
+- Excursion: The 29:1 run came out off-trend. Re-mounting the sample brought back the missing XRD peaks. A run-log comparison showed one heater zone 19 °C below setpoint.
+- Sputtering, in progress: Co-sputtering AZO on a Kurt J. Lesker PVD-03 (ZnO on RF, Al on DC, 100% O2). Calibrating each gun alone before a DOE against the ALD series.
+- Tools: Cambridge NanoTech Savannah S200 ALD (qualified for 24/7 independent use, precursor changes). PVD-03 (sputter target changes).
+- Then ESE 5360 device fabrication, led by 23 nm (DSA feature height).
+
+### Circuits
+TIA (109 dBΩ lead, static plot), PLL, SRAM, compute-in-memory.
+
+### Hardware and power
+ESE 5800 power device characterization, then NeuroSense, NeuroBand and the FPGA quadcopter as a compact list with no big lead numbers. Awards in plain text.
+
+### Experience
+QNF shortened to two lines that link to the case study. "Cambridge NanoTech Savannah S200" everywhere.
+
+### Tools
+Split into "Qualified for independent use" (so far: Savannah S200 only) and "Used in research and coursework".
+
+### Contact band
+Graduating May 2027. Open to process, integration and equipment engineering, and analog/RF design roles, 2027. Will relocate anywhere in the US.
+
+### Look
+Instrument Sans for everything, headings at 600, tabular numerals on every number. Paper background and one blue. Writing page unlinked and noindex until the first post.
+
 ## Identity
 
 - Name: Girish Arora

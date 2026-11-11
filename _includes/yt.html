@@ -1,14 +1,14 @@
 {%- comment -%}
-Lazy YouTube embed. Shows the video's thumbnail with a play button. The YouTube player
-loads only when the visitor clicks, so the page stays fast.
-Params: id (required), title, start (seconds into the video to begin; default 0).
-Without JavaScript the thumbnail is a plain link to the video on YouTube.
+Lazy YouTube embed. Shows a poster frame with a play button; the YouTube player loads only when
+clicked. Params: id (required), title, start (seconds; default 0), poster (path to a local poster
+image; defaults to YouTube's own thumbnail). Without JavaScript the poster links to the video.
 {%- endcomment -%}
 {%- assign yt_start = include.start | default: 0 -%}
 {%- assign yt_title = include.title | default: "Video" -%}
+{%- if include.poster -%}{%- assign yt_poster = include.poster | relative_url -%}{%- else -%}{%- assign yt_poster = "https://i.ytimg.com/vi/" | append: include.id | append: "/hqdefault.jpg" -%}{%- endif -%}
 <div class="yt{% if include.class %} {{ include.class }}{% endif %}" data-id="{{ include.id }}" data-start="{{ yt_start }}" data-title="{{ yt_title }}">
   <a class="yt-link" href="https://www.youtube.com/watch?v={{ include.id }}{% if yt_start != 0 and yt_start != "0" %}&t={{ yt_start }}s{% endif %}" rel="noopener">
-    <img src="https://i.ytimg.com/vi/{{ include.id }}/hqdefault.jpg" alt="" width="480" height="360" loading="lazy">
+    <img src="{{ yt_poster }}" alt="" width="480" height="270" loading="lazy">
     <span class="yt-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
     <span class="visually-hidden">Play video: {{ yt_title }}</span>
   </a>

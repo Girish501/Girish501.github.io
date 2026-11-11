@@ -1,11 +1,17 @@
 # Site settings. GitHub Pages reads this file when it builds the site.
 title: Girish Arora
-description: Analog and mixed-signal IC design, nanofabrication, power electronics. MSE Electrical Engineering, University of Pennsylvania.
+description: Thin-film processes at Penn's nanofab and analog circuit design. MSE Electrical Engineering, University of Pennsylvania, May 2027.
 url: https://girisharora.com
 author: Girish Arora
 email: girish5@engineering.upenn.edu
 linkedin: https://www.linkedin.com/in/girish-arora-027918226
 github: https://github.com/Girish501
+
+# Hero Tauc figure. Put data/azo/tauc_<ratio>.csv files in the repo (photon energy in eV, (αhν)²),
+# named like tauc_99-1.csv, tauc_49-1.csv, tauc_29-1.csv, tauc_19-1.csv, tauc_9-1.csv. Until they exist the
+# hero shows the TIA figure. Ratios listed here draw dashed, with the footnote.
+tauc_dashed: "29:1"
+tauc_footnote: "The 29:1 run came out off-trend."
 
 # Blog posts live in the _posts folder. File name format: YYYY-MM-DD-short-title.md
 permalink: /blog/:year/:title/
