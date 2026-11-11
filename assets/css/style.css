@@ -144,7 +144,7 @@ main { padding-top: var(--nav-h); }
 .hero-track, .hero-pin { position: relative; }
 .cloud-canvas, .cloud-panel, .cloud-tags { display: none; }
 .hero.has-cloud { padding: 0; }
-.hero.has-cloud .hero-track { height: calc(var(--shapes, 2) * 100vh + 40vh); }
+.hero.has-cloud .hero-track { height: calc(var(--shapes, 2) * 130vh + 40vh); }   /* 130vh per shape: each shape holds for more than a screen of scroll */
 .hero.has-cloud .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
 .hero.has-cloud .hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); width: 100%; }
 .hero.has-cloud .hero-visual { position: relative; height: min(72vh, 680px); }

@@ -201,24 +201,24 @@
   // tubes. Values are mapped to the box X0..X1 by Y0..Y1; labels are HTML tags anchored to points.
   var X0 = -1.95, X1 = 2.25, Y0 = -1.4, Y1 = 1.9;
   function axesParts(parts, x0, x1, y0, y1, xs, ys) {
-    xs.forEach(function (x) { parts.push({ w: 0.08, emit: rod([x, y0, -0.02], [x, y1, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([x, y0 - 0.07, 0], [x, y0, 0], 0.012, INK, 0.9 * COV) }); });
-    ys.forEach(function (y) { parts.push({ w: 0.1, emit: rod([x0, y, -0.02], [x1, y, -0.02], 0.006, LIGHT, 0.8 * COV) }); parts.push({ w: 0.015, emit: rod([x0 - 0.07, y, 0], [x0, y, 0], 0.012, INK, 0.9 * COV) }); });
-    parts.push({ w: 0.4, emit: rod([x0, y0, 0], [x1, y0, 0], 0.012, INK, 0.9 * COV) });
-    parts.push({ w: 0.32, emit: rod([x0, y0, 0], [x0, y1, 0], 0.012, INK, 0.9 * COV) });
+    xs.forEach(function (x) { parts.push({ w: 0.08, emit: rod([x, y0, -0.02], [x, y1, -0.02], 0.005, LIGHT, 0.75 * COV) }); parts.push({ w: 0.015, emit: rod([x, y0 - 0.07, 0], [x, y0, 0], 0.009, INK, 0.8 * COV) }); });
+    ys.forEach(function (y) { parts.push({ w: 0.1, emit: rod([x0, y, -0.02], [x1, y, -0.02], 0.005, LIGHT, 0.75 * COV) }); parts.push({ w: 0.015, emit: rod([x0 - 0.07, y, 0], [x0, y, 0], 0.009, INK, 0.8 * COV) }); });
+    parts.push({ w: 0.4, emit: rod([x0, y0, 0], [x1, y0, 0], 0.009, INK, 0.8 * COV) });
+    parts.push({ w: 0.32, emit: rod([x0, y0, 0], [x0, y1, 0], 0.009, INK, 0.8 * COV) });
     return parts;
   }
   function chart(xs, ys) { return axesParts([], X0, X1, Y0, Y1, xs, ys); }
   // Points along a curve given as [x,y] in scene units, as a tube of the given radius at depth z.
   // wave is the amplitude the vertex shader adds as a travelling sine (0 for still points).
   function curve(fn, radius, z, color, wave) {
-    return function () { var s = rnd(), xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius, color, 1.1 * COV, wave || 0]; };
+    return function () { var s = rnd(), xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius, color, 0.95 * COV, wave || 0]; };
   }
   function disc(c, r, color) {
     return function () { var th = rnd() * 6.2832, q = r * Math.sqrt(rnd()); return [c[0] + q * Math.cos(th), c[1] + q * Math.sin(th), c[2], color, 1.1 * COV]; };
   }
 
   // ---- Schematic drawing: wires and symbols in the x-y plane, as parts ----
-  var WIRE = 0.012, SYM = 1.25;
+  var WIRE = 0.009, SYM = 0.95;   // thin wires drawn with small, dense points read crisper than thick fuzzy ones
   function W(parts, a, b, color, r) { var len = Math.hypot(b[0] - a[0], b[1] - a[1]); if (len < 1e-6) return; parts.push({ w: 0.42 * len, emit: rod([a[0], a[1], 0], [b[0], b[1], 0], r || WIRE, color, SYM * COV) }); }
   function poly(parts, pts, color) { for (var i = 1; i < pts.length; i++) W(parts, pts[i - 1], pts[i], color); }
   function arc(parts, c, r, a0, a1, color) { var n = 14, pts = []; for (var i = 0; i <= n; i++) { var a = a0 + (a1 - a0) * i / n; pts.push([c[0] + r * Math.cos(a), c[1] + r * Math.sin(a)]); } poly(parts, pts, color); }
@@ -367,8 +367,8 @@
     var parts = [], yiT = 1.95, yiB = 1.15, yvT = 0.75, yvB = -1.4, ci = (yiT + yiB) / 2, cv = (yvT + yvB) / 2, ai = 0.27, av = 0.297 / 0.33 * (yvT - cv);
     axesParts(parts, X0, X1, yiB, yiT, [], [ci]);
     axesParts(parts, X0, X1, yvB, yvT, [(X0 + X1) / 2], [cv, cv + av, cv - av]);
-    parts.push({ w: 1.0, emit: curve(function (s) { return [X0 + s * (X1 - X0), ci]; }, 0.024, 0.03, BLUE, ai) });
-    parts.push({ w: 1.6, emit: curve(function (s) { return [X0 + s * (X1 - X0), cv]; }, 0.03, 0.03, INK, av) });
+    parts.push({ w: 1.0, emit: curve(function (s) { return [X0 + s * (X1 - X0), ci]; }, 0.02, 0.03, BLUE, ai) });
+    parts.push({ w: 1.6, emit: curve(function (s) { return [X0 + s * (X1 - X0), cv]; }, 0.024, 0.03, INK, av) });
     // peak-to-peak brackets at the right edge
     [[ci, ai], [cv, av]].forEach(function (b) { var x = X1 + 0.14; parts.push({ w: 0.12, emit: rod([x, b[0] - b[1], 0], [x, b[0] + b[1], 0], 0.01, INK, 0.9 * COV) }); [-1, 1].forEach(function (s) { parts.push({ w: 0.03, emit: rod([x - 0.06, b[0] + s * b[1], 0], [x + 0.06, b[0] + s * b[1], 0], 0.01, INK, 0.9 * COV) }); }); });
     var tags = {
@@ -393,7 +393,7 @@
     var gainAt = function (lg) { var i = 0; while (i < data.length - 2 && data[i + 1][0] < lg) i++; var a = data[i], b = data[i + 1], f = Math.min(1, Math.max(0, (lg - a[0]) / (b[0] - a[0]))); return a[1] + (b[1] - a[1]) * f; };
     var lgStart = Math.max(LG0, data[0][0]);
     var parts = chart([6, 7, 8, 9].map(fx), [40, 80, 120].map(fy));
-    parts.push({ w: 1.6, emit: curve(function (s) { var lg = lgStart + s * (LG1 - lgStart); return [fx(lg), fy(Math.max(DB0, gainAt(lg)))]; }, 0.03, 0.03, INK) });
+    parts.push({ w: 1.6, emit: curve(function (s) { var lg = lgStart + s * (LG1 - lgStart); return [fx(lg), fy(Math.max(DB0, gainAt(lg)))]; }, 0.024, 0.03, INK) });
     parts.push({ w: 0.25, emit: rod([X0, fy(L3), 0.01], [X1, fy(L3), 0.01], 0.006, shade(BLUE, 1.0), 0.8 * COV) });
     var lo = Math.log10(2.31102e6), hi = Math.log10(492.868e6);
     parts.push({ w: 0.07, emit: disc([fx(lo), fy(L3), 0.05], 0.08, BLUE) }); parts.push({ w: 0.07, emit: disc([fx(hi), fy(L3), 0.05], 0.08, BLUE) });
