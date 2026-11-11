@@ -142,7 +142,7 @@ main { padding-top: var(--nav-h); }
 
 /* Hero point cloud (cloud.js adds .has-cloud when it runs; otherwise the hero is static) */
 .hero-track, .hero-pin { position: relative; }
-.cloud-canvas, .cloud-panel { display: none; }
+.cloud-canvas, .cloud-panel, .cloud-tags { display: none; }
 .hero.has-cloud { padding: 0; }
 .hero.has-cloud .hero-track { height: calc(var(--shapes, 4) * 100vh + 40vh); }
 .hero.has-cloud .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
@@ -156,6 +156,10 @@ main { padding-top: var(--nav-h); }
   padding: 14px 18px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px;
   box-shadow: 0 1px 2px rgba(23, 24, 26, .04), 0 12px 32px -20px rgba(23, 24, 26, .18);
 }
+.hero.has-cloud .cloud-tags { display: block; position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.cloud-tag { position: absolute; left: 0; top: 0; font-size: 13px; line-height: 1.2; color: var(--muted); white-space: nowrap; opacity: 0; will-change: transform, opacity; font-variant-numeric: tabular-nums; }
+.cloud-tag--dim { color: var(--ink); }
+.cloud-tag--blue { color: var(--accent); }
 .cloud-step { margin-bottom: 6px; }
 .cloud-item { display: none; }
 .cloud-item.is-on { display: block; animation: fade 300ms ease; }
