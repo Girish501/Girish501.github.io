@@ -143,26 +143,34 @@ main { padding-top: var(--nav-h); }
 /* Hero point cloud (cloud.js adds .has-cloud when it runs; otherwise the hero is static) */
 .hero-track, .hero-pin { position: relative; }
 .cloud-canvas, .cloud-panel, .cloud-tags { display: none; }
-.hero.has-cloud { padding: 0; }
-.hero.has-cloud .hero-track { height: calc(var(--shapes, 2) * 130vh + 40vh); }   /* 130vh per shape: each shape holds for more than a screen of scroll */
-.hero.has-cloud .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
-.hero.has-cloud .hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); width: 100%; }
-.hero.has-cloud .hero-visual { position: relative; height: min(72vh, 680px); }
-.hero.has-cloud .hero-text { padding-bottom: 48px; }
+@media (min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  /* Same query as DEFAULT_MQ in cloud.js: the pinned hero layout applies before any script, so the headline never moves when the cloud mounts. cloud.js adds .no-cloud when it cannot run. */
+  .js .hero:not(.no-cloud) { padding: 0; }
+  .js .hero:not(.no-cloud) .hero-track { height: calc(var(--shapes, 2) * 130vh + 40vh); }   /* 130vh per shape: each shape holds for more than a screen of scroll */
+  .js .hero:not(.no-cloud) .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
+  .js .hero:not(.no-cloud) .hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); width: 100%; }
+  .js .hero:not(.no-cloud) .hero-visual { position: relative; height: min(72vh, 680px); display: flex; align-items: center; }
+  .js .hero:not(.no-cloud) .hero-visual .fig { width: 100%; transition: opacity 400ms ease, visibility 0s linear 400ms; }
+  .js .hero:not(.no-cloud) .hero-text { padding-bottom: 48px; }
+  /* Short windows (the owner's laptop at 1279x707 and 1366x768): the text column is narrower, so the headline takes a smaller size to keep four lines, and the text block tightens so everything fits inside the pin. */
+  @media (max-height: 800px) {
+    .js .hero:not(.no-cloud) h1 { font-size: clamp(34px, 3.6vw, 48px); }   /* 46px at 1279 wide, 48px at 1366 */
+    .js .hero:not(.no-cloud) .hero-text { padding-bottom: 24px; }
+    .js .hero:not(.no-cloud) .lead { margin-top: 16px; }
+    .js .hero:not(.no-cloud) .hero-actions { margin-top: 24px; }
+  }
+}
+.hero.has-cloud .hero-visual .fig { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }   /* the static figure fades under the point intro once the cloud runs (animation: none beats the .enter keyframes' forwards fill) */
 .has-cloud .cloud-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero.has-cloud .hero-visual .fig, .stage.has-cloud .cloud-box .fig { display: none; }
+.stage.has-cloud .cloud-box .fig { display: none; }
 .hero.has-cloud .cloud-panel {
   display: block; position: absolute; left: 0; bottom: 0; width: min(340px, 60%);
   padding: 14px 18px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px;
   box-shadow: 0 1px 2px rgba(23, 24, 26, .04), 0 12px 32px -20px rgba(23, 24, 26, .18);
 }
 
-/* Short windows (the owner's laptop at 1279x707 and 1366x768): with the cloud the text column is narrower, so the headline takes a smaller size to keep four lines, and the text block and the panel tighten so both fit inside the pin. */
+/* Short windows: the panel tightens so it fits inside the pin. */
 @media (max-height: 800px) {
-  .hero.has-cloud h1 { font-size: clamp(34px, 3.6vw, 48px); }   /* 46px at 1279 wide, 48px at 1366 */
-  .hero.has-cloud .hero-text { padding-bottom: 24px; }
-  .hero.has-cloud .lead { margin-top: 16px; }
-  .hero.has-cloud .hero-actions { margin-top: 24px; }
   .hero.has-cloud .cloud-panel { width: min(300px, 55%); padding: 12px 16px 14px; }
   .hero.has-cloud .cloud-num { font-size: 30px; }
 }

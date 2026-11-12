@@ -13,15 +13,16 @@
 // keeps its static figure.
 (function () {
   "use strict";
+  function noCloud() { Array.prototype.forEach.call(document.querySelectorAll("[data-cloud]"), function (r) { r.classList.add("no-cloud"); r.classList.remove("has-cloud"); }); }
   var DEFAULT_MQ = "(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
   var roots = Array.prototype.filter.call(document.querySelectorAll("[data-cloud]"), function (r) { return window.matchMedia(r.getAttribute("data-cloud-mq") || DEFAULT_MQ).matches; });
   if (!roots.length) return;
   var test = document.createElement("canvas");
   var gl = test.getContext("webgl2") || test.getContext("webgl");
-  if (!gl) return;
+  if (!gl) { noCloud(); return; }
   var ext = gl.getExtension("WEBGL_debug_renderer_info");
   var rname = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
-  if (/swiftshader|llvmpipe|softpipe|software|microsoft basic render/i.test(rname)) return;
+  if (/swiftshader|llvmpipe|softpipe|software|microsoft basic render/i.test(rname)) { noCloud(); return; }
   var lose = gl.getExtension("WEBGL_lose_context"); if (lose) lose.loseContext();
 
   // ---- The numbers (all from the results table and project rows) ----
@@ -471,9 +472,9 @@
           else if (SPECS[k]) shapes.push({ key: k, build: SPECS[k].build, cam: SPECS[k].cam });
         });
         if (shapes.length) mount(root, THREE, shapes);
-      }).catch(function (e) { root.classList.remove("has-cloud"); if (window.console) console.warn("cloud off:", e && e.message); });
+      }).catch(function (e) { root.classList.remove("has-cloud"); root.classList.add("no-cloud"); if (window.console) console.warn("cloud off:", e && e.message); });
     });
-  }).catch(function (e) { if (window.console) console.warn("cloud off:", e && e.message); });
+  }).catch(function (e) { noCloud(); if (window.console) console.warn("cloud off:", e && e.message); });
 
   function mount(hero, THREE, shapes) {
     var S = shapes.length;
