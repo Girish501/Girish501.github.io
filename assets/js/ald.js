@@ -32,6 +32,7 @@
   var D = C + 3000;          // remaining supercycles, fast
   var END = D + 400;
   api.END = END;
+  api.GROW = C;   // end of the step-by-step part (ZnO cycle 1, cycles 2..N, the Al cycle); the film fills from here to D
 
   function build() {
     while (lines.firstChild) lines.removeChild(lines.firstChild);

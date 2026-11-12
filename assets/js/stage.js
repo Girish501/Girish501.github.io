@@ -41,7 +41,11 @@
     p = p < 0 ? 0 : p > 1 ? 1 : p;
     setStep(p < at[0] ? 0 : p < at[1] ? 1 : 2);
     if (fig && fig.ald) {
-      var q = (p - 0.04) / 0.92; q = q < 0 ? 0 : q > 1 ? 1 : q;
+      // Step 0 (What and why) plays the recipe step by step: the first ZnO cycle, the rest of the
+      // supercycle, the Al cycle. The film then fills across steps 1 and 2, so the panel is never empty.
+      var g = (fig.ald.GROW || 0.6 * fig.ald.END) / fig.ald.END, q;
+      if (p < at[0]) q = g * Math.min(1, p / Math.max(0.05, at[0] - 0.02));
+      else q = g + (1 - g) * Math.min(1, (p - at[0]) / (0.96 - at[0]));
       fig.ald.render(q * fig.ald.END);
     }
   }
