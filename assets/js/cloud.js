@@ -596,10 +596,10 @@
         g.el.style.opacity = w.toFixed(2); g.on = true;
       }
       // Panel: the nearer shape. Its number counts up as the shape comes into focus and then holds.
-      var k = Math.round(u), f = ease(1 - Math.min(1, Math.max(0, k - u) / 0.5));
+      var k = Math.round(u), f = k === seg + 1 ? ease((tt - 0.5) / 0.45) : 1;   // the approaching shape's number counts during the second half of its formation and is complete at tt 0.95; the current shape shows its final value
       if (k !== curPanel) { curPanel = k; active.forEach(function (p, i) { if (p) p.classList.toggle("is-on", i === k); }); if (stepEl) stepEl.textContent = (k + 1) + " of " + S; }
       var p = active[k];
-      if (p) { var num = p.querySelector("[data-value]"); if (num) { var v = parseFloat(num.getAttribute("data-value")), dec = parseInt(num.getAttribute("data-dec"), 10) || 0; num.textContent = (num.getAttribute("data-prefix") || "") + fmt(v * f, dec) + (num.getAttribute("data-suffix") || ""); } }
+      if (p) Array.prototype.forEach.call(p.querySelectorAll("[data-value]"), function (num) { var v = parseFloat(num.getAttribute("data-value")), dec = parseInt(num.getAttribute("data-dec"), 10) || 0, s = (num.getAttribute("data-prefix") || "") + fmt(v * f, dec) + (num.getAttribute("data-suffix") || ""); if (num.textContent !== s) num.textContent = s; });
       if (visible) raf = requestAnimationFrame(frame);
     }
     function start() { if (!raf) raf = requestAnimationFrame(frame); }
