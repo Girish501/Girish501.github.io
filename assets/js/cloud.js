@@ -260,7 +260,8 @@
   // The TIA signal chain, from the report's schematics: photodiode model (current source and 100 fF),
   // 50 pF coupling, common-gate input stage with a 10 kΩ load, differential pair with PMOS loads,
   // four cascaded common-source stages per path, source followers, 600 Ω differential load.
-  var CAM_TIA = [0.08, 0.1, 11.2];
+  // Flat drawings use yaw 0 so horizontal wires and axes stay within one pixel row. Entries: yaw, elevation, distance, optional canvas aspect below which the camera steps back (default 0.9).
+  var CAM_TIA = [0, 0.1, 9.6, 1.08];
   function shapeTIA() {
     var parts = [], tags = {}, S = 0.93, OX = -0.3, OY = 0.4, pathP = [], pathN = [];
     function P(x, y) { return [x * S + OX, y * S + OY]; }
@@ -343,7 +344,7 @@
     pathP = head.concat(pathP);
     pathN = [tA.gate, [tA.top[0], tA.gate[1]], [tA.bot[0], tail[1]], [tB.bot[0], tail[1]], [tB.top[0], tail[1]], vn].concat(pathN);
     // Flow particles: blue dots that run along both paths (their positions are set each frame)
-    var flows = [{ path: pathP, n: 26 }, { path: pathN, n: 18 }];
+    var flows = [{ path: pathP, n: 20 }, { path: pathN, n: 14 }];
     flows.forEach(function (f, i) { f.name = "flow" + i; f.per = 12; parts.push({ name: f.name, n: f.n * f.per, emit: function (k) { var tail = k % f.per >= 7; return [0, 0, 0.03, tail ? BLUE2 : BLUE, (tail ? 1.1 : 1.6) * COV]; } }); });
     tags = {
       pd: { p: [P(xPD, yGndL)[0] - 0.14, P(0, yGndL)[1] - 0.3, 0] },
@@ -362,7 +363,7 @@
 
   // Input current and differential output voltage against time: 2.67 µA peak to peak in at 300 MHz,
   // 594 mV peak to peak out (VOP minus VON). The sines travel; the vertex shader moves them.
-  var CAM_SCOPE = [0.1, 0.08, 9.6], CYCLES_SHOWN = 6;
+  var CAM_SCOPE = [0, 0.08, 9.6], CYCLES_SHOWN = 6;
   function shapeScope() {
     var parts = [], yiT = 1.95, yiB = 1.15, yvT = 0.75, yvB = -1.4, ci = (yiT + yiB) / 2, cv = (yvT + yvB) / 2, ai = 0.27, av = 0.297 / 0.33 * (yvT - cv);
     axesParts(parts, X0, X1, yiB, yiT, [], [ci]);
@@ -384,7 +385,7 @@
 
   // Transimpedance gain against frequency, read from the report's Spectre plot (VOP minus VON over the
   // photodiode current): flat near 109 dBΩ, 3 dB down at 2.31 MHz and 492.88 MHz.
-  var CAM_BODE = [-0.1, 0.12, 9.6];
+  var CAM_BODE = [0, 0.12, 9.6];
   var BODE = [[4.706,-11.0],[4.765,-4.1],[4.824,2.8],[4.882,9.6],[4.941,16.3],[5.0,22.9],[5.059,29.4],[5.118,35.8],[5.176,41.9],[5.235,47.9],[5.294,53.7],[5.353,59.1],[5.412,64.2],[5.471,69.1],[5.529,73.6],[5.588,77.7],[5.647,81.6],[5.706,85.1],[5.765,88.0],[5.824,90.6],[5.882,93.1],[5.941,95.2],[6.0,97.1],[6.059,98.5],[6.118,99.9],[6.176,101.3],[6.235,102.8],[6.294,103.8],[6.353,104.7],[6.412,105.5],[6.471,106.2],[6.529,106.9],[6.588,107.3],[6.647,107.6],[6.706,107.9],[6.765,108.2],[6.824,108.5],[6.882,108.7],[6.941,108.9],[7.0,109.0],[7.059,109.1],[7.118,109.3],[7.176,109.3],[7.235,109.3],[7.294,109.3],[7.353,109.3],[7.412,109.3],[7.471,109.3],[7.529,109.3],[7.588,109.3],[7.647,109.3],[7.706,109.3],[7.765,109.3],[7.824,109.3],[7.882,109.3],[7.941,109.3],[8.0,109.3],[8.059,109.2],[8.118,109.1],[8.176,109.0],[8.235,108.9],[8.294,108.9],[8.353,108.8],[8.412,108.6],[8.471,108.3],[8.529,107.8],[8.588,107.0],[8.647,105.8],[8.706,104.3],[8.765,102.8],[8.824,101.2],[8.882,99.5],[8.941,97.5],[9.0,95.1],[9.059,92.6],[9.118,89.8],[9.176,87.1],[9.235,84.0],[9.294,80.6],[9.353,76.9],[9.412,72.9],[9.471,68.7],[9.529,64.4],[9.588,60.0],[9.647,55.5],[9.706,50.8],[9.765,46.0],[9.824,41.1],[9.882,36.9],[9.941,33.3],[10.0,30.4]];
   function shapeBode() {
     var LG0 = 5, LG1 = 10, DB0 = 0, DB1 = 120, L3 = 104.7;
@@ -478,7 +479,7 @@
     var S = shapes.length;
     shapes.forEach(function (s, i) { var g = s.build(); s.pos = g.pos; s.col = g.col; s.siz = g.siz; s.wav = g.wav; s.tags = g.tags; s.index = i; s.order = g.order;
       s.flows = (g.flows || []).map(function (f) { var r = g.ranges[f.name], cum = [0]; for (var k = 1; k < f.path.length; k++) cum.push(cum[k - 1] + Math.hypot(f.path[k][0] - f.path[k - 1][0], f.path[k][1] - f.path[k - 1][1]));
-        var jit = []; for (var j = 0; j < r.count; j++) { var th = rnd() * 6.2832, q = 0.028 * Math.sqrt(rnd()); jit.push(q * Math.cos(th), q * Math.sin(th)); }
+        var jit = []; for (var j = 0; j < r.count; j++) { var th = rnd() * 6.2832, q = 0.01 * Math.sqrt(rnd()); jit.push(q * Math.cos(th), q * Math.sin(th)); }
         return { start: r.start, count: r.count, per: f.per, n: f.n, path: f.path, cum: cum, len: cum[cum.length - 1], jit: jit }; }); });
     if (debug) debug.push({ root: hero, shapes: shapes });
 
@@ -566,7 +567,7 @@
         var attr = si === seg ? pA : pB, arr = attr.array;
         sh.flows.forEach(function (f) {
           for (var j = 0; j < f.count; j++) {
-            var pt = Math.floor(j / f.per), m = j % f.per, back = m >= 7 ? (m - 6) * 0.045 : 0;   // the last five points trail behind the head
+            var pt = Math.floor(j / f.per), m = j % f.per, back = m >= 7 ? (m - 6) * 0.03 : 0;   // the last five points trail behind the head
             var u = ((pt / f.n) + now * 0.00009 - back / f.len + 1) % 1, d = u * f.len, k = 1;
             while (k < f.cum.length - 1 && f.cum[k] < d) k++;
             var a = f.path[k - 1], b = f.path[k], t = (d - f.cum[k - 1]) / Math.max(1e-6, f.cum[k] - f.cum[k - 1]), o = f.start + j, jx = m >= 7 ? 0.3 : 1;
@@ -581,7 +582,7 @@
       switched = false;
       // Camera between the two shapes' viewpoints, with a slow drift.
       var ca = shapes[seg].cam, cb = shapes[Math.min(S - 1, seg + 1)].cam;
-      var az = ca[0] + (cb[0] - ca[0]) * tt + Math.sin(now * 0.00018) * 0.05, el = ca[1] + (cb[1] - ca[1]) * tt, d = (ca[2] + (cb[2] - ca[2]) * tt) * Math.max(1, 0.9 / camera.aspect); // step back on narrow canvases
+      var az = ca[0] + (cb[0] - ca[0]) * tt + Math.sin(now * 0.00018) * 0.015, el = ca[1] + (cb[1] - ca[1]) * tt, d = (ca[2] + (cb[2] - ca[2]) * tt) * Math.max(1, ((ca[3] || 0.9) + ((cb[3] || 0.9) - (ca[3] || 0.9)) * tt) / camera.aspect); // step back on narrow canvases
       camera.position.set(Math.sin(az) * Math.cos(el) * d, Math.sin(el) * d, Math.cos(az) * Math.cos(el) * d);
       camera.lookAt(0, lookY, 0);   // in the hero the shapes sit high, clear of the panel; data-cloud-look moves this
       renderer.render(scene, camera);
