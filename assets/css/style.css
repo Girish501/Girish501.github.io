@@ -261,13 +261,18 @@ main { padding-top: var(--nav-h); }
 .results th, .results td { text-align: left; vertical-align: top; padding: 10px 16px 10px 0; border-bottom: 1px solid var(--line); }
 .results th { font-weight: 600; font-size: 14px; color: var(--muted); }
 .results td:first-child { color: var(--ink); font-weight: 500; }
-.results td:last-child { color: var(--ink); white-space: nowrap; }
+.results td:last-child { color: var(--ink); }
 .results tr:last-child td { border-bottom: 0; }
 .results-wrap { overflow-x: auto; }
 @media (max-width: 760px) {
   .case-head { grid-template-columns: 1fr; }
   .case-grid > div { grid-template-columns: 1fr; gap: 6px; }
-  .results td:last-child { white-space: normal; }
+}
+@media (max-width: 640px) {
+  .results .nowrap { white-space: normal; }   /* phone column is narrow; values wrap as before */
+}
+@media (min-width: 641px) {
+  .results th:first-child, .results td:first-child { white-space: nowrap; }   /* parameter names stay whole; long values wrap instead */
 }
 
 /* ---------- Pinned stage (AZO case study) ---------- */
