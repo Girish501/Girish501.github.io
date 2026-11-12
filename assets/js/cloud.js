@@ -105,7 +105,7 @@
   // Wurtzite ZnO, ball and stick: the hexagonal unit cell. A prism one lattice constant a on each
   // edge and c tall, Zn at the corners, the face centres and three sites inside, each O a distance
   // u c above its Zn, bonds to the four neighbours, and dimension marks for a and c.
-  var CAM_LATTICE = [0.55, 0.5, 9.6];
+  var CAM_LATTICE = [0.55, 0.5, 10.8];
   function shapeLattice() {
     var SC = 0.45, RZN = 0.46 * SC, RO = 0.34 * SC, RB = 0.09 * SC, YC = 0.2;  // scene units per Å, atom and bond radii, centre height
     var V = viewDir(CAM_LATTICE), az = CAM_LATTICE[0];
@@ -164,7 +164,7 @@
 
   // The AZO film in cross-section: a block of film on its substrate, a blue plane per Al cycle,
   // a thickness bracket on the left and labelled leaders on the right.
-  var CAM_FILM = [0.5, 0.3, 10];
+  var CAM_FILM = [0.5, 0.3, 10.5];
   function shapeFilm() {
     var W = 3.1, D = 2.0, H = 2.4, SUB = 0.9, X0 = 0.05, y0 = -0.9, zf = D / 2, FS = 1.6 * COV;
     var xl = X0 - W / 2, xr = X0 + W / 2, yt = y0 + H, yb = y0 - SUB, planes = Math.round(CYCLES / (RATIO + 1));
