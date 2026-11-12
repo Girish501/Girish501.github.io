@@ -59,10 +59,16 @@
   var ticking = false, vh = window.innerHeight;
   function frame() {
     ticking = false;
-    for (var i = 0; i < items.length; i++) {
-      var it = items[i];
-      var top = it.el.getBoundingClientRect().top;
-      var p = clamp((vh * it.start - top) / (vh * it.span));
+    // Scroll left below this position; an element near the end of the page may never reach the
+    // finish line before the page stops, so its finish line moves up to where it will be at the bottom.
+    var remaining = Math.max(0, document.documentElement.scrollHeight - vh - window.scrollY);
+    var tops = new Array(items.length), i;
+    for (i = 0; i < items.length; i++) tops[i] = items[i].el.getBoundingClientRect().top;   // read everything first, then write
+    for (i = 0; i < items.length; i++) {
+      var it = items[i], top = tops[i], startY = vh * it.start, finish = vh * (it.start - it.span);
+      var lowest = top - remaining; if (lowest > finish) finish = lowest;
+      var denom = startY - finish;
+      var p = denom > 1 ? clamp((startY - top) / denom) : (remaining <= 0 ? 1 : 0);
       if (p === it.last) continue;
       it.last = p;
       apply(it, p);
