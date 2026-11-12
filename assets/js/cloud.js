@@ -16,7 +16,7 @@
   function noCloud() { Array.prototype.forEach.call(document.querySelectorAll("[data-cloud]"), function (r) { r.classList.add("no-cloud"); r.classList.remove("has-cloud"); }); }
   var DEFAULT_MQ = "(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
   var roots = Array.prototype.filter.call(document.querySelectorAll("[data-cloud]"), function (r) { return window.matchMedia(r.getAttribute("data-cloud-mq") || DEFAULT_MQ).matches; });
-  if (!roots.length) return;
+  if (!roots.length) { noCloud(); return; }
   var test = document.createElement("canvas");
   var gl = test.getContext("webgl2") || test.getContext("webgl");
   if (!gl) { noCloud(); return; }

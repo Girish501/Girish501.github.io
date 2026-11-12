@@ -160,6 +160,13 @@ main { padding-top: var(--nav-h); }
     .js .hero:not(.no-cloud) .hero-actions { margin-top: 24px; }
   }
 }
+/* The running cloud keeps the pinned layout at every viewport (resize or zoom after mount), same declarations as above. */
+.hero.has-cloud { padding: 0; }
+.hero.has-cloud .hero-track { height: calc(var(--shapes, 2) * 130vh + 40vh); }
+.hero.has-cloud .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
+.hero.has-cloud .hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); width: 100%; }
+.hero.has-cloud .hero-visual { position: relative; height: min(72vh, 680px); display: flex; align-items: center; }
+.hero.has-cloud .hero-text { padding-bottom: 48px; }
 .hero.has-cloud .hero-visual .fig { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }   /* the static figure fades under the point intro once the cloud runs (animation: none beats the .enter keyframes' forwards fill) */
 .has-cloud .cloud-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
 .stage.has-cloud .cloud-box .fig { display: none; }
@@ -171,6 +178,10 @@ main { padding-top: var(--nav-h); }
 
 /* Short windows: the panel tightens so it fits inside the pin. */
 @media (max-height: 800px) {
+  .hero.has-cloud h1 { font-size: clamp(34px, 3.6vw, 48px); }
+  .hero.has-cloud .hero-text { padding-bottom: 24px; }
+  .hero.has-cloud .lead { margin-top: 16px; }
+  .hero.has-cloud .hero-actions { margin-top: 24px; }
   .hero.has-cloud .cloud-panel { width: min(300px, 55%); padding: 12px 16px 14px; }
   .hero.has-cloud .cloud-num { font-size: 30px; }
 }
