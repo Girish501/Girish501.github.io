@@ -85,8 +85,8 @@
     var d = sub(b, a), len = Math.hypot(d[0], d[1], d[2]);
     var u = norm(cross(d, Math.abs(d[1]) > 0.9 * len ? [1, 0, 0] : [0, 1, 0])), v = norm(cross(d, u));
     t0 = t0 || 0; t1 = t1 === undefined ? 1 : t1;
-    return function () {
-      var t = t0 + (t1 - t0) * rnd(), th = rnd() * 6.2832, q = r * Math.sqrt(rnd()), cu = Math.cos(th) * q, sv = Math.sin(th) * q;
+    return function (i, cnt) {
+      var t = t0 + (t1 - t0) * ((i + 0.5 + 0.7 * (rnd() - 0.5)) / cnt), th = rnd() * 6.2832, q = r * Math.sqrt(rnd()), cu = Math.cos(th) * q, sv = Math.sin(th) * q;
       return [a[0] + d[0] * t + u[0] * cu + v[0] * sv, a[1] + d[1] * t + u[1] * cu + v[1] * sv, a[2] + d[2] * t + u[2] * cu + v[2] * sv, color, size];
     };
   }
@@ -178,9 +178,9 @@
     var yAl = function (m) { return y0 + m * (RATIO + 1) / CYCLES * H; };
     for (var m = 1; m <= planes; m++) {
       parts.push({ w: 0.2, emit: rod([xl, yAl(m), zf + 0.012], [xr, yAl(m), zf + 0.012], 0.008, BLUE, 0.9 * COV) });
-      parts.push({ w: 0.09, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0.008, BLUE, 0.9 * COV) });
+      parts.push({ w: 0.15, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0.008, BLUE, 0.9 * COV) });
     }
-    var E = function (a, b, w, color) { parts.push({ w: w || 0.1, emit: rod(a, b, 0.008, color || INK, 0.9 * COV) }); };
+    var E = function (a, b, w, color) { parts.push({ w: w || 0.2, emit: rod(a, b, 0.008, color || INK, 0.9 * COV) }); };
     E([xl, y0, zf], [xr, y0, zf]); E([xl, yt, zf], [xr, yt, zf]); E([xl, y0, zf], [xl, yt, zf]); E([xr, y0, zf], [xr, yt, zf]);
     E([xr, y0, zf], [xr, y0, -zf]); E([xr, yt, zf], [xr, yt, -zf]); E([xr, y0, -zf], [xr, yt, -zf]); E([xl, yt, -zf], [xr, yt, -zf]); E([xl, yt, zf], [xl, yt, -zf]);
     E([xl, yb, zf], [xr, yb, zf]); E([xl, yb, zf], [xl, y0, zf]); E([xr, yb, zf], [xr, y0, zf]); E([xr, yb, zf], [xr, yb, -zf]); E([xr, yb, -zf], [xr, y0, -zf]);
@@ -211,7 +211,7 @@
   // Points along a curve given as [x,y] in scene units, as a tube of the given radius at depth z.
   // wave is the amplitude the vertex shader adds as a travelling sine (0 for still points).
   function curve(fn, radius, z, color, wave) {
-    return function () { var s = rnd(), xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius, color, 0.95 * COV, wave || 0]; };
+    return function (i, cnt) { var s = (i + 0.5 + 0.7 * (rnd() - 0.5)) / cnt, xy = fn(s), th = rnd() * 6.2832, r = radius * Math.sqrt(rnd()); return [xy[0] + r * Math.cos(th), xy[1] + r * Math.sin(th), z + (rnd() - .5) * radius, color, 0.95 * COV, wave || 0]; };
   }
   function disc(c, r, color) {
     return function () { var th = rnd() * 6.2832, q = r * Math.sqrt(rnd()); return [c[0] + q * Math.cos(th), c[1] + q * Math.sin(th), c[2], color, 1.1 * COV]; };
