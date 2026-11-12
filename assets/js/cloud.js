@@ -321,7 +321,7 @@
         node = [n.top[0], (n.top[1] + p.bot[1]) / 2]; W(parts, n.top, p.bot, color); dot(parts, node, BLUE);
         W(parts, p.top, [p.top[0], P(0, yRail)[1]], color); W(parts, n.bot, [n.bot[0], P(0, yGnd)[1]], color); dot(parts, [p.top[0], P(0, yRail)[1]], color); dot(parts, [n.bot[0], P(0, yGnd)[1]], color);
         path.push([n.top[0], g[1]], node);
-        prev = [node[0] + 0.14, node[1]]; W(parts, node, prev, color);
+        prev = [node[0] + 0.14, node[1]]; W(parts, node, prev, color); path.push(prev);
       });
       // source follower
       var xS = 3.18, g = P(xS - 0.32, yN), cA = [prev[0], g[1]], cB = [prev[0] + 0.3, g[1]];
@@ -342,7 +342,7 @@
     // The signal path from the photodiode to the pair, shared by both chains
     var head = [P(xPD, yIn), [t0.bot[0], P(0, yIn)[1]], t0.top, cgOut, c2b, [tA.gate[0] - 0.08, c2b[1]], [tA.gate[0] - 0.08, tA.gate[1]], tA.gate, [tA.top[0], tA.gate[1]], vp, [xHop, vp[1]], [xDrop, vp[1]]];
     pathP = head.concat(pathP);
-    pathN = [tA.gate, [tA.top[0], tA.gate[1]], [tA.bot[0], tail[1]], [tB.bot[0], tail[1]], [tB.top[0], tail[1]], vn].concat(pathN);
+    pathN = [tA.gate, [tA.top[0], tA.gate[1]], [tA.bot[0], tail[1]], [tB.bot[0], tail[1]], [tB.top[0], tail[1]], vn, [xDropN, vn[1]]].concat(pathN);
     // Flow particles: blue dots that run along both paths (their positions are set each frame)
     var flows = [{ path: pathP, n: 20 }, { path: pathN, n: 14 }];
     flows.forEach(function (f, i) { f.name = "flow" + i; f.per = 12; parts.push({ name: f.name, n: f.n * f.per, emit: function (k) { var tail = k % f.per >= 7; return [0, 0, 0.03, tail ? BLUE2 : BLUE, (tail ? 1.1 : 1.6) * COV]; } }); });
