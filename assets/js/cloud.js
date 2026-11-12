@@ -42,7 +42,7 @@
   var INK = [0.09, 0.094, 0.102], SLATE = [0.22, 0.23, 0.26], GRAY = [0.6, 0.62, 0.65], LIGHT = [0.78, 0.77, 0.73], BLUE = [0.12, 0.29, 0.79], BLUE2 = [0.55, 0.65, 0.9];
   function shade(c, k) { return [Math.min(1, c[0] * k), Math.min(1, c[1] * k), Math.min(1, c[2] * k)]; }
   function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
-  function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+  function vdot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }   // vector dot product (dot() below draws a junction)
   function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
   function norm(v) { var l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; }
 
@@ -77,7 +77,7 @@
     return function (i, cnt) {
       var z = 1 - 1.3 * (i + 0.5 + 0.3 * (rnd() - 0.5)) / cnt, s = Math.sqrt(Math.max(0, 1 - z * z)), th = i * GOLD + rnd() * 0.3;
       var n = [V[0] * z + e1[0] * s * Math.cos(th) + e2[0] * s * Math.sin(th), V[1] * z + e1[1] * s * Math.cos(th) + e2[1] * s * Math.sin(th), V[2] * z + e1[2] * s * Math.cos(th) + e2[2] * s * Math.sin(th)];
-      return [c[0] + R * n[0], c[1] + R * n[1], c[2] + R * n[2], shade(color, 0.55 + 0.5 * Math.max(0, dot(n, LIGHT_DIR))), size];
+      return [c[0] + R * n[0], c[1] + R * n[1], c[2] + R * n[2], shade(color, 0.55 + 0.5 * Math.max(0, vdot(n, LIGHT_DIR))), size];
     };
   }
   // A thin rod from a to b (the part of it between t0 and t1).
