@@ -370,7 +370,7 @@ main { padding-top: var(--nav-h); }
 .is-pinned .stage:not(.has-cloud) .box-fig[data-for="0"], .is-pinned .stage:not(.has-cloud)[data-active="1"] .box-fig[data-for="1"], .is-pinned .stage:not(.has-cloud)[data-active="2"] .box-fig[data-for="2"] { display: block; }
 .is-pinned .stage:not(.has-cloud)[data-active="1"] .box-fig[data-for="0"], .is-pinned .stage:not(.has-cloud)[data-active="2"] .box-fig[data-for="0"] { display: none; }
 .box-fig img { max-height: calc(100vh - var(--nav-h) - 140px); width: auto; max-width: 100%; margin: 0 auto; }
-.case--tia.is-pinned .stage-grid { grid-template-columns: 340px minmax(0, 1fr); }
+.case--tia.is-pinned .stage-grid { grid-template-columns: 380px minmax(0, 1fr); }
 .case--tia.is-pinned .stage-steps { min-height: 70vh; }
 
 /* ---------- Project rows ---------- */
