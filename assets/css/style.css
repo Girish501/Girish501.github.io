@@ -253,6 +253,7 @@ main { padding-top: var(--nav-h); }
 .ald-block.al { fill: var(--accent); }
 .ald .ald-dur text { font-size: 14px; }
 .ald-film { fill: var(--line); stroke: var(--ink); stroke-width: 1; }
+.ald-env { fill: var(--paper-2); stroke: var(--line); stroke-width: 1; }
 .ald-sub { fill: var(--paper-2); stroke: var(--line-strong); stroke-width: 1; }
 .ald-al { stroke: var(--accent); stroke-width: 1.5; }
 @media (max-width: 860px) {
