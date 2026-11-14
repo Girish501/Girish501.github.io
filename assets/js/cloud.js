@@ -98,7 +98,8 @@
     var l1 = Math.hypot(e1[0], e1[1], e1[2]), l2 = Math.hypot(e2[0], e2[1], e2[2]);
     return function (i, cnt) {
       var n1 = Math.max(1, Math.round(Math.sqrt(cnt * l1 / l2))), n2 = Math.ceil(cnt / n1);
-      var s = ((i % n1) + 0.5 + 0.4 * (rnd() - 0.5)) / n1, t = (Math.floor(i / n1) + 0.5 + 0.4 * (rnd() - 0.5)) / n2;
+      // first and last grid rows sit on the face edges, so two faces meet without a paper-coloured seam
+      var s = ((i % n1) + 0.4 * (rnd() - 0.5)) / Math.max(1, n1 - 1), t = (Math.floor(i / n1) + 0.4 * (rnd() - 0.5)) / Math.max(1, n2 - 1);
       return [o[0] + e1[0] * s + e2[0] * t, o[1] + e1[1] * s + e2[1] * t, o[2] + e1[2] * s + e2[2] * t, colorAt(s, t), size];
     };
   }
@@ -109,7 +110,7 @@
   // u c above its Zn, bonds to the four neighbours, and dimension marks for a and c.
   var CAM_LATTICE = [0.55, 0.5, 10.8, 0.78];
   function shapeLattice() {
-    var SC = 0.45, RZN = 0.46 * SC, RO = 0.34 * SC, RB = 0.09 * SC, YC = 0.2;  // scene units per Å, atom and bond radii, centre height
+    var SC = 0.45, RZN = 0.46 * SC, RO = 0.34 * SC, RB = 0.065 * SC, YC = 0.2;  // scene units per Å, atom and bond radii, centre height
     var V = viewDir(CAM_LATTICE), az = CAM_LATTICE[0];
     var a1 = [A_LAT, 0], a2 = [-A_LAT / 2, A_LAT * Math.sqrt(3) / 2];
     var at = function (f1, f2) { return [f1 * a1[0] + f2 * a2[0], f1 * a1[1] + f2 * a2[1]]; };
@@ -129,29 +130,29 @@
     P.forEach(function (p) { parts.push({ w: p[3] ? 0.7 : 1, emit: ball(p, p[3] ? RO : RZN, p[3] ? GRAY : SLATE, V, 1.7 * COV) }); });   // Zn dark, O gray, as in the first version
     P.forEach(function (p) {
       if (p[3]) return;
-      P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.5, emit: rod(p, q, RB, LIGHT, COV, RZN / d, 1 - RO / d) }); });
+      P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.6, emit: rod(p, q, RB, LIGHT, 1.4 * COV, RZN / d, 1 - RO / d) }); });
     });
     // Prism edges: thin ink lines through the corner atoms.
-    var R = 0.01;
+    var R = 0.003;
     corners.forEach(function (c, n) {
       var d = corners[(n + 1) % 6], a = [c[0] * SC, 0, c[1] * SC], b = [d[0] * SC, 0, d[1] * SC];
-      parts.push({ w: 0.3, emit: rod([a[0], y0, a[2]], [b[0], y0, b[2]], R, INK, 0.9 * COV) });
-      parts.push({ w: 0.3, emit: rod([a[0], y1, a[2]], [b[0], y1, b[2]], R, INK, 0.9 * COV) });
-      parts.push({ w: 0.3, emit: rod([a[0], y0 + U_WZ * C_LAT * SC + RO, a[2]], [a[0], y1, a[2]], R, INK, 0.9 * COV) });   // the vertical ink edge starts above the corner O; below it the Zn-O bond and the Zn sphere carry the line, as in a solid ball-and-stick drawing
+      parts.push({ w: 0.3, emit: rod([a[0], y0, a[2]], [b[0], y0, b[2]], R, INK, 1.0 * COV) });
+      parts.push({ w: 0.3, emit: rod([a[0], y1, a[2]], [b[0], y1, b[2]], R, INK, 1.0 * COV) });
+      parts.push({ w: 0.3, emit: rod([a[0], y0 + U_WZ * C_LAT * SC + RO, a[2]], [a[0], y1, a[2]], R, INK, 1.0 * COV) });   // the vertical ink edge starts above the corner O; below it the Zn-O bond and the Zn sphere carry the line, as in a solid ball-and-stick drawing
     });
     // Dimension marks: a along the front bottom edge, c beside the right vertical edge.
     var front = function (c) { return c[0] * Math.sin(az) + c[1] * Math.cos(az); }, sx = function (c) { return c[0] * Math.cos(az) - c[1] * Math.sin(az); };
     var fi = 0, best = -1e9; corners.forEach(function (c, n) { var d = corners[(n + 1) % 6], f = front(c) + front(d); if (f > best) { best = f; fi = n; } });
     var A = corners[fi], B = corners[(fi + 1) % 6], TK = 0.4 * SC, ya = y0 - 1.0 * SC;
     var pa = [A[0] * SC, ya, A[1] * SC], pb = [B[0] * SC, ya, B[1] * SC];
-    parts.push({ w: 0.9, emit: rod(pa, pb, R, INK, 0.9 * COV) });
-    parts.push({ w: 0.15, emit: rod([pa[0], ya - TK / 2, pa[2]], [pa[0], ya + TK / 2, pa[2]], R, INK, 0.9 * COV) });
-    parts.push({ w: 0.15, emit: rod([pb[0], ya - TK / 2, pb[2]], [pb[0], ya + TK / 2, pb[2]], R, INK, 0.9 * COV) });
+    parts.push({ w: 0.9, emit: rod(pa, pb, R, INK, 1.0 * COV) });
+    parts.push({ w: 0.15, emit: rod([pa[0], ya - TK / 2, pa[2]], [pa[0], ya + TK / 2, pa[2]], R, INK, 1.0 * COV) });
+    parts.push({ w: 0.15, emit: rod([pb[0], ya - TK / 2, pb[2]], [pb[0], ya + TK / 2, pb[2]], R, INK, 1.0 * COV) });
     var ri = 0; best = -1e9; corners.forEach(function (c, n) { var v = sx(c) + 0.3 * front(c); if (v > best) { best = v; ri = n; } });
     var Cc = corners[ri], xc = Cc[0] * SC + 1.1 * SC, zc = Cc[1] * SC;
-    parts.push({ w: 1.2, emit: rod([xc, y0, zc], [xc, y1, zc], R, INK, 0.9 * COV) });
-    parts.push({ w: 0.15, emit: rod([xc - TK / 2, y0, zc], [xc + TK / 2, y0, zc], R, INK, 0.9 * COV) });
-    parts.push({ w: 0.15, emit: rod([xc - TK / 2, y1, zc], [xc + TK / 2, y1, zc], R, INK, 0.9 * COV) });
+    parts.push({ w: 1.2, emit: rod([xc, y0, zc], [xc, y1, zc], R, INK, 1.0 * COV) });
+    parts.push({ w: 0.15, emit: rod([xc - TK / 2, y0, zc], [xc + TK / 2, y0, zc], R, INK, 1.0 * COV) });
+    parts.push({ w: 0.15, emit: rod([xc - TK / 2, y1, zc], [xc + TK / 2, y1, zc], R, INK, 1.0 * COV) });
     var li = 0; best = 1e9; corners.forEach(function (c, n) { if (sx(c) < best) { best = sx(c); li = n; } });
     var Lc = corners[li], Os = P.filter(function (p) { return p[3]; }), leftO = Os[0]; best = 1e9;
     Os.forEach(function (p) { var v = sx([p[0], p[2]]); if (v < best) { best = v; leftO = p; } });
@@ -168,7 +169,7 @@
   // a thickness bracket on the left and labelled leaders on the right.
   var CAM_FILM = [0.5, 0.3, 10.5, 0.78];
   function shapeFilm() {
-    var W = 3.1, D = 2.0, H = 2.4, SUB = 0.9, X0 = 0.05, y0 = -0.9, zf = D / 2, FS = 1.6 * COV;
+    var W = 3.1, D = 2.0, H = 2.4, SUB = 0.9, X0 = 0.05, y0 = -0.9, zf = D / 2, FS = 1.9 * COV;
     var xl = X0 - W / 2, xr = X0 + W / 2, yt = y0 + H, yb = y0 - SUB, planes = Math.round(CYCLES / (RATIO + 1));
     var grain = function (s) { return 0.86 + 0.12 * Math.sin(s * 57) + 0.07 * Math.sin(s * 131 + 1); }; // columnar grains across the cut
     var parts = [];
@@ -179,15 +180,15 @@
     parts.push({ w: 4.0, emit: face([xl, yt, zf], [W, 0, 0], [0, 0, -D], function () { return shade(LIGHT, 1.03); }, FS) });
     var yAl = function (m) { return y0 + m * (RATIO + 1) / CYCLES * H; };
     for (var m = 1; m <= planes; m++) {
-      parts.push({ w: 0.2, emit: rod([xl, yAl(m), zf + 0.012], [xr, yAl(m), zf + 0.012], 0.008, BLUE, 0.9 * COV) });
-      parts.push({ w: 0.15, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0.008, BLUE, 0.9 * COV) });
+      parts.push({ w: 0.45, emit: rod([xl, yAl(m), zf + 0.012], [xr, yAl(m), zf + 0.012], 0.003, BLUE, 1.15 * COV) });
+      parts.push({ w: 0.3, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0.003, BLUE, 1.15 * COV) });
     }
-    var E = function (a, b, w, color) { parts.push({ w: w || 0.2, emit: rod(a, b, 0.008, color || INK, 0.9 * COV) }); };
+    var E = function (a, b, w, color) { parts.push({ w: w || 0.5, emit: rod(a, b, 0.003, color || INK, 1.1 * COV) }); };
     E([xl, y0, zf], [xr, y0, zf]); E([xl, yt, zf], [xr, yt, zf]); E([xl, y0, zf], [xl, yt, zf]); E([xr, y0, zf], [xr, yt, zf]);
     E([xr, y0, zf], [xr, y0, -zf]); E([xr, yt, zf], [xr, yt, -zf]); E([xr, y0, -zf], [xr, yt, -zf]); E([xl, yt, -zf], [xr, yt, -zf]); E([xl, yt, zf], [xl, yt, -zf]);
     E([xl, yb, zf], [xr, yb, zf]); E([xl, yb, zf], [xl, y0, zf]); E([xr, yb, zf], [xr, y0, zf]); E([xr, yb, zf], [xr, yb, -zf]); E([xr, yb, -zf], [xr, y0, -zf]);
     var bx = xl - 0.42;
-    E([bx, y0, zf], [bx, yt, zf], 0.3); E([bx - 0.1, y0, zf], [bx + 0.1, y0, zf], 0.05); E([bx - 0.1, yt, zf], [bx + 0.1, yt, zf], 0.05);
+    E([bx, y0, zf], [bx, yt, zf], 0.6); E([bx - 0.1, y0, zf], [bx + 0.1, y0, zf], 0.05); E([bx - 0.1, yt, zf], [bx + 0.1, yt, zf], 0.05);
     E([xl - 0.06, y0, zf], [bx - 0.14, y0, zf], 0.06); E([xl - 0.06, yt, zf], [bx - 0.14, yt, zf], 0.06);
     var lead = function (y, color) { E([xr, y, 0], [xr + 0.42, y, 0], 0.07, color); return [xr + 0.42, y, 0]; };
     var tags = {
@@ -445,7 +446,7 @@
     "  float ti = smoothstep(0.0, 1.0, clamp((uIntro - rnd * 0.4) / 0.6, 0.0, 1.0));",
     "  p = mix(sc, p, ti);",
     "  vec4 mv = modelViewMatrix * vec4(p, 1.0);",
-    "  gl_PointSize = max(1.0, uSize * s * uScale / -mv.z);",
+    "  gl_PointSize = max(1.0, uSize * s * uScale / max(-mv.z, 8.0));",
     "  gl_Position = projectionMatrix * mv;",
     "}"].join("\n");
   // Points are round and opaque and write depth, so spheres and faces occlude each other properly.
@@ -523,7 +524,7 @@
     var sA = new THREE.BufferAttribute(new Float32Array(shapes[0].siz), 1), sB = new THREE.BufferAttribute(new Float32Array(shapes[b].siz), 1);
     var wA = new THREE.BufferAttribute(new Float32Array(shapes[0].wav), 1), wB = new THREE.BufferAttribute(new Float32Array(shapes[b].wav), 1);
     var scat = new Float32Array(3 * N), rn = new Float32Array(N);
-    for (var i = 0; i < N; i++) { var r = 4 + rnd() * 5, th = rnd() * 6.2832, ph = Math.acos(2 * rnd() - 1); scat[3 * i] = r * Math.sin(ph) * Math.cos(th); scat[3 * i + 1] = r * Math.cos(ph) * 0.6; scat[3 * i + 2] = r * Math.sin(ph) * Math.sin(th); rn[i] = rnd(); }
+    for (var i = 0; i < N; i++) { var r = 3 + rnd() * 3, th = rnd() * 6.2832, ph = Math.acos(2 * rnd() - 1); scat[3 * i] = r * Math.sin(ph) * Math.cos(th); scat[3 * i + 1] = r * Math.cos(ph) * 0.6; scat[3 * i + 2] = r * Math.sin(ph) * Math.sin(th); rn[i] = rnd(); }
     geo.setAttribute("pA", pA); geo.setAttribute("pB", pB); geo.setAttribute("cA", cA); geo.setAttribute("cB", cB); geo.setAttribute("sA", sA); geo.setAttribute("sB", sB); geo.setAttribute("wA", wA); geo.setAttribute("wB", wB);
     geo.setAttribute("sc", new THREE.BufferAttribute(scat, 3)); geo.setAttribute("rnd", new THREE.BufferAttribute(rn, 1));
     geo.setAttribute("position", pA); // bounding sphere
