@@ -1,5 +1,5 @@
 <svg class="fig-svg" viewBox="0 0 580 370" role="img" aria-label="Transimpedance gain of the 45 nm TIA: flat at 109 dBΩ, 3 dB down at 492 MHz">
-  <g transform="translate(20,0)">
+  <g transform="translate(34,0)">
   <g class="fig-grid"><line x1="175.0" y1="28" x2="175.0" y2="296"/><line x1="298.0" y1="28" x2="298.0" y2="296"/><line x1="421.0" y1="28" x2="421.0" y2="296"/><line x1="52" y1="28.0" x2="544" y2="28.0"/><line x1="52" y1="135.2" x2="544" y2="135.2"/><line x1="52" y1="242.4" x2="544" y2="242.4"/></g>
   <g class="fig-axis"><line x1="52" y1="28" x2="52" y2="296"/><line x1="52" y1="296" x2="544" y2="296"/></g>
   <g class="fig-ticks"><text x="42" y="33.0" text-anchor="end">120</text><text x="42" y="140.2" text-anchor="end">100</text><text x="42" y="247.4" text-anchor="end">80</text>
@@ -9,6 +9,6 @@
   <text class="fig-note" x="371.1" y="137.0" text-anchor="end">−3 dB at 492 MHz</text>
   <text class="fig-note" x="62" y="73.0">109 dBΩ</text>
   </g>
-  <text class="fig-axlab" x="318" y="364" text-anchor="middle">Frequency (Hz)</text>
-  <text class="fig-axlab" x="14" y="162" text-anchor="middle" transform="rotate(-90 14 162)">Transimpedance gain (dBΩ)</text>
+  <text class="fig-axlab" x="318" y="361" text-anchor="middle">Frequency (Hz)</text>
+  <text class="fig-axlab" x="24" y="162" text-anchor="middle" transform="rotate(-90 24 162)">Transimpedance gain (dBΩ)</text>
 </svg>

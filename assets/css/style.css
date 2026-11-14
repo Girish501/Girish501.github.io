@@ -205,26 +205,27 @@ main { padding-top: var(--nav-h); }
 .fig { position: relative; padding: 18px 18px 14px; background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 1px 2px rgba(23, 24, 26, .04), 0 12px 32px -20px rgba(23, 24, 26, .18); }
 .fig-title { font-size: 14px; color: var(--ink-2); margin-bottom: 6px; max-width: 55ch; }
 .fig-title b { font-weight: 600; color: var(--ink); }
-.fig-svg { display: block; width: 100%; height: auto; }
+.fig-svg { display: block; width: 100%; height: auto; overflow: visible; }
 .fig-grid line { stroke: var(--line); stroke-width: 1; }
 .fig-axis line { stroke: var(--line-strong); stroke-width: 1; }
-.fig-ticks text, .fig-note, .fig-axlab, .fig-leg { font-family: var(--sans); font-size: 14px; fill: var(--muted); }
+.fig-ticks text, .fig-note, .fig-axlab, .fig-leg { font-family: var(--sans); font-size: 18px; fill: var(--muted); }
 .fig-axlab { fill: var(--ink-2); }
 .fig-note { fill: var(--ink-2); }
 .fig-curve { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .fig-mark line { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 4; }
 .fig-mark circle { fill: var(--accent); }
 .fig-foot { margin-top: 8px; font-size: 13px; color: var(--muted); }
-@media (max-width: 640px) {
-  .fig-ticks text, .fig-note, .fig-axlab, .fig-leg { font-size: 20px; } /* viewBox units: about 13px on a phone */
-}
+@media (min-width: 1024px) and (max-width: 1239px) { .fig-ticks text, .fig-note, .fig-axlab, .fig-leg, .tauc-mark text { font-size: 21px; } }   /* compact no-cloud hero, svg 371 to 440px: 13.4 to 15.9px */
+@media (min-width: 901px) and (max-width: 1023px) { .fig-ticks text, .fig-note, .fig-axlab, .fig-leg, .tauc-mark text { font-size: 24px; } }   /* two-column hero, svg about 324 to 372px: 13.4 to 15.4px */
+@media (max-width: 900px) { .fig-ticks text, .fig-note, .fig-axlab, .fig-leg, .tauc-mark text { font-size: 15px; } }   /* one column, svg 541 to 774px: 14 to 20px */
+@media (max-width: 640px) { .fig-ticks text, .fig-note, .fig-axlab, .fig-leg, .tauc-mark text { font-size: 20px; } }   /* svg 397 to 540px: 13.7 to 18.6px */
+@media (max-width: 480px) { .fig-ticks text, .fig-note, .fig-axlab, .fig-leg, .tauc-mark text { font-size: 25px; } }   /* 390px phone, svg about 312px: 13.5px */
 
 /* Tauc figure (drawn by tauc.js from data/azo/*.csv) */
 .tauc-curve { fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .tauc-curve.is-dashed { stroke-dasharray: .018 .012; }
 .tauc-mark line, .tauc-mark path { stroke: var(--accent); stroke-width: 1.5; }
-.tauc-mark text { font-family: var(--sans); font-size: 14px; font-weight: 600; fill: var(--accent); }
-@media (max-width: 640px) { .tauc-mark text { font-size: 20px; } }
+.tauc-mark text { font-family: var(--sans); font-size: 18px; font-weight: 600; fill: var(--accent); }
 
 /* ---------- ALD supercycle figure ---------- */
 
@@ -251,12 +252,15 @@ main { padding-top: var(--nav-h); }
 .ald-rows line { stroke: var(--line-strong); stroke-width: 1; }
 .ald-block { fill: var(--ink); }
 .ald-block.al { fill: var(--accent); }
-.ald .ald-dur text { font-size: 13px; }
+.ald .ald-dur text { font-size: 14px; }
 .ald-film { fill: var(--line); stroke: var(--ink); stroke-width: 1; }
 .ald-sub { fill: var(--paper-2); stroke: var(--line-strong); stroke-width: 1; }
 .ald-al { stroke: var(--accent); stroke-width: 1.5; }
-@media (max-width: 640px) {
+@media (max-width: 860px) {
   .ald { grid-template-columns: 1fr; gap: 12px; }
+  .ald svg { max-width: 420px; margin: 0 auto; }
+}
+@media (max-width: 640px) {
   .ald text { font-size: 16px; }   /* viewBox units: about 14px on a 390px phone */
   .ald .ald-dur text { font-size: 15px; }
 }
