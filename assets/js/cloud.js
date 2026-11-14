@@ -184,9 +184,11 @@
       parts.push({ w: 0.3, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0.003, BLUE, 1.15 * COV) });
     }
     var E = function (a, b, w, color) { parts.push({ w: w || 0.5, emit: rod(a, b, 0.003, color || INK, 1.1 * COV) }); };
-    E([xl, y0, zf], [xr, y0, zf]); E([xl, yt, zf], [xr, yt, zf]); E([xl, y0, zf], [xl, yt, zf]); E([xr, y0, zf], [xr, yt, zf]);
-    E([xr, y0, zf], [xr, y0, -zf]); E([xr, yt, zf], [xr, yt, -zf]); E([xr, y0, -zf], [xr, yt, -zf]); E([xl, yt, -zf], [xr, yt, -zf]); E([xl, yt, zf], [xl, yt, -zf]);
-    E([xl, yb, zf], [xr, yb, zf]); E([xl, yb, zf], [xl, y0, zf]); E([xr, yb, zf], [xr, y0, zf]); E([xr, yb, zf], [xr, yb, -zf]); E([xr, yb, -zf], [xr, y0, -zf]);
+    // box edges lie 0.012 in front of the face planes they border (as the Al planes do), so the larger face discs never overdraw them
+    var o = 0.012, zo = zf + o, xo = xr + o, yo = yt + o, zb = -zf + o;
+    E([xl, y0, zo], [xr, y0, zo]); E([xl, yo, zo], [xr, yo, zo]); E([xl, y0, zo], [xl, yt, zo]); E([xo, y0, zo], [xo, yt, zo]);
+    E([xo, y0, zf], [xo, y0, -zf]); E([xo, yo, zf], [xo, yo, -zf]); E([xo, y0, zb], [xo, yt, zb]); E([xl, yo, zb], [xr, yo, zb]); E([xl, yo, zf], [xl, yo, -zf]);
+    E([xl, yb, zo], [xr, yb, zo]); E([xl, yb, zo], [xl, y0, zo]); E([xo, yb, zo], [xo, y0, zo]); E([xo, yb, zf], [xo, yb, -zf]); E([xo, yb, zb], [xo, y0, zb]);
     var bx = xl - 0.42;
     E([bx, y0, zf], [bx, yt, zf], 0.6); E([bx - 0.1, y0, zf], [bx + 0.1, y0, zf], 0.05); E([bx - 0.1, yt, zf], [bx + 0.1, yt, zf], 0.05);
     E([xl - 0.06, y0, zf], [bx - 0.14, y0, zf], 0.06); E([xl - 0.06, yt, zf], [bx - 0.14, yt, zf], 0.06);
