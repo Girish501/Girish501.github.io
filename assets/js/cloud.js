@@ -131,7 +131,7 @@
       P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.3, emit: rod(p, q, RB, LIGHT, COV, RZN / d, 1 - RO / d) }); });
     });
     // Prism edges: thin ink lines through the corner atoms.
-    var R = 0.01;
+    var R = 0;
     corners.forEach(function (c, n) {
       var d = corners[(n + 1) % 6], a = [c[0] * SC, 0, c[1] * SC], b = [d[0] * SC, 0, d[1] * SC];
       parts.push({ w: 0.3, emit: rod([a[0], y0, a[2]], [b[0], y0, b[2]], R, INK, 0.9 * COV) });
@@ -178,10 +178,10 @@
     parts.push({ w: 4.0, emit: face([xl, yt, zf], [W, 0, 0], [0, 0, -D], function () { return shade(LIGHT, 1.03); }, FS) });
     var yAl = function (m) { return y0 + m * (RATIO + 1) / CYCLES * H; };
     for (var m = 1; m <= planes; m++) {
-      parts.push({ w: 0.2, emit: rod([xl, yAl(m), zf + 0.012], [xr, yAl(m), zf + 0.012], 0.008, BLUE, 0.9 * COV) });
-      parts.push({ w: 0.15, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0.008, BLUE, 0.9 * COV) });
+      parts.push({ w: 0.35, emit: rod([xl, yAl(m), zf + 0.012], [xr, yAl(m), zf + 0.012], 0, BLUE, 0.9 * COV) });
+      parts.push({ w: 0.25, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0, BLUE, 0.9 * COV) });
     }
-    var E = function (a, b, w, color) { parts.push({ w: w || 0.2, emit: rod(a, b, 0.008, color || INK, 0.9 * COV) }); };
+    var E = function (a, b, w, color) { parts.push({ w: w || 0.2, emit: rod(a, b, 0, color || INK, 0.9 * COV) }); };
     E([xl, y0, zf], [xr, y0, zf]); E([xl, yt, zf], [xr, yt, zf]); E([xl, y0, zf], [xl, yt, zf]); E([xr, y0, zf], [xr, yt, zf]);
     E([xr, y0, zf], [xr, y0, -zf]); E([xr, yt, zf], [xr, yt, -zf]); E([xr, y0, -zf], [xr, yt, -zf]); E([xl, yt, -zf], [xr, yt, -zf]); E([xl, yt, zf], [xl, yt, -zf]);
     E([xl, yb, zf], [xr, yb, zf]); E([xl, yb, zf], [xl, y0, zf]); E([xr, yb, zf], [xr, y0, zf]); E([xr, yb, zf], [xr, yb, -zf]); E([xr, yb, -zf], [xr, y0, -zf]);
@@ -202,10 +202,10 @@
   // tubes. Values are mapped to the box X0..X1 by Y0..Y1; labels are HTML tags anchored to points.
   var X0 = -1.95, X1 = 2.25, Y0 = -1.4, Y1 = 1.9;
   function axesParts(parts, x0, x1, y0, y1, xs, ys) {
-    xs.forEach(function (x) { parts.push({ w: 0.08, emit: rod([x, y0, -0.02], [x, y1, -0.02], 0.005, LIGHT, 0.75 * COV) }); parts.push({ w: 0.015, emit: rod([x, y0 - 0.07, 0], [x, y0, 0], 0.009, INK, 0.8 * COV) }); });
-    ys.forEach(function (y) { parts.push({ w: 0.1, emit: rod([x0, y, -0.02], [x1, y, -0.02], 0.005, LIGHT, 0.75 * COV) }); parts.push({ w: 0.015, emit: rod([x0 - 0.07, y, 0], [x0, y, 0], 0.009, INK, 0.8 * COV) }); });
-    parts.push({ w: 0.4, emit: rod([x0, y0, 0], [x1, y0, 0], 0.009, INK, 0.8 * COV) });
-    parts.push({ w: 0.32, emit: rod([x0, y0, 0], [x0, y1, 0], 0.009, INK, 0.8 * COV) });
+    xs.forEach(function (x) { parts.push({ w: 0.12, emit: rod([x, y0, -0.02], [x, y1, -0.02], 0, LIGHT, 0.75 * COV) }); parts.push({ w: 0.015, emit: rod([x, y0 - 0.07, 0], [x, y0, 0], 0, INK, 0.8 * COV) }); });
+    ys.forEach(function (y) { parts.push({ w: 0.15, emit: rod([x0, y, -0.02], [x1, y, -0.02], 0, LIGHT, 0.75 * COV) }); parts.push({ w: 0.015, emit: rod([x0 - 0.07, y, 0], [x0, y, 0], 0, INK, 0.8 * COV) }); });
+    parts.push({ w: 0.4, emit: rod([x0, y0, 0], [x1, y0, 0], 0, INK, 0.8 * COV) });
+    parts.push({ w: 0.32, emit: rod([x0, y0, 0], [x0, y1, 0], 0, INK, 0.8 * COV) });
     return parts;
   }
   function chart(xs, ys) { return axesParts([], X0, X1, Y0, Y1, xs, ys); }
@@ -219,7 +219,7 @@
   }
 
   // ---- Schematic drawing: wires and symbols in the x-y plane, as parts ----
-  var WIRE = 0.009, SYM = 0.95;   // thin wires drawn with small, dense points read crisper than thick fuzzy ones
+  var WIRE = 0.003, SYM = 0.95;   // thin wires drawn with small, dense points read crisper than thick fuzzy ones
   function W(parts, a, b, color, r) { var len = Math.hypot(b[0] - a[0], b[1] - a[1]); if (len < 1e-6) return; parts.push({ w: 0.42 * len, emit: rod([a[0], a[1], 0], [b[0], b[1], 0], r || WIRE, color, SYM * COV) }); }
   function poly(parts, pts, color) { for (var i = 1; i < pts.length; i++) W(parts, pts[i - 1], pts[i], color); }
   function arc(parts, c, r, a0, a1, color) { var n = 14, pts = []; for (var i = 0; i <= n; i++) { var a = a0 + (a1 - a0) * i / n; pts.push([c[0] + r * Math.cos(a), c[1] + r * Math.sin(a)]); } poly(parts, pts, color); }
@@ -247,22 +247,22 @@
   function cap(parts, a, b, color) {
     var dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len, nx = -uy, ny = ux, m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], g = 0.035, pl = 0.12;
     W(parts, a, [m[0] - ux * g, m[1] - uy * g], color); W(parts, [m[0] + ux * g, m[1] + uy * g], b, color);
-    [-1, 1].forEach(function (s) { var c = [m[0] + ux * g * s, m[1] + uy * g * s]; W(parts, [c[0] - nx * pl, c[1] - ny * pl], [c[0] + nx * pl, c[1] + ny * pl], color, 0.014); });
+    [-1, 1].forEach(function (s) { var c = [m[0] + ux * g * s, m[1] + uy * g * s]; W(parts, [c[0] - nx * pl, c[1] - ny * pl], [c[0] + nx * pl, c[1] + ny * pl], color, 0.006); });
   }
-  function gnd(parts, p, color) { W(parts, p, [p[0], p[1] - 0.1], color); [[0.13, 0], [0.085, 0.05], [0.04, 0.1]].forEach(function (s) { W(parts, [p[0] - s[0], p[1] - 0.1 - s[1]], [p[0] + s[0], p[1] - 0.1 - s[1]], color, 0.014); }); }
+  function gnd(parts, p, color) { W(parts, p, [p[0], p[1] - 0.1], color); [[0.13, 0], [0.085, 0.05], [0.04, 0.1]].forEach(function (s) { W(parts, [p[0] - s[0], p[1] - 0.1 - s[1]], [p[0] + s[0], p[1] - 0.1 - s[1]], color, 0.006); }); }
   function photodiode(parts, top, bot, color) {
     var x = top[0], m = (top[1] + bot[1]) / 2, s = 0.14;
     W(parts, top, [x, m + s], color); W(parts, [x, m - s], bot, color);
     poly(parts, [[x - s, m + s], [x + s, m + s], [x, m - s], [x - s, m + s]], color);      // triangle, anode up
-    W(parts, [x - s, m - s], [x + s, m - s], color, 0.014);                                  // bar
+    W(parts, [x - s, m - s], [x + s, m - s], color, 0.006);                                  // bar
     [[-0.42, 0.2], [-0.42, 0.02]].forEach(function (o) { var a = [x + o[0], m + o[1] + 0.2], b = [x + o[0] + 0.2, m + o[1]]; W(parts, a, b, color); chevron(parts, b, [0.707, -0.707], color); }); // light
   }
 
   // The TIA signal chain, from the report's schematics: photodiode model (current source and 100 fF),
   // 50 pF coupling, common-gate input stage with a 10 kΩ load, differential pair with PMOS loads,
   // four cascaded common-source stages per path, source followers, 600 Ω differential load.
-  // Flat drawings use yaw 0 so horizontal wires and axes stay within one pixel row. Entries: yaw, elevation, distance, optional canvas aspect below which the camera steps back (default 0.9).
-  var CAM_TIA = [0, 0.1, 9.6, 1.08];
+  // Flat drawings are viewed square-on (yaw 0, elevation 0, no drift) so wires stay straight and in one pixel row. Entries: yaw, elevation, distance, optional canvas aspect below which the camera steps back (default 0.9).
+  var CAM_TIA = [0, 0, 9.6, 1.08];
   function shapeTIA() {
     var parts = [], tags = {}, S = 0.93, OX = -0.3, OY = 0.4, pathP = [], pathN = [];
     function P(x, y) { return [x * S + OX, y * S + OY]; }
@@ -346,7 +346,7 @@
     pathN = [tA.gate, [tA.top[0], tA.gate[1]], [tA.bot[0], tail[1]], [tB.bot[0], tail[1]], [tB.top[0], tail[1]], vn, [xDropN, vn[1]]].concat(pathN);
     // Flow particles: blue dots that run along both paths (their positions are set each frame)
     var flows = [{ path: pathP, n: 20 }, { path: pathN, n: 14 }];
-    flows.forEach(function (f, i) { f.name = "flow" + i; f.per = 12; parts.push({ name: f.name, n: f.n * f.per, emit: function (k) { var tail = k % f.per >= 7; return [0, 0, 0.03, tail ? BLUE2 : BLUE, (tail ? 1.1 : 1.6) * COV]; } }); });
+    flows.forEach(function (f, i) { f.name = "flow" + i; f.per = 12; parts.push({ name: f.name, n: f.n * f.per, emit: function (k) { var tail = k % f.per >= 7; return [0, 0, 0.03, tail ? BLUE2 : BLUE, (tail ? 1.1 : 2.0) * COV]; } }); });
     tags = {
       pd: { p: [P(xPD, yGndL)[0] - 0.14, P(0, yGndL)[1] - 0.3, 0] },
       cp: { p: [P(xCP, 0)[0] + 0.14, P(0, -0.03)[1], 0] },
@@ -364,7 +364,7 @@
 
   // Input current and differential output voltage against time: 2.67 µA peak to peak in at 300 MHz,
   // 594 mV peak to peak out (VOP minus VON). The sines travel; the vertex shader moves them.
-  var CAM_SCOPE = [0, 0.08, 9.6], CYCLES_SHOWN = 6;
+  var CAM_SCOPE = [0, 0, 9.6], CYCLES_SHOWN = 6;
   function shapeScope() {
     var parts = [], yiT = 1.95, yiB = 1.15, yvT = 0.75, yvB = -1.4, ci = (yiT + yiB) / 2, cv = (yvT + yvB) / 2, ai = 0.27, av = 0.297 / 0.33 * (yvT - cv);
     axesParts(parts, X0, X1, yiB, yiT, [], [ci]);
@@ -386,7 +386,7 @@
 
   // Transimpedance gain against frequency, read from the report's Spectre plot (VOP minus VON over the
   // photodiode current): flat near 109 dBΩ, 3 dB down at 2.31 MHz and 492.88 MHz.
-  var CAM_BODE = [0, 0.12, 9.6];
+  var CAM_BODE = [0, 0, 9.6];
   var BODE = [[4.706,-11.0],[4.765,-4.1],[4.824,2.8],[4.882,9.6],[4.941,16.3],[5.0,22.9],[5.059,29.4],[5.118,35.8],[5.176,41.9],[5.235,47.9],[5.294,53.7],[5.353,59.1],[5.412,64.2],[5.471,69.1],[5.529,73.6],[5.588,77.7],[5.647,81.6],[5.706,85.1],[5.765,88.0],[5.824,90.6],[5.882,93.1],[5.941,95.2],[6.0,97.1],[6.059,98.5],[6.118,99.9],[6.176,101.3],[6.235,102.8],[6.294,103.8],[6.353,104.7],[6.412,105.5],[6.471,106.2],[6.529,106.9],[6.588,107.3],[6.647,107.6],[6.706,107.9],[6.765,108.2],[6.824,108.5],[6.882,108.7],[6.941,108.9],[7.0,109.0],[7.059,109.1],[7.118,109.3],[7.176,109.3],[7.235,109.3],[7.294,109.3],[7.353,109.3],[7.412,109.3],[7.471,109.3],[7.529,109.3],[7.588,109.3],[7.647,109.3],[7.706,109.3],[7.765,109.3],[7.824,109.3],[7.882,109.3],[7.941,109.3],[8.0,109.3],[8.059,109.2],[8.118,109.1],[8.176,109.0],[8.235,108.9],[8.294,108.9],[8.353,108.8],[8.412,108.6],[8.471,108.3],[8.529,107.8],[8.588,107.0],[8.647,105.8],[8.706,104.3],[8.765,102.8],[8.824,101.2],[8.882,99.5],[8.941,97.5],[9.0,95.1],[9.059,92.6],[9.118,89.8],[9.176,87.1],[9.235,84.0],[9.294,80.6],[9.353,76.9],[9.412,72.9],[9.471,68.7],[9.529,64.4],[9.588,60.0],[9.647,55.5],[9.706,50.8],[9.765,46.0],[9.824,41.1],[9.882,36.9],[9.941,33.3],[10.0,30.4]];
   function shapeBode() {
     var LG0 = 5, LG1 = 10, DB0 = 0, DB1 = 120, L3 = 104.7;
@@ -396,7 +396,7 @@
     var lgStart = Math.max(LG0, data[0][0]);
     var parts = chart([6, 7, 8, 9].map(fx), [40, 80, 120].map(fy));
     parts.push({ w: 1.6, emit: curve(function (s) { var lg = lgStart + s * (LG1 - lgStart); return [fx(lg), fy(Math.max(DB0, gainAt(lg)))]; }, 0.024, 0.03, INK) });
-    parts.push({ w: 0.25, emit: rod([X0, fy(L3), 0.01], [X1, fy(L3), 0.01], 0.006, shade(BLUE, 1.0), 0.8 * COV) });
+    parts.push({ w: 0.4, emit: rod([X0, fy(L3), 0.01], [X1, fy(L3), 0.01], 0, shade(BLUE, 1.0), 0.8 * COV) });
     var lo = Math.log10(2.31102e6), hi = Math.log10(492.868e6);
     parts.push({ w: 0.07, emit: disc([fx(lo), fy(L3), 0.05], 0.08, BLUE) }); parts.push({ w: 0.07, emit: disc([fx(hi), fy(L3), 0.05], 0.08, BLUE) });
     var tags = {
@@ -436,7 +436,7 @@
 
   var VERT = [
     "attribute vec3 pA; attribute vec3 pB; attribute vec3 cA; attribute vec3 cB; attribute float sA; attribute float sB; attribute float wA; attribute float wB; attribute vec3 sc; attribute float rnd;",
-    "uniform float uT; uniform float uIntro; uniform float uSize; uniform float uScale; uniform float uK; uniform float uPhase; varying vec3 vCol;",
+    "uniform float uT; uniform float uIntro; uniform float uSize; uniform float uScale; uniform float uK; uniform float uPhase; varying vec3 vCol; varying float vPx;",
     "void main(){",
     "  float tt = smoothstep(0.0, 1.0, clamp((uT - rnd * 0.35) / 0.65, 0.0, 1.0));",
     "  vec3 p = mix(pA, pB, tt); vCol = mix(cA, cB, tt); float s = mix(sA, sB, tt);",
@@ -444,13 +444,16 @@
     "  float ti = smoothstep(0.0, 1.0, clamp((uIntro - rnd * 0.4) / 0.6, 0.0, 1.0));",
     "  p = mix(sc, p, ti);",
     "  vec4 mv = modelViewMatrix * vec4(p, 1.0);",
-    "  gl_PointSize = max(1.0, uSize * s * uScale / -mv.z);",
+    "  gl_PointSize = max(2.0, uSize * s * uScale / -mv.z); vPx = gl_PointSize;",
     "  gl_Position = projectionMatrix * mv;",
     "}"].join("\n");
-  // Points are round and opaque and write depth, so spheres and faces occlude each other properly.
+  // Points are round with a one-device-pixel feathered rim. With multisampling the alpha becomes a sample
+  // mask (alpha to coverage) and the resolve blends the rim into the paper; without it uCut 0.5 gives a hard disc.
+  // Depth still writes, so spheres and faces occlude each other properly.
   var FRAG = [
-    "varying vec3 vCol;",
-    "void main(){ vec2 d = gl_PointCoord - 0.5; if (dot(d, d) > 0.22) discard; gl_FragColor = vec4(vCol, 1.0); }"].join("\n");
+    "varying vec3 vCol; varying float vPx; uniform float uCut;",
+    "void main(){ float r = length(gl_PointCoord - 0.5), aa = 0.5 / max(2.0, vPx);",
+    "  float a = 1.0 - smoothstep(0.47 - aa, 0.47 + aa, r); if (a < uCut) discard; gl_FragColor = vec4(vCol, a); }"].join("\n");
 
   var SPECS = {
     lattice: { build: shapeLattice, cam: CAM_LATTICE },
@@ -503,8 +506,10 @@
     var canvas = hero.querySelector(".cloud-canvas"), box = canvas.parentElement, lookY = parseFloat(hero.getAttribute("data-cloud-look")); if (isNaN(lookY)) lookY = -0.75;
     var track = hero.querySelector(".hero-track") || hero, pin = hero.querySelector(".hero-pin, .stage-pin") || box;
 
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: "high-performance" });
-    renderer.setClearColor(0x000000, 0);
+    THREE.ColorManagement.enabled = false;   // the shaders output raw sRGB values
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
+    renderer.setClearColor(0xf8f7f3, 1);   // paper: the canvas only ever sits on paper (.hero-visual and .cloud-box)
+    var gl = renderer.getContext(), msaa = gl.getParameter(gl.SAMPLES) >= 2;
     var lost = false;
     canvas.addEventListener("webglcontextlost", function () {   // three.js's own listener calls preventDefault, so the browser may restore the context
       lost = true;
@@ -525,7 +530,7 @@
     geo.setAttribute("pA", pA); geo.setAttribute("pB", pB); geo.setAttribute("cA", cA); geo.setAttribute("cB", cB); geo.setAttribute("sA", sA); geo.setAttribute("sB", sB); geo.setAttribute("wA", wA); geo.setAttribute("wB", wB);
     geo.setAttribute("sc", new THREE.BufferAttribute(scat, 3)); geo.setAttribute("rnd", new THREE.BufferAttribute(rn, 1));
     geo.setAttribute("position", pA); // bounding sphere
-    var mat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms: { uT: { value: 0 }, uIntro: { value: 0 }, uSize: { value: 0.026 }, uScale: { value: 900 }, uK: { value: 2 * Math.PI * CYCLES_SHOWN / (X1 - X0) }, uPhase: { value: 0 } } });
+    var mat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, alphaToCoverage: msaa, uniforms: { uCut: { value: msaa ? 0.02 : 0.5 }, uT: { value: 0 }, uIntro: { value: 0 }, uSize: { value: 0.026 }, uScale: { value: 900 }, uK: { value: 2 * Math.PI * CYCLES_SHOWN / (X1 - X0) }, uPhase: { value: 0 } } });
     scene.add(new THREE.Points(geo, mat));
 
     var curSeg = -1, switched = false;
@@ -598,7 +603,7 @@
         var attr = si === seg ? pA : pB, arr = attr.array;
         sh.flows.forEach(function (f) {
           for (var j = 0; j < f.count; j++) {
-            var pt = Math.floor(j / f.per), m = j % f.per, back = m >= 7 ? (m - 6) * 0.03 : 0;   // the last five points trail behind the head
+            var pt = Math.floor(j / f.per), m = j % f.per, back = m >= 7 ? (m - 6) * 0.012 : 0;   // the last five points trail behind the head
             var u = ((pt / f.n) + now * 0.00009 - back / f.len + 1) % 1, d = u * f.len, k = 1;
             while (k < f.cum.length - 1 && f.cum[k] < d) k++;
             var a = f.path[k - 1], b = f.path[k], t = (d - f.cum[k - 1]) / Math.max(1e-6, f.cum[k] - f.cum[k - 1]), o = f.start + j, jx = m >= 7 ? 0.3 : 1;
@@ -613,7 +618,7 @@
       switched = false;
       // Camera between the two shapes' viewpoints, with a slow drift.
       var ca = shapes[seg].cam, cb = shapes[Math.min(S - 1, seg + 1)].cam;
-      var az = ca[0] + (cb[0] - ca[0]) * tt + Math.sin(now * 0.00018) * 0.015, el = ca[1] + (cb[1] - ca[1]) * tt, d = (ca[2] + (cb[2] - ca[2]) * tt) * Math.max(1, ((ca[3] || 0.9) + ((cb[3] || 0.9) - (ca[3] || 0.9)) * tt) / camera.aspect); // step back on narrow canvases
+      var drift = (ca[0] || cb[0]) ? Math.sin(now * 0.00018) * 0.015 : 0, az = ca[0] + (cb[0] - ca[0]) * tt + drift, el = ca[1] + (cb[1] - ca[1]) * tt, d = (ca[2] + (cb[2] - ca[2]) * tt) * Math.max(1, ((ca[3] || 0.9) + ((cb[3] || 0.9) - (ca[3] || 0.9)) * tt) / camera.aspect); // step back on narrow canvases
       camera.position.set(Math.sin(az) * Math.cos(el) * d, Math.sin(el) * d, Math.cos(az) * Math.cos(el) * d);
       camera.lookAt(0, lookY, 0);   // in the hero the shapes sit high, clear of the panel; data-cloud-look moves this
       renderer.render(scene, camera);
