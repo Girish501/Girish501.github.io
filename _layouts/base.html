@@ -19,7 +19,7 @@
   {% if page.cloud %}
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js"}}</script>
-  <script>(function () { if (window.matchMedia("(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)").matches) { var l = document.createElement("link"); l.rel = "modulepreload"; l.href = "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js"; document.head.appendChild(l); } })();</script>
+  <script>(function () { function gl2() { try { var g = document.createElement("canvas").getContext("webgl2"), x = g && g.getExtension("WEBGL_lose_context"); if (x) x.loseContext(); return !!g; } catch (e) { return false; } } /* three.js r163+ needs WebGL 2: a WebGL 1 device never downloads it */ if (window.matchMedia("(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)").matches && gl2()) { var l = document.createElement("link"); l.rel = "modulepreload"; l.href = "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js"; document.head.appendChild(l); } })();</script>
   {% endif %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
