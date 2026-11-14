@@ -504,8 +504,14 @@
     var track = hero.querySelector(".hero-track") || hero, pin = hero.querySelector(".hero-pin, .stage-pin") || box;
 
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: "high-performance" });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setClearColor(0x000000, 0);
+    var lost = false;
+    canvas.addEventListener("webglcontextlost", function () {   // three.js's own listener calls preventDefault, so the browser may restore the context
+      lost = true;
+      hero.classList.remove("has-cloud");   // the CSS then shows the hero's static figure (or the pinned stage's box-fig for its current step) and hides canvas, panel and tags
+      for (var i = 0; i < tags.length; i++) { tags[i].el.style.opacity = 0; tags[i].on = false; }
+    });
+    canvas.addEventListener("webglcontextrestored", function () { lost = false; hero.classList.add("has-cloud"); relayout(); });
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 
@@ -531,15 +537,29 @@
     }
     setSegment(0);
 
-    function size() {
-      var w = box.clientWidth, h = box.clientHeight;
-      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
-      // Point size in device pixels = uSize (world units) * uScale / distance; uScale is the
-      // perspective factor for the canvas height, so a point is about 2.8 css px at the cloud's distance.
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      mat.uniforms.uScale.value = (h * dpr) / (2 * Math.tan(camera.fov * Math.PI / 360));
+    var snapL = NaN, snapT = NaN;
+    function snap(br, dpr) {   // move the canvas origin onto a device pixel (overrides the CSS inset; right/bottom are ignored once left+width and top+height are set)
+      var l = (Math.round(br.left * dpr) - br.left * dpr) / dpr, t = (Math.round(br.top * dpr) - br.top * dpr) / dpr;
+      if (!(Math.abs(l - snapL) <= 1e-4)) { snapL = l; canvas.style.left = l + "px"; }
+      if (!(Math.abs(t - snapT) <= 1e-4)) { snapT = t; canvas.style.top = t + "px"; }
     }
+    function size() {
+      // Whole device pixels: a fractional CSS box (the centred text column puts the hero visual at x 652.78 at 1279x707) makes Chrome resample the opaque point canvas by a fraction of a pixel and every vertical line gets two soft columns.
+      var dpr = Math.min(window.devicePixelRatio || 1, 2), br = box.getBoundingClientRect();
+      var pw = Math.max(1, Math.round(br.width * dpr)), ph = Math.max(1, Math.round(br.height * dpr));
+      renderer.setPixelRatio(1); renderer.setSize(pw, ph, false);
+      canvas.style.width = (pw / dpr) + "px"; canvas.style.height = (ph / dpr) + "px";
+      snap(br, dpr);
+      camera.aspect = pw / ph; camera.updateProjectionMatrix();
+      mat.uniforms.uScale.value = ph / (2 * Math.tan(camera.fov * Math.PI / 360));   // ph is already in device pixels
+    }
+    function relayout() { size(); measure(); start(); }
     size();
+    (function watchDpr() {
+      var m = window.matchMedia("(resolution: " + (window.devicePixelRatio || 1) + "dppx)");
+      var f = function () { if (m.removeEventListener) m.removeEventListener("change", f); else m.removeListener(f); relayout(); watchDpr(); };
+      if (m.addEventListener) m.addEventListener("change", f); else if (m.addListener) m.addListener(f);
+    })();
 
     // Scroll scrub: the target follows scrollY, the shown value eases toward it.
     var top = 0, span = 1, navH = 60;
@@ -551,6 +571,8 @@
 
     function frame(now) {
       raf = 0;
+      if (lost) return;
+      snap(box.getBoundingClientRect(), Math.min(window.devicePixelRatio || 1, 2));   // the box moves by a fraction when a sticky stage engages
       if (!t0) t0 = now;
       if (intro < 1) intro = Math.min(1, (now - t0) / 1500);
       target = Math.min(1, Math.max(0, (window.scrollY - top) / span));
@@ -603,13 +625,13 @@
       if (p) Array.prototype.forEach.call(p.querySelectorAll("[data-value]"), function (num) { var v = parseFloat(num.getAttribute("data-value")), dec = parseInt(num.getAttribute("data-dec"), 10) || 0, s = (num.getAttribute("data-prefix") || "") + fmt(v * f, dec) + (num.getAttribute("data-suffix") || ""); if (num.textContent !== s) num.textContent = s; });
       if (visible) raf = requestAnimationFrame(frame);
     }
-    function start() { if (!raf) raf = requestAnimationFrame(frame); }
+    function start() { if (!raf && !lost) raf = requestAnimationFrame(frame); }
     if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); }, { threshold: 0 }).observe(hero);
     document.addEventListener("visibilitychange", function () { if (!document.hidden && visible) start(); });
-    window.addEventListener("resize", function () { size(); measure(); start(); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-    window.addEventListener("load", measure);
-    window.addEventListener("cloud:mounted", measure);
+    window.addEventListener("resize", relayout);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+    window.addEventListener("load", relayout);
+    window.addEventListener("cloud:mounted", relayout);
     start();
   }
 })();
