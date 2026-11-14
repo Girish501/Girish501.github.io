@@ -84,4 +84,5 @@
   window.addEventListener("scroll", tick, { passive: true });
   window.addEventListener("resize", function () { vh = window.innerHeight; items.forEach(function (it) { it.last = -1; }); tick(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { items.forEach(function (it) { it.last = -1; }); tick(); });
+  window.addEventListener("cloud:mounted", function () { items.forEach(function (it) { it.last = -1; }); tick(); });   // the hero or a stage changed height
 })();

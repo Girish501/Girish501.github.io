@@ -13,12 +13,13 @@
 // keeps its static figure.
 (function () {
   "use strict";
-  function noCloud() { Array.prototype.forEach.call(document.querySelectorAll("[data-cloud]"), function (r) { r.classList.add("no-cloud"); r.classList.remove("has-cloud"); r.classList.remove("cloud-pending"); }); }
+  function announce() { window.dispatchEvent(new Event("cloud:mounted")); }   // the layout above or around a listener changed: stage.js, anim.js and the other cloud measure again
+  function noCloud() { Array.prototype.forEach.call(document.querySelectorAll("[data-cloud]"), function (r) { r.classList.add("no-cloud"); r.classList.remove("has-cloud"); r.classList.remove("cloud-pending"); }); announce(); }
   var DEFAULT_MQ = "(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
   var roots = Array.prototype.filter.call(document.querySelectorAll("[data-cloud]"), function (r) { return window.matchMedia(r.getAttribute("data-cloud-mq") || DEFAULT_MQ).matches; });
   if (!roots.length) { noCloud(); return; }
   var test = document.createElement("canvas");
-  var gl = test.getContext("webgl2") || test.getContext("webgl");
+  var gl = test.getContext("webgl2");   // three.js r163 and later draw with WebGL 2 only
   if (!gl) { noCloud(); return; }
   var ext = gl.getExtension("WEBGL_debug_renderer_info");
   var rname = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
@@ -479,8 +480,8 @@
           if (k === "tauc") { if (tauc) shapes.push({ key: "tauc", build: function () { return shapeTauc(tauc); }, cam: [0.2, 0.12, 11] }); }
           else if (SPECS[k]) shapes.push({ key: k, build: SPECS[k].build, cam: SPECS[k].cam });
         });
-        if (shapes.length) mount(root, THREE, shapes);
-      }).catch(function (e) { root.classList.remove("has-cloud"); root.classList.add("no-cloud"); root.classList.remove("cloud-pending"); if (window.console) console.warn("cloud off:", e && e.message); });
+        if (shapes.length) mount(root, THREE, shapes); else { root.classList.remove("cloud-pending"); root.classList.add("no-cloud"); announce(); }
+      }).catch(function (e) { root.classList.remove("has-cloud"); root.classList.add("no-cloud"); root.classList.remove("cloud-pending"); announce(); if (window.console) console.warn("cloud off:", e && e.message); });
     });
   }).catch(function (e) { noCloud(); if (window.console) console.warn("cloud off:", e && e.message); });
 
@@ -503,17 +504,17 @@
       var spec = si >= 0 && shapes[si].tags[el.getAttribute("data-at")];
       if (spec) tags.push({ el: el, shape: si, p: new THREE.Vector3(spec.p[0], spec.p[1], spec.p[2]), dx: spec.dx || 0, dy: spec.dy || 0, tail: (el.hasAttribute("data-rotate") ? " rotate(" + el.getAttribute("data-rotate") + "deg)" : "") + " translate(" + (el.getAttribute("data-align") === "right" ? "-100%" : el.getAttribute("data-align") === "center" ? "-50%" : "0") + ",-50%)", on: false });
     });
+    var canvas = hero.querySelector(".cloud-canvas"), box = canvas.parentElement, lookY = parseFloat(hero.getAttribute("data-cloud-look")); if (isNaN(lookY)) lookY = -0.75;
+    var track = hero.querySelector(".hero-track") || hero, pin = hero.querySelector(".hero-pin, .stage-pin") || box;
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: "high-performance" });
+    renderer.setClearColor(0x000000, 0);
     hero.classList.add("has-cloud");
     hero.classList.remove("cloud-pending");
     hero.style.setProperty("--shapes", S);
     // The element just grew (its track height depends on the shape count), so everything below it
     // moved: tell the pinned stages and the other clouds to measure again.
     window.dispatchEvent(new Event("cloud:mounted"));
-    var canvas = hero.querySelector(".cloud-canvas"), box = canvas.parentElement, lookY = parseFloat(hero.getAttribute("data-cloud-look")); if (isNaN(lookY)) lookY = -0.75;
-    var track = hero.querySelector(".hero-track") || hero, pin = hero.querySelector(".hero-pin, .stage-pin") || box;
-
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, powerPreference: "high-performance" });
-    renderer.setClearColor(0x000000, 0);
     var lost = false;
     canvas.addEventListener("webglcontextlost", function () {   // three.js's own listener calls preventDefault, so the browser may restore the context
       lost = true;
@@ -521,6 +522,10 @@
       for (var i = 0; i < tags.length; i++) { tags[i].el.style.opacity = 0; tags[i].on = false; }
     });
     canvas.addEventListener("webglcontextrestored", function () { lost = false; hero.classList.add("has-cloud"); relayout(); });
+    // A stage cloud steps aside when its media query stops matching (window shrank, tablet rotated): stage.js has unpinned the stage and each step shows its static figure.
+    var off = false, rootMq = hero.hasAttribute("data-stage") ? window.matchMedia(hero.getAttribute("data-cloud-mq") || DEFAULT_MQ) : null;
+    function park(p) { off = p; if (p) { hero.classList.remove("has-cloud"); for (var i = 0; i < tags.length; i++) { tags[i].el.style.opacity = 0; tags[i].on = false; } } else { hero.classList.add("has-cloud"); relayout(); } }
+    if (rootMq) { var onMq = function () { park(!rootMq.matches); }; if (rootMq.addEventListener) rootMq.addEventListener("change", onMq); else if (rootMq.addListener) rootMq.addListener(onMq); }
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 
@@ -592,7 +597,7 @@
 
     function frame(now) {
       raf = 0;
-      if (lost) return;
+      if (lost || off) return;
       if (Math.min(window.devicePixelRatio || 1, 2) !== gdpr) { size(); measure(); }   // zoom step or monitor move that the media-query watcher missed
       place();
       if (!t0) t0 = now;
@@ -647,7 +652,7 @@
       if (p) Array.prototype.forEach.call(p.querySelectorAll("[data-value]"), function (num) { var v = parseFloat(num.getAttribute("data-value")), dec = parseInt(num.getAttribute("data-dec"), 10) || 0, s = (num.getAttribute("data-prefix") || "") + fmt(v * f, dec) + (num.getAttribute("data-suffix") || ""); if (num.textContent !== s) num.textContent = s; });
       if (visible) raf = requestAnimationFrame(frame);
     }
-    function start() { if (!raf && !lost) { last = 0; raf = requestAnimationFrame(frame); } }
+    function start() { if (!raf && !lost && !off) { last = 0; raf = requestAnimationFrame(frame); } }
     if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); }, { threshold: 0 }).observe(hero);
     document.addEventListener("visibilitychange", function () { if (!document.hidden && visible) start(); });
     window.addEventListener("resize", relayout);

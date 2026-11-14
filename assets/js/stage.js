@@ -59,6 +59,7 @@
     if (fig && fig.ald) { fig.ald.scrub = true; fig.ald.stop(); }
     measure(); current = -1; update();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.dispatchEvent(new Event("cloud:mounted"));   // the stage just grew by a few screens: clouds below measure again
   }
 
   function disable() {
@@ -69,6 +70,7 @@
     steps.forEach(function (s) { s.classList.remove("is-past"); s.classList.add("is-active"); });
     current = -1;
     if (fig && fig.ald) { fig.ald.scrub = false; fig.ald.render(fig.ald.END); }
+    window.dispatchEvent(new Event("cloud:mounted"));
   }
 
   function apply() { if (mq.matches) enable(); else disable(); }
