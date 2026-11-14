@@ -33,6 +33,7 @@
   var END = D + 400;
   api.END = END;
   api.GROW = C;   // end of the step-by-step part (ZnO cycle 1, cycles 2..N, the Al cycle); the film fills from here to D
+  api.CYCLE1 = A;   // end of the step-by-step first ZnO cycle
 
   function build() {
     while (lines.firstChild) lines.removeChild(lines.firstChild);
@@ -127,7 +128,7 @@
     n = r; fig.setAttribute("data-ratio", n);
     Array.prototype.forEach.call(fig.querySelectorAll("button[data-ratio]"), function (x) { x.setAttribute("aria-pressed", x === btn ? "true" : "false"); });
     build();
-    if (api.scrub) render(api.lastT); else play();
+    if (api.scrub) render(api.lastT); else if (raf) play(); else render(END);
   });
 
   api.play = play;
