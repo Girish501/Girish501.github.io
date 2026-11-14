@@ -13,7 +13,7 @@
 // keeps its static figure.
 (function () {
   "use strict";
-  function noCloud() { Array.prototype.forEach.call(document.querySelectorAll("[data-cloud]"), function (r) { r.classList.add("no-cloud"); r.classList.remove("has-cloud"); }); }
+  function noCloud() { Array.prototype.forEach.call(document.querySelectorAll("[data-cloud]"), function (r) { r.classList.add("no-cloud"); r.classList.remove("has-cloud"); r.classList.remove("cloud-pending"); }); }
   var DEFAULT_MQ = "(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
   var roots = Array.prototype.filter.call(document.querySelectorAll("[data-cloud]"), function (r) { return window.matchMedia(r.getAttribute("data-cloud-mq") || DEFAULT_MQ).matches; });
   if (!roots.length) { noCloud(); return; }
@@ -24,6 +24,7 @@
   var rname = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
   if (/swiftshader|llvmpipe|softpipe|software|microsoft basic render/i.test(rname)) { noCloud(); return; }
   var lose = gl.getExtension("WEBGL_lose_context"); if (lose) lose.loseContext();
+  roots.forEach(function (r) { r.classList.add("cloud-pending"); });   // the static figure stays hidden while three.js loads; removed when the cloud mounts or gives up
 
   // ---- The numbers (all from the results table and project rows) ----
   var A_LAT = 3.252, C_LAT = 5.213, U_WZ = 0.382;      // wurtzite ZnO lattice constants (Å), internal parameter u
@@ -472,7 +473,7 @@
           else if (SPECS[k]) shapes.push({ key: k, build: SPECS[k].build, cam: SPECS[k].cam });
         });
         if (shapes.length) mount(root, THREE, shapes);
-      }).catch(function (e) { root.classList.remove("has-cloud"); root.classList.add("no-cloud"); if (window.console) console.warn("cloud off:", e && e.message); });
+      }).catch(function (e) { root.classList.remove("has-cloud"); root.classList.add("no-cloud"); root.classList.remove("cloud-pending"); if (window.console) console.warn("cloud off:", e && e.message); });
     });
   }).catch(function (e) { noCloud(); if (window.console) console.warn("cloud off:", e && e.message); });
 
@@ -496,6 +497,7 @@
       if (spec) tags.push({ el: el, shape: si, p: new THREE.Vector3(spec.p[0], spec.p[1], spec.p[2]), dx: spec.dx || 0, dy: spec.dy || 0, tail: (el.hasAttribute("data-rotate") ? " rotate(" + el.getAttribute("data-rotate") + "deg)" : "") + " translate(" + (el.getAttribute("data-align") === "right" ? "-100%" : el.getAttribute("data-align") === "center" ? "-50%" : "0") + ",-50%)", on: false });
     });
     hero.classList.add("has-cloud");
+    hero.classList.remove("cloud-pending");
     hero.style.setProperty("--shapes", S);
     // The element just grew (its track height depends on the shape count), so everything below it
     // moved: tell the pinned stages and the other clouds to measure again.
@@ -572,7 +574,9 @@
     var top = 0, span = 1, navH = 60;
     function measure() { var n = document.querySelector(".nav"); navH = n ? n.offsetHeight : 60; top = track.getBoundingClientRect().top + window.scrollY - navH; span = Math.max(1, track.offsetHeight - pin.offsetHeight); }
     measure();
-    var target = 0, shown = 0, intro = 0, t0 = 0, visible = true, raf = 0, curPanel = -1, proj = new THREE.Vector3();
+    var HOLD = 0.3;   // each shape holds for 30% of its segment on either side, the dissolve takes the middle 40% (hero at 707 tall: 442 / 590 / 442 px; TIA chain 285px, scope 569px, Bode 285px)
+    var target = 0, shown = 0, last = 0, intro = 0, t0 = 0, visible = true, raf = 0, curPanel = -1, proj = new THREE.Vector3();
+    target = shown = Math.min(1, Math.max(0, (window.scrollY - top) / span));   // a reload mid-page starts on the right shape
     function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x); }
     function fmt(v, dec) { return v.toFixed(dec); }
 
@@ -584,11 +588,11 @@
       if (!t0) t0 = now;
       if (intro < 1) intro = Math.min(1, (now - t0) / 1500);
       target = Math.min(1, Math.max(0, (window.scrollY - top) / span));
-      shown += (target - shown) * 0.11;
+      var dt = last ? Math.min(100, now - last) : 16.7; last = now; shown += (target - shown) * (1 - Math.pow(0.89, dt / 16.7));   // 11% of the gap per 60 Hz frame, whatever the display refresh or frame rate
       var u = shown * (S - 1), seg = Math.min(S - 2, Math.floor(u)), t = u - seg;
       if (S === 1) { seg = 0; t = 0; }
       setSegment(seg);
-      var tt = ease((t - 0.2) / 0.6), wi = 1 - Math.pow(1 - intro, 3);
+      var tt = ease((t - HOLD) / (1 - 2 * HOLD)), wi = 1 - Math.pow(1 - intro, 3);
       mat.uniforms.uT.value = tt;
       mat.uniforms.uIntro.value = wi;
       mat.uniforms.uPhase.value = now * 0.0025;   // the waveforms travel: one cycle every 2.5 s
@@ -618,7 +622,7 @@
       camera.lookAt(0, lookY, 0);   // in the hero the shapes sit high, clear of the panel; data-cloud-look moves this
       renderer.render(scene, camera);
       // Labels follow their anchor points; a shape's labels fade out as it dissolves and in as the next forms.
-      var wA = (1 - ease(tt / 0.3)) * wi, wB = ease((tt - 0.7) / 0.3) * wi, cw = cW, ch = cH;
+      var wl = ease((intro - 0.5) / 0.5), wA = (1 - ease(tt / 0.3)) * wl, wB = ease((tt - 0.7) / 0.3) * wl, cw = cW, ch = cH;
       for (var i = 0; i < tags.length; i++) {
         var g = tags[i], w = g.shape === seg ? wA : g.shape === seg + 1 ? wB : 0;
         if (w < 0.02) { if (g.on) { g.el.style.opacity = 0; g.on = false; } continue; }
@@ -627,13 +631,13 @@
         g.el.style.opacity = w.toFixed(2); g.on = true;
       }
       // Panel: the nearer shape. Its number counts up as the shape comes into focus and then holds.
-      var k = Math.round(u), f = k === seg + 1 ? ease((tt - 0.5) / 0.45) : 1;   // the approaching shape's number counts during the second half of its formation and is complete at tt 0.95; the current shape shows its final value
+      var k = Math.round(u), f = k === seg + 1 ? ease((tt - 0.5) / 0.45) : (S > 1 && t > HOLD) ? ease((0.5 - tt) / 0.45) : 1; if (k === 0) f = Math.min(f, ease((intro - 0.3) / 0.6));   // the first number counts up during the second half of the intro, a number counts down as its shape dissolves and up again as it re-forms, and holds its final value while the shape holds
       if (k !== curPanel) { curPanel = k; active.forEach(function (p, i) { if (p) p.classList.toggle("is-on", i === k); }); if (stepEl) stepEl.textContent = (k + 1) + " of " + S; }
       var p = active[k];
       if (p) Array.prototype.forEach.call(p.querySelectorAll("[data-value]"), function (num) { var v = parseFloat(num.getAttribute("data-value")), dec = parseInt(num.getAttribute("data-dec"), 10) || 0, s = (num.getAttribute("data-prefix") || "") + fmt(v * f, dec) + (num.getAttribute("data-suffix") || ""); if (num.textContent !== s) num.textContent = s; });
       if (visible) raf = requestAnimationFrame(frame);
     }
-    function start() { if (!raf && !lost) raf = requestAnimationFrame(frame); }
+    function start() { if (!raf && !lost) { last = 0; raf = requestAnimationFrame(frame); } }
     if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); }, { threshold: 0 }).observe(hero);
     document.addEventListener("visibilitychange", function () { if (!document.hidden && visible) start(); });
     window.addEventListener("resize", relayout);
