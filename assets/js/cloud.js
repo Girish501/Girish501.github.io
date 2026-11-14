@@ -183,7 +183,11 @@
       parts.push({ w: 0.45, emit: rod([xl, yAl(m), zf + 0.012], [xr, yAl(m), zf + 0.012], 0.003, BLUE, 1.15 * COV) });
       parts.push({ w: 0.3, emit: rod([xr + 0.012, yAl(m), zf], [xr + 0.012, yAl(m), -zf], 0.003, BLUE, 1.15 * COV) });
     }
-    var E = function (a, b, w, color) { parts.push({ w: w || 0.5, emit: rod(a, b, 0.003, color || INK, 1.1 * COV) }); };
+    var VF = viewDir(CAM_FILM), KF = 0.1; // box edges also move 0.1 toward the camera so the foreshortened top and right face discs cannot overdraw them
+    var E = function (a, b, w, color) {
+      var a2 = [a[0] + KF * VF[0], a[1] + KF * VF[1], a[2] + KF * VF[2]], b2 = [b[0] + KF * VF[0], b[1] + KF * VF[1], b[2] + KF * VF[2]];
+      parts.push({ w: w || 0.5, emit: rod(a2, b2, 0.003, color || INK, 1.1 * COV) });
+    };
     // box edges lie 0.012 in front of the face planes they border (as the Al planes do), so the larger face discs never overdraw them
     var o = 0.012, zo = zf + o, xo = xr + o, yo = yt + o, zb = -zf + o;
     E([xl, y0, zo], [xr, y0, zo]); E([xl, yo, zo], [xr, yo, zo]); E([xl, y0, zo], [xl, yt, zo]); E([xo, y0, zo], [xo, yt, zo]);
@@ -526,7 +530,7 @@
     var sA = new THREE.BufferAttribute(new Float32Array(shapes[0].siz), 1), sB = new THREE.BufferAttribute(new Float32Array(shapes[b].siz), 1);
     var wA = new THREE.BufferAttribute(new Float32Array(shapes[0].wav), 1), wB = new THREE.BufferAttribute(new Float32Array(shapes[b].wav), 1);
     var scat = new Float32Array(3 * N), rn = new Float32Array(N);
-    for (var i = 0; i < N; i++) { var r = 3 + rnd() * 3, th = rnd() * 6.2832, ph = Math.acos(2 * rnd() - 1); scat[3 * i] = r * Math.sin(ph) * Math.cos(th); scat[3 * i + 1] = r * Math.cos(ph) * 0.6; scat[3 * i + 2] = r * Math.sin(ph) * Math.sin(th); rn[i] = rnd(); }
+    for (var i = 0; i < N; i++) { var r = 1 + rnd() * 1.5, th = rnd() * 6.2832, ph = Math.acos(2 * rnd() - 1); scat[3 * i] = r * Math.sin(ph) * Math.cos(th); scat[3 * i + 1] = r * Math.cos(ph) * 0.6; scat[3 * i + 2] = r * Math.sin(ph) * Math.sin(th); rn[i] = rnd(); }
     geo.setAttribute("pA", pA); geo.setAttribute("pB", pB); geo.setAttribute("cA", cA); geo.setAttribute("cB", cB); geo.setAttribute("sA", sA); geo.setAttribute("sB", sB); geo.setAttribute("wA", wA); geo.setAttribute("wB", wB);
     geo.setAttribute("sc", new THREE.BufferAttribute(scat, 3)); geo.setAttribute("rnd", new THREE.BufferAttribute(rn, 1));
     geo.setAttribute("position", pA); // bounding sphere
