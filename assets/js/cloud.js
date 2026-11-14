@@ -107,7 +107,7 @@
   // Wurtzite ZnO, ball and stick: the hexagonal unit cell. A prism one lattice constant a on each
   // edge and c tall, Zn at the corners, the face centres and three sites inside, each O a distance
   // u c above its Zn, bonds to the four neighbours, and dimension marks for a and c.
-  var CAM_LATTICE = [0.55, 0.5, 10.8];
+  var CAM_LATTICE = [0.55, 0.5, 10.8, 0.78];
   function shapeLattice() {
     var SC = 0.45, RZN = 0.46 * SC, RO = 0.34 * SC, RB = 0.09 * SC, YC = 0.2;  // scene units per Å, atom and bond radii, centre height
     var V = viewDir(CAM_LATTICE), az = CAM_LATTICE[0];
@@ -129,7 +129,7 @@
     P.forEach(function (p) { parts.push({ w: p[3] ? 0.7 : 1, emit: ball(p, p[3] ? RO : RZN, p[3] ? GRAY : SLATE, V, 1.7 * COV) }); });   // Zn dark, O gray, as in the first version
     P.forEach(function (p) {
       if (p[3]) return;
-      P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.3, emit: rod(p, q, RB, LIGHT, COV, RZN / d, 1 - RO / d) }); });
+      P.forEach(function (q) { if (!q[3]) return; var d = Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]); if (d < 2.1 * SC) parts.push({ w: 0.5, emit: rod(p, q, RB, LIGHT, COV, RZN / d, 1 - RO / d) }); });
     });
     // Prism edges: thin ink lines through the corner atoms.
     var R = 0.01;
@@ -137,7 +137,7 @@
       var d = corners[(n + 1) % 6], a = [c[0] * SC, 0, c[1] * SC], b = [d[0] * SC, 0, d[1] * SC];
       parts.push({ w: 0.3, emit: rod([a[0], y0, a[2]], [b[0], y0, b[2]], R, INK, 0.9 * COV) });
       parts.push({ w: 0.3, emit: rod([a[0], y1, a[2]], [b[0], y1, b[2]], R, INK, 0.9 * COV) });
-      parts.push({ w: 0.45, emit: rod([a[0], y0, a[2]], [a[0], y1, a[2]], R, INK, 0.9 * COV) });
+      parts.push({ w: 0.3, emit: rod([a[0], y0 + U_WZ * C_LAT * SC + RO, a[2]], [a[0], y1, a[2]], R, INK, 0.9 * COV) });   // the vertical ink edge starts above the corner O; below it the Zn-O bond and the Zn sphere carry the line, as in a solid ball-and-stick drawing
     });
     // Dimension marks: a along the front bottom edge, c beside the right vertical edge.
     var front = function (c) { return c[0] * Math.sin(az) + c[1] * Math.cos(az); }, sx = function (c) { return c[0] * Math.cos(az) - c[1] * Math.sin(az); };
@@ -156,9 +156,9 @@
     var Lc = corners[li], Os = P.filter(function (p) { return p[3]; }), leftO = Os[0]; best = 1e9;
     Os.forEach(function (p) { var v = sx([p[0], p[2]]); if (v < best) { best = v; leftO = p; } });
     var tags = {
-      a: { p: [(pa[0] + pb[0]) / 2, ya, (pa[2] + pb[2]) / 2], dy: 13 },
+      a: { p: [(pa[0] + pb[0]) / 2, ya, (pa[2] + pb[2]) / 2], dy: 22 },
       c: { p: [xc, (y0 + y1) / 2, zc], dx: 10 },
-      zn: { p: [Lc[0] * SC - RZN, y1, Lc[1] * SC], dx: -7 },
+      zn: { p: [Lc[0] * SC - RZN, y1, Lc[1] * SC], dx: -13 },
       o: { p: [leftO[0] - RO, leftO[1], leftO[2]], dx: -7 }
     };
     return build(parts, tags);
@@ -166,7 +166,7 @@
 
   // The AZO film in cross-section: a block of film on its substrate, a blue plane per Al cycle,
   // a thickness bracket on the left and labelled leaders on the right.
-  var CAM_FILM = [0.5, 0.3, 10.5];
+  var CAM_FILM = [0.5, 0.3, 10.5, 0.78];
   function shapeFilm() {
     var W = 3.1, D = 2.0, H = 2.4, SUB = 0.9, X0 = 0.05, y0 = -0.9, zf = D / 2, FS = 1.6 * COV;
     var xl = X0 - W / 2, xr = X0 + W / 2, yt = y0 + H, yb = y0 - SUB, planes = Math.round(CYCLES / (RATIO + 1));
@@ -404,7 +404,7 @@
       f100k: { p: [fx(5), Y0, 0], dy: 12 }, f1m: { p: [fx(6), Y0, 0], dy: 12 }, f10m: { p: [fx(7), Y0, 0], dy: 12 }, f100m: { p: [fx(8), Y0, 0], dy: 12 }, f1g: { p: [fx(9), Y0, 0], dy: 12 }, f10g: { p: [fx(10), Y0, 0], dy: 12 },
       g0: { p: [X0, fy(0), 0], dx: -8 }, g40: { p: [X0, fy(40), 0], dx: -8 }, g80: { p: [X0, fy(80), 0], dx: -8 }, g120: { p: [X0, fy(120), 0], dx: -8 },
       xlabel: { p: [(X0 + X1) / 2, Y0, 0], dy: 34 }, ylabel: { p: [X0, (Y0 + Y1) / 2, 0], dx: -48 },
-      plateau: { p: [fx(7.5), fy(109.3), 0], dy: -14 }, lo: { p: [fx(lo), fy(L3), 0], dx: -10, dy: 12 }, hi: { p: [fx(hi), fy(L3), 0], dx: 10, dy: 12 }, m3: { p: [X0, fy(L3), 0], dx: 6, dy: -11 }
+      plateau: { p: [fx(7.5), fy(109.3), 0], dy: -14 }, lo: { p: [fx(lo), fy(L3), 0], dx: -10, dy: -13 }, hi: { p: [fx(hi), fy(L3), 0], dx: 10, dy: -13 }, m3: { p: [X1, fy(L3), 0], dx: -4, dy: 13 }
     };
     return build(parts, tags);
   }
