@@ -542,6 +542,8 @@
     // Chrome snaps a canvas box to whole CSS pixels and stretches the backing store into it. The size stays on the q grid
     // (q * dpr a whole number, so the backing store is 1:1); the position rounds to device pixels, so the canvas follows its box
     // one device pixel at a time while a pin slides.
+    // Verified under Chromium's own device scale factor (Windows display scaling): canvas steps match box steps within 0.02 px at 1.25.
+    // Playwright's deviceScaleFactor emulation lays out at CSS px and snaps scrollY to whole CSS px, so it cannot show this.
     var gq = 1, gdpr = 1, cW = 1, cH = 1, ox = 0, oy = 0, lastL = NaN, lastT = NaN, lastY = NaN;
     function place() {   // origin on the grid, and the scroll residual of the compositor's device-pixel scroll snapping (also moves when a sticky stage engages)
       var br = box.getBoundingClientRect();
