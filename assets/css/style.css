@@ -169,7 +169,7 @@ main { padding-top: var(--nav-h); }
 .hero.has-cloud .hero-visual { position: relative; height: min(72vh, 680px); display: flex; align-items: center; }
 .hero.has-cloud .hero-text { padding-bottom: 48px; }
 .hero.has-cloud .hero-visual .fig { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }   /* the static figure fades under the point intro once the cloud runs (animation: none beats the .enter keyframes' forwards fill) */
-.has-cloud .cloud-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }  /* cloud.js sets the exact size and a sub-pixel left/top inline so the canvas lands on whole device pixels */
+.has-cloud .cloud-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }  /* cloud.js sets size, left/top and a scroll-residual transform inline so the canvas lands on whole device pixels */
 .stage.has-cloud .cloud-box .fig { display: none; }
 .hero.has-cloud .cloud-panel {
   display: block; position: absolute; left: 0; bottom: 0; width: min(340px, 60%);

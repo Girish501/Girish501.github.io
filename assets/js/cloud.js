@@ -537,19 +537,26 @@
     }
     setSegment(0);
 
-    var snapL = NaN, snapT = NaN;
-    function snap(br, dpr) {   // move the canvas origin onto a device pixel (overrides the CSS inset; right/bottom are ignored once left+width and top+height are set)
-      var l = (Math.round(br.left * dpr) - br.left * dpr) / dpr, t = (Math.round(br.top * dpr) - br.top * dpr) / dpr;
-      if (!(Math.abs(l - snapL) <= 1e-4)) { snapL = l; canvas.style.left = l + "px"; }
-      if (!(Math.abs(t - snapT) <= 1e-4)) { snapT = t; canvas.style.top = t + "px"; }
+    // Chrome snaps a canvas box to whole CSS pixels and stretches the backing store into it, so at a fractional
+    // pixel ratio the canvas is laid out on a grid of q CSS px (q * dpr a whole number) and every point lands on a device pixel.
+    var gq = 1, gdpr = 1, cW = 1, cH = 1, ox = 0, oy = 0, lastL = NaN, lastT = NaN, lastY = NaN;
+    function place() {   // origin on the grid, and the scroll residual of the compositor's device-pixel scroll snapping (also moves when a sticky stage engages)
+      var br = box.getBoundingClientRect();
+      var l = gq * Math.round(br.left / gq) - br.left, t = gq * Math.round(br.top / gq) - br.top;
+      var y = (Math.round(window.scrollY * gdpr) - window.scrollY * gdpr) / gdpr;
+      if (l !== lastL) { lastL = l; ox = l; canvas.style.left = l + "px"; }
+      if (t !== lastT) { lastT = t; oy = t; canvas.style.top = t + "px"; }
+      if (y !== lastY) { lastY = y; canvas.style.transform = y ? "translateY(" + y + "px)" : ""; }
     }
     function size() {
-      // Whole device pixels: a fractional CSS box (the centred text column puts the hero visual at x 652.78 at 1279x707) makes Chrome resample the opaque point canvas by a fraction of a pixel and every vertical line gets two soft columns.
-      var dpr = Math.min(window.devicePixelRatio || 1, 2), br = box.getBoundingClientRect();
-      var pw = Math.max(1, Math.round(br.width * dpr)), ph = Math.max(1, Math.round(br.height * dpr));
+      var dpr = Math.min(window.devicePixelRatio || 1, 2), br = box.getBoundingClientRect(), q = 1;
+      for (var k = 1; k <= 8; k++) if (Math.abs(k * dpr - Math.round(k * dpr)) < 1e-6) { q = k; break; }
+      gq = q; gdpr = dpr;
+      cW = Math.max(q, q * Math.round(br.width / q)); cH = Math.max(q, q * Math.round(br.height / q));
+      var pw = Math.round(cW * dpr), ph = Math.round(cH * dpr);
       renderer.setPixelRatio(1); renderer.setSize(pw, ph, false);
-      canvas.style.width = (pw / dpr) + "px"; canvas.style.height = (ph / dpr) + "px";
-      snap(br, dpr);
+      canvas.style.width = cW + "px"; canvas.style.height = cH + "px";
+      lastL = lastT = lastY = NaN; place();
       camera.aspect = pw / ph; camera.updateProjectionMatrix();
       mat.uniforms.uScale.value = ph / (2 * Math.tan(camera.fov * Math.PI / 360));   // ph is already in device pixels
     }
@@ -572,7 +579,8 @@
     function frame(now) {
       raf = 0;
       if (lost) return;
-      snap(box.getBoundingClientRect(), Math.min(window.devicePixelRatio || 1, 2));   // the box moves by a fraction when a sticky stage engages
+      if (Math.min(window.devicePixelRatio || 1, 2) !== gdpr) { size(); measure(); }   // zoom step or monitor move that the media-query watcher missed
+      place();
       if (!t0) t0 = now;
       if (intro < 1) intro = Math.min(1, (now - t0) / 1500);
       target = Math.min(1, Math.max(0, (window.scrollY - top) / span));
@@ -610,12 +618,12 @@
       camera.lookAt(0, lookY, 0);   // in the hero the shapes sit high, clear of the panel; data-cloud-look moves this
       renderer.render(scene, camera);
       // Labels follow their anchor points; a shape's labels fade out as it dissolves and in as the next forms.
-      var wA = (1 - ease(tt / 0.3)) * wi, wB = ease((tt - 0.7) / 0.3) * wi, cw = box.clientWidth, ch = box.clientHeight;
+      var wA = (1 - ease(tt / 0.3)) * wi, wB = ease((tt - 0.7) / 0.3) * wi, cw = cW, ch = cH;
       for (var i = 0; i < tags.length; i++) {
         var g = tags[i], w = g.shape === seg ? wA : g.shape === seg + 1 ? wB : 0;
         if (w < 0.02) { if (g.on) { g.el.style.opacity = 0; g.on = false; } continue; }
         proj.copy(g.p).project(camera);
-        g.el.style.transform = "translate(" + ((proj.x + 1) / 2 * cw + g.dx).toFixed(1) + "px," + ((1 - proj.y) / 2 * ch + g.dy).toFixed(1) + "px)" + g.tail;
+        g.el.style.transform = "translate(" + (ox + (proj.x + 1) / 2 * cw + g.dx).toFixed(1) + "px," + (oy + (1 - proj.y) / 2 * ch + g.dy).toFixed(1) + "px)" + g.tail;
         g.el.style.opacity = w.toFixed(2); g.on = true;
       }
       // Panel: the nearer shape. Its number counts up as the shape comes into focus and then holds.
