@@ -261,8 +261,8 @@ main { padding-top: var(--nav-h); }
 
 /* ---------- Process work: case study ---------- */
 
-.photo-wide { display: block; width: 100%; overflow: hidden; border-radius: 12px; background: var(--paper-2); aspect-ratio: 2 / 1; max-height: min(56vh, 520px); margin: 0 0 clamp(32px, 4vw, 48px); }
-.photo-wide img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transition: transform 600ms var(--ease-out); }
+.photo-wide { display: block; width: 100%; overflow: hidden; border-radius: 12px; background: var(--paper-2); aspect-ratio: 2 / 1; max-height: min(64vh, 520px); margin: 0 0 clamp(32px, 4vw, 48px); }
+.photo-wide img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; transition: transform 600ms var(--ease-out); }
 @media (max-width: 640px) { .photo-wide { aspect-ratio: 3 / 2; max-height: none; } }
 .case { padding: 28px 0 8px; border-top: 1px solid var(--line); }
 .case-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: baseline; margin-bottom: 20px; }
@@ -313,9 +313,9 @@ main { padding-top: var(--nav-h); }
 .is-pinned .stage-step {
   position: absolute; left: 0; right: 0; top: 50%;
   margin: 0; opacity: 0; transform: translateY(calc(-50% + 10px)); pointer-events: none;
-  transition: opacity 400ms ease, transform 400ms cubic-bezier(.25, .46, .45, .94);
+  transition: opacity 160ms ease-in, transform 160ms ease-in;   /* on its way out: quick */
 }
-.is-pinned .stage-step.is-active { opacity: 1; transform: translateY(-50%); pointer-events: auto; }
+.is-pinned .stage-step.is-active { opacity: 1; transform: translateY(-50%); pointer-events: auto; transition: opacity 360ms ease-out 150ms, transform 480ms var(--ease-out) 150ms; }   /* coming in: starts once the old step is gone */
 .is-pinned .stage-step.is-past { transform: translateY(calc(-50% - 10px)); }
 .is-pinned .stage-fig { margin-top: 0; }
 .is-pinned .fig-controls .replay, .is-pinned .fig-title-long { display: none; }
@@ -378,6 +378,8 @@ main { padding-top: var(--nav-h); }
 .compact { margin-top: 32px; }
 .compact li { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 6px 32px; padding: 18px 0; border-top: 1px solid var(--line); }
 .compact li:last-child { border-bottom: 1px solid var(--line); }
+.rows + .compact { margin-top: 0; }   /* one hairline between the lead-number list and the compact list (Hardware) */
+.rows + .compact li:first-child { border-top: 0; }
 .compact .row-body p { margin-top: 4px; }
 @media (max-width: 640px) { .compact li { grid-template-columns: 1fr; gap: 4px; } }
 
