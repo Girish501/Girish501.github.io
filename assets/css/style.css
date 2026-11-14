@@ -506,7 +506,6 @@ main { padding-top: var(--nav-h); }
 
 /* ---------- Scroll-linked motion (anim.js sets opacity and transform inline) ---------- */
 
-[data-anim] { will-change: opacity, transform; }
 .photo[data-anim] img, .photo-wide[data-anim] img { transform-origin: 50% 50%; }
 
 /* ---------- The entrance (once, on load) ---------- */

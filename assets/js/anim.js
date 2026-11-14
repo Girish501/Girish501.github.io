@@ -3,8 +3,8 @@
 // enters and back as it leaves. No library, no scroll hijacking.
 //
 // Markup: data-anim="rise|fade|count|settle|draw" with optional data-anim-start (fraction of the
-// viewport height at which the element's top starts the motion, default .88), data-anim-span
-// (fraction of the viewport height over which it completes, default .28) and data-anim-y (px).
+// viewport height at which the element's top starts the motion, default .92), data-anim-span
+// (fraction of the viewport height over which it completes, default .2) and data-anim-y (px).
 //   rise   opacity 0 to 1 and a 12px upward slide
 //   fade   opacity 0 to 1
 //   count  the element's leading number counts up from 0 (formatting kept)
@@ -22,7 +22,7 @@
 
   var items = els.map(function (el) {
     var type = el.getAttribute("data-anim") || "rise";
-    var it = { el: el, type: type, start: parseFloat(el.getAttribute("data-anim-start")) || 0.88, span: parseFloat(el.getAttribute("data-anim-span")) || 0.28, y: parseFloat(el.getAttribute("data-anim-y")) || 12, last: -1 };
+    var it = { el: el, type: type, start: parseFloat(el.getAttribute("data-anim-start")) || 0.92, span: parseFloat(el.getAttribute("data-anim-span")) || 0.2, y: parseFloat(el.getAttribute("data-anim-y")) || 12, last: -1 };
     if (type === "count") {
       // Only the element's first text node counts (for example "109 dBΩ"); child elements such as the
       // small label underneath are left alone.
@@ -39,6 +39,7 @@
   function apply(it, p) {
     var e = easeOutQuad(p);
     var s = it.el.style;
+    var moving = p > 0 && p < 1; if (moving !== it.moving) { it.moving = moving; s.willChange = moving ? "opacity, transform" : ""; }
     switch (it.type) {
       case "rise":
         s.opacity = e; s.transform = p >= 1 ? "" : "translateY(" + ((1 - e) * it.y).toFixed(2) + "px)"; break;
@@ -49,7 +50,9 @@
         it.node.nodeValue = it.pre + (it.num * e).toFixed(it.dec) + it.post; break;
       case "settle":
         s.opacity = Math.min(1, e * 1.4);
-        it.img.style.transform = p >= 1 ? "" : "scale(" + (1.04 - 0.04 * e).toFixed(4) + ")"; break;
+        if (p >= 1) { it.img.style.transform = ""; it.img.style.transition = ""; it.img.style.willChange = ""; }
+        else { if (it.img.style.transition !== "none") { it.img.style.transition = "none"; it.img.style.willChange = "transform"; } it.img.style.transform = "scale(" + (1.04 - 0.04 * e).toFixed(4) + ")"; }
+        break;
       case "draw":
         s.opacity = Math.min(1, e * 1.4);
         it.path.style.strokeDasharray = "1"; it.path.style.strokeDashoffset = (1 - e).toFixed(4); break;

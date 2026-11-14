@@ -51,7 +51,7 @@ The Process work section has an animated figure of the ALD recipe: one cycle's v
 
 ## Design
 
-Paper background, near-black text, one blue accent for links and buttons. Instrument Sans for everything (loaded from Google Fonts), headings at weight 600, tabular numerals throughout. Body text is 17 px; nothing is under 13 px. The only animation is the hero entrance on load; nothing moves on scroll. Hover gives quick feedback: underlines draw, buttons step, photos zoom 3%.
+Paper background, near-black text, one blue accent for links and buttons. Instrument Sans for everything (loaded from Google Fonts), headings at weight 600, tabular numerals throughout. Body text is 17 px; nothing is under 13 px. Motion: the hero entrance on load and the scroll-linked reveals described above. Hover gives quick feedback: underlines draw, buttons step, photos zoom 3%.
 
 ## Photos
 
