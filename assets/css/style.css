@@ -149,12 +149,12 @@ main { padding-top: var(--nav-h); }
   .js .hero:not(.no-cloud) .hero-track { height: calc(var(--shapes, 2) * 130vh + 40vh); }   /* 130vh per shape: each shape holds for more than a screen of scroll */
   .js .hero:not(.no-cloud) .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
   .js .hero:not(.no-cloud) .hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); width: 100%; }
+  .js .hero:not(.no-cloud) h1 { font-size: clamp(34px, 3.6vw, 48px); }   /* the pinned text column is about 475px wide at every desktop size: 48px keeps the headline to four lines (46px at 1279 wide) */
   .js .hero:not(.no-cloud) .hero-visual { position: relative; height: min(72vh, 680px); display: flex; align-items: center; }
   .js .hero:not(.no-cloud) .hero-visual .fig { width: 100%; transition: opacity 400ms ease, visibility 0s linear 400ms; }
   .js .hero:not(.no-cloud) .hero-text { padding-bottom: 48px; }
-  /* Short windows (the owner's laptop at 1279x707 and 1366x768): the text column is narrower, so the headline takes a smaller size to keep four lines, and the text block tightens so everything fits inside the pin. */
+  /* Short windows (the owner's laptop at 1279x707 and 1366x768): the text block tightens so everything fits inside the pin. */
   @media (max-height: 800px) {
-    .js .hero:not(.no-cloud) h1 { font-size: clamp(34px, 3.6vw, 48px); }   /* 46px at 1279 wide, 48px at 1366 */
     .js .hero:not(.no-cloud) .hero-text { padding-bottom: 24px; }
     .js .hero:not(.no-cloud) .lead { margin-top: 16px; }
     .js .hero:not(.no-cloud) .hero-actions { margin-top: 24px; }
@@ -165,6 +165,7 @@ main { padding-top: var(--nav-h); }
 .hero.has-cloud .hero-track { height: calc(var(--shapes, 2) * 130vh + 40vh); }
 .hero.has-cloud .hero-pin { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); display: flex; align-items: center; }
 .hero.has-cloud .hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); width: 100%; }
+.hero.has-cloud h1 { font-size: clamp(34px, 3.6vw, 48px); }
 .hero.has-cloud .hero-visual { position: relative; height: min(72vh, 680px); display: flex; align-items: center; }
 .hero.has-cloud .hero-text { padding-bottom: 48px; }
 .hero.has-cloud .hero-visual .fig { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }   /* the static figure fades under the point intro once the cloud runs (animation: none beats the .enter keyframes' forwards fill) */
@@ -178,7 +179,6 @@ main { padding-top: var(--nav-h); }
 
 /* Short windows: the panel tightens so it fits inside the pin. */
 @media (max-height: 800px) {
-  .hero.has-cloud h1 { font-size: clamp(34px, 3.6vw, 48px); }
   .hero.has-cloud .hero-text { padding-bottom: 24px; }
   .hero.has-cloud .lead { margin-top: 16px; }
   .hero.has-cloud .hero-actions { margin-top: 24px; }
