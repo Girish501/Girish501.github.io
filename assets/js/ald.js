@@ -134,8 +134,9 @@
   build();
   render(END); // static final state until it scrolls into view
   if (reduce || !("IntersectionObserver" in window)) return;
+  var watch = fig.querySelector(".ald-stack") || fig;   // start when the film panel is the thing in view: on a phone that puts the whole valve panel above it on screen too
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) { if (en.isIntersecting && !played && !api.scrub) { play(); io.disconnect(); } });
-  }, { threshold: 0.4 });
-  io.observe(fig);
+  }, { threshold: 0.5, rootMargin: "0px 0px -15% 0px" });
+  io.observe(watch);
 })();
