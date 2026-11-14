@@ -16,6 +16,11 @@
   <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
   <meta name="theme-color" content="#f8f7f3">
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+  {% if page.cloud %}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js"}}</script>
+  <script>(function () { if (window.matchMedia("(min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)").matches) { var l = document.createElement("link"); l.rel = "modulepreload"; l.href = "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js"; document.head.appendChild(l); } })();</script>
+  {% endif %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap">
@@ -27,8 +32,6 @@
   <script src="{{ '/assets/js/main.js' | relative_url }}?v={{ v }}" defer></script>
   <script src="{{ '/assets/js/anim.js' | relative_url }}?v={{ v }}" defer></script>
   {% if page.cloud %}
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js"}}</script>
   <script type="module" src="{{ '/assets/js/cloud.js' | relative_url }}?v={{ v }}"></script>
   {% endif %}
 </head>

@@ -195,7 +195,7 @@ main { padding-top: var(--nav-h); }
 .cloud-tag--blue { color: var(--accent); }
 .cloud-step { margin-bottom: 6px; }
 .cloud-item { display: none; }
-.cloud-item.is-on { display: block; animation: cloud-in 300ms ease; }
+.cloud-item.is-on { display: block; animation: cloud-in 360ms var(--ease-out); }
 .cloud-num { font-size: 34px; font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
 .cloud-label { margin-top: 6px; font-size: 14px; color: var(--muted); line-height: 1.4; }
 .cloud-link { display: inline-block; margin-top: 8px; font-size: 14px; color: var(--accent); background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat; background-size: 0 1px; background-position: 0 100%; padding-bottom: 1px; transition: background-size 150ms var(--ease-out); }
@@ -537,7 +537,7 @@ main { padding-top: var(--nav-h); }
 .js .fig-mark, .js .fig-note { opacity: 0; animation: fade 300ms ease 1300ms forwards; }
 .js .row-fig .fig-mark, .js .row-fig .fig-note { opacity: 1; animation: none; }
 @keyframes fade { to { opacity: 1; } }
-@keyframes cloud-in { from { opacity: 0; transform: translateY(4px); } }
+@keyframes cloud-in { from { opacity: 0; transform: translateY(6px); } }
 
 @media (prefers-reduced-motion: reduce) {
   .js .enter { transform: none; animation: fade 300ms ease forwards; animation-delay: 0ms; }

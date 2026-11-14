@@ -539,12 +539,13 @@
     }
     setSegment(0);
 
-    // Chrome snaps a canvas box to whole CSS pixels and stretches the backing store into it, so at a fractional
-    // pixel ratio the canvas is laid out on a grid of q CSS px (q * dpr a whole number) and every point lands on a device pixel.
+    // Chrome snaps a canvas box to whole CSS pixels and stretches the backing store into it. The size stays on the q grid
+    // (q * dpr a whole number, so the backing store is 1:1); the position rounds to device pixels, so the canvas follows its box
+    // one device pixel at a time while a pin slides.
     var gq = 1, gdpr = 1, cW = 1, cH = 1, ox = 0, oy = 0, lastL = NaN, lastT = NaN, lastY = NaN;
     function place() {   // origin on the grid, and the scroll residual of the compositor's device-pixel scroll snapping (also moves when a sticky stage engages)
       var br = box.getBoundingClientRect();
-      var l = gq * Math.round(br.left / gq) - br.left, t = gq * Math.round(br.top / gq) - br.top;
+      var l = (Math.round(br.left * gdpr) - br.left * gdpr) / gdpr, t = (Math.round(br.top * gdpr) - br.top * gdpr) / gdpr;
       var y = (Math.round(window.scrollY * gdpr) - window.scrollY * gdpr) / gdpr;
       if (l !== lastL) { lastL = l; ox = l; canvas.style.left = l + "px"; }
       if (t !== lastT) { lastT = t; oy = t; canvas.style.top = t + "px"; }
@@ -631,7 +632,7 @@
         g.el.style.opacity = w.toFixed(2); g.on = true;
       }
       // Panel: the nearer shape. Its number counts up as the shape comes into focus and then holds.
-      var k = Math.round(u), f = k === seg + 1 ? ease((tt - 0.5) / 0.45) : (S > 1 && t > HOLD) ? ease((0.5 - tt) / 0.45) : 1; if (k === 0) f = Math.min(f, ease((intro - 0.3) / 0.6));   // the first number counts up during the second half of the intro, a number counts down as its shape dissolves and up again as it re-forms, and holds its final value while the shape holds
+      var k = Math.round(u), f = k === seg + 1 ? ease((tt - 0.5) / 0.45) : 1; if (k === 0) f = Math.min(f, ease((intro - 0.3) / 0.6));   // the first number counts up during the second half of the intro; each later number counts up as its shape forms and then holds (a measured constant never counts down)
       if (k !== curPanel) { curPanel = k; active.forEach(function (p, i) { if (p) p.classList.toggle("is-on", i === k); }); if (stepEl) stepEl.textContent = (k + 1) + " of " + S; }
       var p = active[k];
       if (p) Array.prototype.forEach.call(p.querySelectorAll("[data-value]"), function (num) { var v = parseFloat(num.getAttribute("data-value")), dec = parseInt(num.getAttribute("data-dec"), 10) || 0, s = (num.getAttribute("data-prefix") || "") + fmt(v * f, dec) + (num.getAttribute("data-suffix") || ""); if (num.textContent !== s) num.textContent = s; });
