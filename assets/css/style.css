@@ -191,7 +191,6 @@ main { padding-top: var(--nav-h); }
 .cloud-tag { position: absolute; left: 0; top: 0; transform-origin: 0 0; font-size: 13px; line-height: 1.2; color: var(--muted); white-space: nowrap; opacity: 0; will-change: transform, opacity; font-variant-numeric: tabular-nums; }
 .cloud-tag--dim { color: var(--ink); }
 .cloud-tag--chip { padding: 1px 5px; border-radius: 4px; background: rgba(248, 247, 243, .88); }
-.cloud-tag sub { font-size: 11px; }
 .cloud-tag--blue { color: var(--accent); }
 .cloud-step { margin-bottom: 6px; }
 .cloud-item { display: none; }
@@ -362,8 +361,8 @@ main { padding-top: var(--nav-h); }
 /* Not pinned: each step carries its own figure and the box is empty. Pinned without the cloud: the box shows the schematic. */
 .step-fig { margin-top: 18px; max-width: 900px; }
 @media (max-width: 640px) {
-  .fig--static { overflow-x: auto; -webkit-overflow-scrolling: touch; }   /* the 676px capture keeps its 13px labels and pans sideways inside the card */
-  .fig--static img { min-width: 676px; }
+  .fig--static { overflow-x: auto; -webkit-overflow-scrolling: touch; }   /* the 636px capture keeps its 13px labels and pans sideways inside the card */
+  .fig--static img { min-width: 636px; }
 }
 .box-fig { display: none; }
 .is-pinned .step-fig { display: none; }
