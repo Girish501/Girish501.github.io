@@ -169,7 +169,7 @@ main { padding-top: var(--nav-h); }
 .hero.has-cloud .hero-visual { position: relative; height: min(72vh, 680px); display: flex; align-items: center; }
 .hero.has-cloud .hero-text { padding-bottom: 48px; }
 .hero.cloud-pending .hero-visual .fig { animation: none; opacity: 0; visibility: hidden; }   /* no flash of the static card while three.js loads; if the cloud gives up the class goes and the card fades in */
-.stage.cloud-pending .cloud-box .fig { display: none; }
+.is-pinned .stage.cloud-pending:not(.has-cloud) .cloud-box .box-fig[data-for] { display: none; }
 .hero.has-cloud .hero-visual .fig { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }   /* the static figure fades under the point intro once the cloud runs (animation: none beats the .enter keyframes' forwards fill) */
 .has-cloud .cloud-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }  /* cloud.js sets size, left/top and a scroll-residual transform inline so the canvas lands on whole device pixels */
 .stage.has-cloud .cloud-box .fig { display: none; }
