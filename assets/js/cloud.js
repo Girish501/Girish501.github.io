@@ -507,11 +507,7 @@
     var track = hero.querySelector(".hero-track") || hero, pin = hero.querySelector(".hero-pin, .stage-pin") || box;
 
     THREE.ColorManagement.enabled = false;   // the shaders output raw sRGB values
-    // three.js always asks for an alpha channel when it makes the context itself, and the browser then composites
-    // the feathered rim (alpha < 1) over the page a second time. Make the context here, opaque, and hand it over.
-    var ctxOpts = { alpha: false, antialias: true, depth: true, premultipliedAlpha: true, powerPreference: "high-performance" };
-    var ctx = canvas.getContext("webgl2", ctxOpts) || canvas.getContext("webgl", ctxOpts);
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, context: ctx, antialias: true, alpha: false, powerPreference: "high-performance" });
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
     renderer.setClearColor(0xf8f7f3, 1);   // paper: the canvas only ever sits on paper (.hero-visual and .cloud-box)
     var gl = renderer.getContext(), msaa = gl.getParameter(gl.SAMPLES) >= 2;
     var lost = false;
